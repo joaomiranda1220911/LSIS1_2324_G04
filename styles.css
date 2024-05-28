@@ -1,0 +1,86 @@
+h1 {
+    color: black;
+    text-align: center;
+}
+header {
+    background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade */
+    position: fixed; /* Mantém o header fixo no topo */
+    top: 0; /* Posiciona no topo da página */
+    width: 100%; /* Largura total da página */
+    border-bottom: 1px solid #000000; /* Borda inferior reta e fina */
+    z-index: 1000; /* Mantém o header acima de outros elementos */
+    padding: 10px 0; /* Espaçamento interno */
+    box-sizing: border-box; /* Inclui a borda no tamanho total */
+    display: flex; /* Flexbox para centralizar e posicionar elementos */
+    justify-content: space-between; /* Espaça os itens à esquerda e à direita */
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    transition: background-color 0.3s ease; /* Transição suave para a mudança de fundo */
+}
+
+header.scrolled {
+    background-color: rgba(255, 255, 255, 1); /* Fundo branco opaco ao rolar */
+}
+
+.left-container, .right-container {
+    display: flex;
+    align-items: center;
+}
+
+.left-container {
+    gap: 20px; /* Espaçamento entre ícone da casa e menu "Sobre nós" */
+}
+
+.right-container {
+    gap: 20px; /* Espaçamento entre o ícone do usuário e outros elementos */
+}
+
+/* Estilo para o container do menu */
+.menuLeft, .menuRight {
+    position: relative;
+    display: inline-block;
+}
+
+/* Estilo para o link principal do menu */
+.menuLeft > a, .menuRight > a {
+    display: inline-block;
+    padding: 10px;
+    background-color: #f1f1f1;
+    color: #000;
+    text-decoration: none;
+}
+
+/* Estilo para o submenu */
+.dropdown-menu {
+    display: none; /* Esconde o submenu inicialmente */
+    position: absolute;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+}
+
+/* Estilo para os itens do submenu */
+.dropdown-menu li {
+    display: block; /* Alterando para exibição de bloco */
+    margin: 0; /* Remove espaçamento padrão */
+}
+
+/* Estilo para os links dentro do submenu */
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    color: #000; /* Cor do texto preto */
+    text-decoration: none; /* Remover sublinhado padrão */
+}
+
+/* Mostrar o submenu quando o container do menu for hover */
+.menuLeft:hover .dropdown-menu, .menuRight:hover .dropdown-menu {
+    display: block;
+}
+
+/* Estilo adicional para links ao passar o mouse */
+.dropdown-menu a:hover {
+    background-color: #ddd;
+}
