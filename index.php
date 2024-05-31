@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
-    <title> LSIS1 </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <header>
-        <div class="left-container">
-            <a href="index.php">
-                <img src="https://cdn.icon-icons.com/icons2/787/PNG/512/home_icon-icons.com_64840.png" alt="Ícone da casa" style="width: 32px; height: 32px;">
-            </a>
-            <div class="menuLeft">
-                <a href="#">Sobre nós</a>
-                <ul class="dropdown-menu">
-                    <li><a href="Objetivo.php">O nosso objetivo</a></li>
-                    <li><a href="Nos.php">Quem somos</a></li>
-                </ul>
-            </div>
+        <div class="logo">
+            <img src="Imagens/home_icon.png" alt="Logo">
         </div>
-
-        <div class="right-container">
-            <div class="menuRight">
-                <a href="index.php">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" alt="Ícone do user" style="width: 32px; height: 32px;">
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="Login.php">Login</a></li>
-                    <li><a href="Register.php">Registo</a></li>
-                    <li><a href="User.php">User</a></li>
-                    <li><a href="Logout.php">Logout</a></li>
-                </ul>
-            </div>
+        <nav>
+            <ul>
+                <li><a href="#">Sobre Nós</a></li>
+                <li><a href="#">Dados</a></li>
+                <li><a href="#">Análise</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <a href="https://www.e-redes.pt/pt-pt" class="official-site" target="_blank">Site oficial E-redes</a>
+            <input type="text" placeholder="Pesquisar">
+            <button class="search-button">Ir</button>
+        </div>
+        <div class="user-info">
+            <img src="Imagens/user_icon.png" alt="User Icon">
+            <span>Name</span>
         </div>
     </header>
-
-
+    <main>
+        <section class="hero">
+            <img src="Imagens/homepage_image.png" alt="Hero Image">
+            <div class="hero-text">
+                <h1>Principais estatisticas descobertas</h1>
+            </div>
+        </section>
+        <section class="dashboards">
+            <div class="dashboard">
+                <img src="Imagens/dashboard1.png" alt="Dashboard 1">
+                <p>Informação sobre a dashboard</p>
+            </div>
+            <div class="dashboard">
+                <img src="Imagens/dashboard2.png" alt="Dashboard 2">
+                <p>Informação sobre a dashboard</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <img src="Imagens/isep_logo.png" alt="ISEP Logo">
+            <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+        </div>
+    </footer>
 </body>
-
 </html>

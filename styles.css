@@ -1,86 +1,171 @@
-h1 {
-    color: black;
-    text-align: center;
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
 header {
-    background-color: rgba(255, 255, 255, 0.7); /* Fundo branco com 70% de opacidade */
-    position: fixed; /* Mantém o header fixo no topo */
-    top: 0; /* Posiciona no topo da página */
-    width: 100%; /* Largura total da página */
-    border-bottom: 1px solid #000000; /* Borda inferior reta e fina */
-    z-index: 1000; /* Mantém o header acima de outros elementos */
-    padding: 10px 0; /* Espaçamento interno */
-    box-sizing: border-box; /* Inclui a borda no tamanho total */
-    display: flex; /* Flexbox para centralizar e posicionar elementos */
-    justify-content: space-between; /* Espaça os itens à esquerda e à direita */
-    align-items: center; /* Alinha os itens verticalmente ao centro */
-    transition: background-color 0.3s ease; /* Transição suave para a mudança de fundo */
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-header.scrolled {
-    background-color: rgba(255, 255, 255, 1); /* Fundo branco opaco ao rolar */
+.logo img {
+    height: 40px;
+    margin-left: 20px;
 }
 
-.left-container, .right-container {
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-right: 20px;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: background 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+.search-bar {
     display: flex;
     align-items: center;
 }
 
-.left-container {
-    gap: 20px; /* Espaçamento entre ícone da casa e menu "Sobre nós" */
+.search-bar input[type="text"] {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
 }
 
-.right-container {
-    gap: 20px; /* Espaçamento entre o ícone do usuário e outros elementos */
+.search-bar .search-button {
+    padding: 5px 10px;
+    background-color: #575757;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
-/* Estilo para o container do menu */
-.menuLeft, .menuRight {
-    position: relative;
-    display: inline-block;
+.search-bar .search-button:hover {
+    background-color: #444;
 }
 
-/* Estilo para o link principal do menu */
-.menuLeft > a, .menuRight > a {
-    display: inline-block;
-    padding: 10px;
-    background-color: #f1f1f1;
-    color: #000;
+.search-bar .official-site {
+    color: #fff;
     text-decoration: none;
+    margin-right: 20px;
+    transition: color 0.3s;
 }
 
-/* Estilo para o submenu */
-.dropdown-menu {
-    display: none; /* Esconde o submenu inicialmente */
+.search-bar .official-site:hover {
+    color: #ddd;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.user-info img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+main {
+    padding: 20px;
+}
+
+.hero {
+    position: relative;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.hero img {
+    width: 100%;
+    height: auto;
+}
+
+.hero-text {
     position: absolute;
-    background-color: #ffffff;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
 }
 
-/* Estilo para os itens do submenu */
-.dropdown-menu li {
-    display: block; /* Alterando para exibição de bloco */
-    margin: 0; /* Remove espaçamento padrão */
+.hero-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
-/* Estilo para os links dentro do submenu */
-.dropdown-menu a {
-    display: block;
-    padding: 10px;
-    color: #000; /* Cor do texto preto */
-    text-decoration: none; /* Remover sublinhado padrão */
+.dashboards {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-/* Mostrar o submenu quando o container do menu for hover */
-.menuLeft:hover .dropdown-menu, .menuRight:hover .dropdown-menu {
-    display: block;
+.dashboard {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-/* Estilo adicional para links ao passar o mouse */
-.dropdown-menu a:hover {
-    background-color: #ddd;
+.dashboard img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.dashboard p {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-content img {
+    height: 40px;
+    margin-bottom: 10px;
 }

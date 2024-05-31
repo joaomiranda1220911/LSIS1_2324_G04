@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $user = "root";
 $pass = "";
 $host = "localhost";
-$db = "colecoes";
+$db = "";
 $mysqli = mysqli_connect($host, $user, $pass);
 if ($mysqli) {
     mysqli_select_db($mysqli, $db);

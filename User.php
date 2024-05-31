@@ -1,105 +1,115 @@
-<?php
-include("ImportSQL.php");
-?>
-
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <title>Coleções</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <header>
-            <h1>Coleções</h1>
-            <form class="search-form" action="#" method="GET">
-                <input type="text" name="search" placeholder="Pesquisar...">
-                <button type="submit">Buscar</button>
-            </form>
 
-            <div class="user-dropdown">
-                <a href="#" class="user-button">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small_2x/user-profile-icon-free-vector.jpg" alt="Ícone de usuário">
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="Registo.php">Registo</a></li>
-                    <li><a href="Login.php">Login</a></li>
-                    <li><a href="Utilizador.php">Área de utilizador</a></li>
-                    <li><a href="Logout.php">Terminar Sessão</a></li>
-                </ul>
-            </div>
-        </header>
+<head>
+    <title> LSIS1 </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-        <nav>
+<body>
+    <header>
 
-        </nav>
+    </header>
 
-        <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Processar a submissão do nome
-            if (isset($_POST['submitName']) && !empty($_POST['name'])) {
-                $newName = $_POST['name'];
-                $email = $_SESSION['email'];
-                $sql = "UPDATE usuario SET nome = '$newName' WHERE email = '$email'";
-                if ($mysqli->query($sql) === TRUE) {
-                    echo "<script>alert('Nome atualizado com sucesso');</script>";
-                } else {
-                    echo "Erro ao atualizar o nome: " . $mysqli->error;
-                }
-            }
+    <nav>
 
-            // Processar a submissão do email
-            if (isset($_POST['submitEmail']) && !empty($_POST['email'])) {
-                // Lógica para atualizar o email na base de dados
-            }
+    </nav>
 
-            // Processar a submissão do NIF
-            if (isset($_POST['submitNIF']) && !empty($_POST['nif'])) {
-                // Lógica para atualizar o NIF na base de dados
-            }
+    <?php
+    session_start();
+    include 'db_connection.php'; // Arquivo que contém a conexão com o banco de dados
 
-            // Processar a submissão da senha
-            if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-                // Lógica para atualizar a senha na base de dados
+    if (!isset($_SESSION['email'])) {
+        header("Location: login.php");
+        exit();
+    }
+
+    $email = $_SESSION['email'];
+    $sql = "SELECT nome, email, nif FROM utilizador WHERE email = '$email'";
+    $result = $mysqli->query($sql);
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+    } else {
+        echo "Erro ao encontrar os dados do utilizador.";
+        exit();
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Processar a submissão do nome
+        if (isset($_POST['submitName']) && !empty($_POST['name'])) {
+            $newName = $_POST['name'];
+            $sql = "UPDATE usuario SET nome = '$newName' WHERE email = '$email'";
+            if ($mysqli->query($sql) === TRUE) {
+                echo "<script>alert('Nome atualizado com sucesso');</script>";
+                $user['nome'] = $newName; // Atualiza o nome na variável $user
+            } else {
+                echo "Erro ao atualizar o nome: " . $mysqli->error;
             }
         }
-        ?>
 
-        <div class="form-container">
-            <h2>Dados do Usuário</h2>
-
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                <div class="form-container">
-                    <input type="text" id="name" name="name" placeholder="Nome">
-                    <button type="submit" name="submitName">Alterar Nome</button>
-                </div>
-                <div class="form-container">
-                    <input type="email" id="email" name="email" placeholder="Email">
-                    <button type="submit" name="submitEmail">Alterar Email</button>
-                </div>
-                <div class="form-container">
-                    <input type="text" id="nif" name="nif" placeholder="NIF">
-                    <button type="submit" name="submitNIF">Alterar NIF</button>
-                </div>
-                <div class="form-container">
-                    <input type="password" id="password" name="password" placeholder="Nova Password">
-                    <button type="submit" name="submitPassword">Alterar Password</button>
-                </div>
-                <div class="form-container">
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar Nova Password">
-                </div>
-            </form>
-        </div>
+        // Processar a submissão do email
+        if (isset($_POST['submitEmail']) && !empty($_POST['email'])) {
+            $newEmail = $_POST['email'];
+            $sql = "UPDATE usuario SET email = '$newEmail' WHERE email = '$email'";
+            if ($mysqli->query($sql) === TRUE) {
+                echo "<script>alert('Email atualizado com sucesso');</script>";
+                $_SESSION['email'] = $newEmail; // Atualiza o email na sessão
+                $user['email'] = $newEmail; // Atualiza o email na variável $user
+            } else {
+                echo "Erro ao atualizar o email: " . $mysqli->error;
+            }
+        }
 
 
+        // Processar a submissão da senha
+        if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
+            if ($_POST['password'] === $_POST['confirm_password']) {
+                $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                $sql = "UPDATE usuario SET senha = '$newPassword' WHERE email = '$email'";
+                if ($mysqli->query($sql) === TRUE) {
+                    echo "<script>alert('Senha atualizada com sucesso');</script>";
+                } else {
+                    echo "Erro ao atualizar a senha: " . $mysqli->error;
+                }
+            } else {
+                echo "As senhas não coincidem.";
+            }
+        }
+    }
+    ?>
 
-        <footer>
-            <p>Conheça as nossas coleções</p>
-            <p>Siga-nos nas redes sociais</p>
-        </footer>
+    <div class="form-container">
+        <h2>Dados do Usuário</h2>
 
-    </body>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <div class="form-row">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" placeholder="Nome">
+                <span>Atual: <?php echo htmlspecialchars($user['nome']); ?></span>
+                <button type="submit" name="submitName">Alterar Nome</button>
+            </div>
+            <div class="form-row">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Email">
+                <span>Atual: <?php echo htmlspecialchars($user['email']); ?></span>
+                <button type="submit" name="submitEmail">Alterar Email</button>
+            </div>
+
+            <div class="form-row">
+                <label for="password">Nova Senha:</label>
+                <input type="password" id="password" name="password" placeholder="Nova Senha">
+                <button type="submit" name="submitPassword">Alterar Senha</button>
+            </div>
+            <div class="form-row">
+                <label for="confirm_password">Confirmar Nova Senha:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar Nova Senha">
+            </div>
+        </form>
+    </div>
+
+</body>
+
 </html>
-
-
