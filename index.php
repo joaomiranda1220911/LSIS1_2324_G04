@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <div class="logo">
@@ -19,7 +21,7 @@
             </ul>
         </nav>
         <div class="search-bar">
-            <button class=""><a href="https://www.e-redes.pt/pt-pt" class="official-site" target="_blank">Site oficial E-redes</a></button>
+            <button class="eredes_btn" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">Site oficial E-redes</button>
             <input type="text" placeholder="Pesquisar">
             <button class="search-button">Ir</button>
         </div>
@@ -53,4 +55,5 @@
         </div>
     </footer>
 </body>
+
 </html>

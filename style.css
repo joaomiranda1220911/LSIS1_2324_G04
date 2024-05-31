@@ -9,7 +9,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #F7CE44;
+    background-color: #FFDC00;
     color: black;
     padding: 10px 20px;
 }
@@ -47,24 +47,31 @@ nav ul li a:hover {
 }
 
 .search-bar input[type="text"] {
-    padding: 5px;
-    border: none;
+    padding: 10px 10px 10px 10px; 
+    width: 400px;
+    border: 1px solid;
     border-radius: 4px;
     margin-right: 10px;
+    margin-left: 40px;
+    background-color: rgb(222, 222, 222);
+}
+
+input[type="text"]::placeholder {
+    color: black;
 }
 
 .search-bar .search-button {
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
-    background-color: #555;
+    background-color: black;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .search-bar .search-button:hover {
-    background-color: #777;
+    background-color: #FFDC00;
 }
 
 .user-info {
@@ -130,7 +137,7 @@ main {
 }
 
 footer {
-    background-color: #333;
+    background-color: #FFDC00;
     color: white;
     text-align: center;
     padding: 10px 20px;
@@ -146,4 +153,27 @@ footer {
 .footer-content img {
     height: 30px;
     margin-right: 10px;
+}
+
+.eredes_btn {
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    color: #FFDC00;
+}
+
+.eredes_btn a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+.eredes_btn:hover {
+    background-color: #FFDC00; /* Tom de amarelo mais escuro ao passar o mouse */
+    color: black; /* Cor do texto ao passar o mouse */
 }
