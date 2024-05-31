@@ -32,7 +32,7 @@
     </header>
     <main>
         <section class="hero">
-            <img src="Imagens/homepage_image.png" alt="Hero Image">
+            <img src="Imagens/paineis.png" alt="Hero Image">
             <div class="hero-text">
                 <h1>Principais estatísticas descobertas</h1>
             </div>

@@ -37,7 +37,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background-color: #555;
+    border: 1px solid black;
     border-radius: 4px;
 }
 
@@ -61,8 +61,8 @@ input[type="text"]::placeholder {
 }
 
 .search-bar .search-button {
-    padding: 5px 10px;
-    border: none;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid black;
     border-radius: 4px;
     background-color: black;
     color: white;
@@ -72,6 +72,7 @@ input[type="text"]::placeholder {
 
 .search-bar .search-button:hover {
     background-color: #FFDC00;
+    color: black;
 }
 
 .user-info {
@@ -136,22 +137,23 @@ main {
     padding: 10px;
 }
 
-footer {
-    background-color: #FFDC00;
-    color: white;
-    text-align: center;
-    padding: 10px 20px;
-    margin-top: 20px;
-}
-
 .footer-content {
+    background-color: #FFDC00;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    color: black;
 }
 
 .footer-content img {
     height: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+    order: 1;
+}
+
+.footer-content p {
+    order: 2;
     margin-right: 10px;
 }
 
