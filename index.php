@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="isep_logo.png" alt="Logo">
+            <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
         <nav>
             <ul>
@@ -19,7 +19,7 @@
             </ul>
         </nav>
         <div class="search-bar">
-            <a href="https://www.e-redes.pt/pt-pt" class="official-site" target="_blank">Site oficial E-redes</a>
+            <button class=""><a href="https://www.e-redes.pt/pt-pt" class="official-site" target="_blank">Site oficial E-redes</a></button>
             <input type="text" placeholder="Pesquisar">
             <button class="search-button">Ir</button>
         </div>
