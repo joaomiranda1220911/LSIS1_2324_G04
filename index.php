@@ -10,7 +10,7 @@
 
 <body>
     <header>
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
         <nav>
@@ -25,10 +25,18 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button">Ir</button>
         </div>
-        <div class="user-info">
-            <img src="Imagens/user_icon.png" alt="User Icon">
-            <span>Name</span>
-        </div>
+        <div class="dropdown">
+            <div class="user-info">
+                <img src="Imagens/user_icon.png" alt="User Icon">
+                <span>Name</span>
+                <div class="dropdown-content">
+                    <a href="Login.php">Login</a>
+                    <a href="#">Registo</a>
+                    <a href="#">Perfil</a>
+                    <a href="#">Sair</a>
+                </div>
+            </div>
+
     </header>
     <main>
         <section class="hero">
