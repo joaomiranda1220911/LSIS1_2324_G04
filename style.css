@@ -20,7 +20,6 @@ header {
 
 nav ul {
     list-style: none;
-    margin: 0;
     padding: 0;
     display: flex;
 }
@@ -178,4 +177,45 @@ main {
 .eredes_btn:hover {
     background-color: #FFDC00; /* Tom de amarelo mais escuro ao passar o mouse */
     color: black; /* Cor do texto ao passar o mouse */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 0; /* Alterando a posição para o topo do item pai */
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adicionando sombra */
+    padding: 10px;
+    z-index: 1;
+    width: 75px; /* Largura do submenu */
+}
+
+/* Estilo para os itens do submenu */
+.dropdown-content li {
+    margin-bottom: 8px; /* Adicionando um espaçamento entre os itens */
+}
+
+.dropdown-content a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f9f9f9;
+}
+
+.user-info:hover .dropdown-content {
+    display: block;
 }
