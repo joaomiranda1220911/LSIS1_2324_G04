@@ -4,7 +4,7 @@ function togglePasswordVisibility(id) {
 
     if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        toggleButton.textContent = "Esconder";
+        toggleButton.textContent = "Ocultar";
     } else {
         passwordInput.type = "password";
         toggleButton.textContent = "Mostrar";

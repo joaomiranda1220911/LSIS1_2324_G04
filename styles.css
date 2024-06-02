@@ -13,6 +13,21 @@ header {
     padding: 10px 20px;
 }
 
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.nav-buttons button {
+    height: auto;
+    width: 100px;
+}
+
 .logo img {
     height: 40px;
     cursor: pointer;
@@ -23,7 +38,7 @@ header {
     display: flex;
     align-items: center;
     border-color: 1px #898989 solid;
-    margin-left: 550px;
+    margin-left: auto; /* This will push the element to the right */
 }
 
 .search-bar input[type="text"] {
@@ -143,10 +158,6 @@ main {
 .footer-left img {
     height: 30px;
     margin-right: 10px;
-}
-
-.footer-right {
-    margin-right: 40px;
 }
 
 .footer-content img {
@@ -310,7 +321,7 @@ main {
 }
 
 .register-box {
-    width: 400px;
+    width: 300px;
     padding: 20px;
     background-color: white;
     border-radius: 5px;
@@ -347,7 +358,7 @@ main {
     position: relative;
     width: 100%;
     margin-bottom: 10px;
-    margin-left: 200px;
+    margin-left: 100px;
 }
 
 .input-container button:hover {
@@ -429,7 +440,6 @@ form input[type="text"]::placeholder {
 
 .input-container button{
     background-color: #dec000;
-    width: 80px;
+    width: 60px;
     height: 35px;
-
 }
