@@ -356,7 +356,9 @@ main {
 }
 
 .login-box button:hover,
-.login-registar button:hover {
+.login-registar button:hover,
+.register-box button:hover,
+.register-container button:hover {
     background-color: rgb(119, 119, 119);
 }
 
@@ -378,10 +380,6 @@ main {
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.login-registar button:hover {
-    background-color: rgb(119, 119, 119);
 }
 
 form input[type="text"]::placeholder {
