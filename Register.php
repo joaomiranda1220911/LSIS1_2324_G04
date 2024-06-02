@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             </div>
         <?php endif; ?>
 
-        <form action="Registo.php" method="POST" class="register-box">
+        <form action="Registo.php" method="POST" class="register-box" style="border: 1px solid #cccccc; padding: 20px; border-radius: 5px;">
             <div>
                 <h2>Criar Conta</h2>
             </div>
