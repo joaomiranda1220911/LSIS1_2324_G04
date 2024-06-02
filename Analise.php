@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Página de Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -35,25 +35,14 @@
                     <a href="#">Sair</a>
                 </div>
             </div>
+
     </header>
-    <main>
-        <section class="hero">
-            <img src="Imagens/paineis.png" alt="Hero Image">
-            <div class="hero-text">
-                <h1>Principais estatísticas descobertas</h1>
-            </div>
-        </section>
-        <section class="dashboards">
-            <div class="dashboard">
-                <img src="Imagens/dashboard1.png" alt="Dashboard 1">
-                <p>Informação sobre a dashboard</p>
-            </div>
-            <div class="dashboard">
-                <img src="Imagens/dashboard2.png" alt="Dashboard 2">
-                <p>Informação sobre a dashboard</p>
-            </div>
-        </section>
+
+    <main class="l">
+
     </main>
+
+
     <footer>
         <div class="footer-content">
             <div class="footer-left">
@@ -66,6 +55,8 @@
         </div>
     </footer>
 
+
+    <script src="script.js"></script>
 </body>
 
 </html>

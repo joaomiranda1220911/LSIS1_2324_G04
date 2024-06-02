@@ -18,41 +18,19 @@ header {
     height: 40px;
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-}
-
-nav ul li {
-    margin-right: 20px;
-}
-
-nav ul li a {
-    color: black;
-    text-decoration: none;
-    padding: 5px 10px;
-    transition: background-color 0.3s ease;
-}
-
-nav ul li a:hover {
-    border: 1px solid black;
-    border-radius: 4px;
-}
-
 .search-bar {
     display: flex;
     align-items: center;
 }
 
 .search-bar input[type="text"] {
-    padding: 10px 10px 10px 10px; 
+    padding: 10px 10px 10px 10px;
     width: 400px;
     border: 1px solid;
     border-radius: 4px;
     margin-right: 10px;
     margin-left: 40px;
-    background-color: rgb(222, 222, 222);
+    background-color: rgb(250, 250, 250);
 }
 
 input[type="text"]::placeholder {
@@ -142,7 +120,23 @@ main {
     justify-content: space-between;
     align-items: center;
     color: black;
+    padding: 10px 20px;
 }
+
+.footer-left {
+    display: flex;
+    align-items: center;
+}
+
+.footer-left img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.footer-right {
+    margin-right: 40px;
+}
+
 
 .footer-content img {
     height: 30px;
@@ -151,33 +145,58 @@ main {
     order: 1;
 }
 
+.isep_img {
+    width: 100px;
+    height: auto;
+}
+
+.eredes_img {
+    width: 100px;
+    height: auto;
+}
+
 .footer-content p {
     order: 2;
-    margin-right: 10px;
+    margin-right: 40px;
 }
 
 .eredes_btn {
-    background-color: black;
+    background-color: #FFDC00;
     border: 1px solid black;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     display: inline-block;
+    color: black;
+}
+
+.nav-buttons button {
+    background-color: #FFDC00;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+    color: black;
+    margin: 0 10px 0 10px;
+}
+
+.eredes_btn:hover,
+.nav-buttons button:hover {
+    background-color: black;
     color: #FFDC00;
 }
 
-.eredes_btn a {
-    color: black;
+.eredes_btn a,
+.nav-buttons a {
+    color: inherit;
     text-decoration: none;
     font-weight: bold;
     display: block;
 }
 
-.eredes_btn:hover {
-    background-color: #FFDC00; /* Tom de amarelo mais escuro ao passar o mouse */
-    color: black; /* Cor do texto ao passar o mouse */
-}
 
 .dropdown {
     position: relative;
@@ -187,20 +206,19 @@ main {
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 0; /* Alterando a posição para o topo do item pai */
+    top: 0;
     left: 0;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adicionando sombra */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 10px;
     z-index: 1;
-    width: 75px; /* Largura do submenu */
+    width: 75px;
 }
 
-/* Estilo para os itens do submenu */
 .dropdown-content li {
-    margin-bottom: 8px; /* Adicionando um espaçamento entre os itens */
+    margin-bottom: 8px;
 }
 
 .dropdown-content a {
@@ -227,14 +245,15 @@ main {
     align-items: center;
     color: black;
     padding: 10px 20px;
-    position: fixed; 
-    bottom: 0; 
-    left: 0; 
-    right: 0; 
-    width: 100%; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
 }
 
-.login-container {
+.login-container,
+.register-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -242,10 +261,11 @@ main {
     background-color: #f4f4f4;
 }
 
-.login-box {
-    width: 300px;
-    padding: 20px 20px 20px 20px;
-    background-color: rgb(59, 59, 59);
+.login-box,
+.login-registar,
+.register-box {
+    padding: 20px;
+    background-color: white;
     border-radius: 5px;
     border: 1px solid black;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -255,17 +275,60 @@ main {
     justify-content: center;
 }
 
-.login-box input[type="email"],
-.login-box input[type="password"] {
-    width: 280px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+.login-box,
+.login-registar {
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-.login-box button {
+.register-box {
+    width: 400px;
+}
+
+.separator {
+    width: 1px;
+    height: 60%;
+    background-color: gray;
+    margin: 0 70px 0 70px;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"],
+.register-box input[type="text"],
+.register-box input[type="email"],
+.register-box input[type="password"] {
     width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.register-box input[type="text"],
+.register-box input[type="email"],
+.register-box input[type="password"] {
+    width: 200px;
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-left: 200px;
+}
+
+.input-container button:hover {
+    background-color: rgb(119, 119, 119);
+}
+
+.login-box button,
+.login-registar button,
+.register-box button {
+    width: 100px;
     padding: 10px;
     background-color: #dec000;
     color: #ffffff;
@@ -273,14 +336,54 @@ main {
     border-radius: 3px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
-.login-box button:hover {
+.login-box button a,
+.login-registar button a,
+.register-box button a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.login-box button:hover,
+.login-registar button:hover {
     background-color: rgb(119, 119, 119);
 }
 
 .login-container p {
     margin-top: 10px;
     margin-left: 40px;
+    text-align: center;
+}
+
+.login-registar {
+    text-align: center;
+}
+
+.login-registar button {
+    background-color: #dec000;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-registar button:hover {
+    background-color: rgb(119, 119, 119);
+}
+
+form input[type="text"]::placeholder {
+    color: rgb(187, 187, 187);
+}
+
+.login-box h2 {
     text-align: center;
 }

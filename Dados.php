@@ -23,7 +23,6 @@ $data = json_decode($response, true);
 <head>
     <meta charset="UTF-8">
     <title>Dados</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         table {
             border-collapse: collapse;
@@ -48,30 +47,6 @@ $data = json_decode($response, true);
 </head>
 
 <body>
-    <header>
-        <div class="logo">
-            <a href="index.php">
-                <img src="Imagens/casa_icon.png" alt="Logo">
-            </a>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Sobre Nós</a></li>
-                <li><a href="Dados.php">Dados</a></li>
-                <li><a href="#">Análise</a></li>
-            </ul>
-        </nav>
-        <div class="search-bar">
-            <button class="eredes_btn" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">Site oficial E-redes</button>
-            <input type="text" placeholder="Pesquisar">
-            <button class="search-button">Ir</button>
-        </div>
-        <div class="user-info">
-            <img src="Imagens/user_icon.png" alt="User Icon">
-            <span>Name</span>
-        </div>
-    </header>
-
     <table>
         <thead>
             <tr>
@@ -111,5 +86,16 @@ $data = json_decode($response, true);
         </div>
     </footer>
 </body>
+<footer>
+    <div class="footer-content">
+        <div class="footer-left">
+            <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+            <img src="Imagens/e-redes.jpg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+        </div>
+        <div class="footer-right">
+            <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+        </div>
+    </div>
+</footer>
 
 </html>
