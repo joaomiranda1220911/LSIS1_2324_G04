@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $user = "root";
 $pass = "";
 $host = "localhost";
-$db = "lsis1_g04"; // Nome do seu banco de dados
+$db = "test"; // MUDAR PARA O NOME DA BASE DE DADOS
 $mysqli = mysqli_connect($host, $user, $pass);
 if ($mysqli) {
     mysqli_select_db($mysqli, $db);
