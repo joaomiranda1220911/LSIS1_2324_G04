@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Registo</title>
+    <title>Página de Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -35,41 +35,13 @@
                     <a href="#">Sair</a>
                 </div>
             </div>
-        </div>
+
     </header>
 
-    <main class="register-container">
-        <form action="Registo.php" method="POST" class="register-box">
-            <div>
-                <h2>Criar Conta</h2>
-            </div>
-            <div class="input-container">
-                <input type="text" placeholder="Nome" name="name" required>
-            </div>
-            <div class="input-container">
-                <input type="email" placeholder="Email" id="email" name="email" required>
-            </div>
-            <div class="input-container">
-                <input type="text" placeholder="NIF" id="nif" name="nif" required>
-            </div>
-            <div class="input-container">
-                <input type="password" placeholder="Password" id="password" name="password" required>
-                <button type="button" onclick="togglePasswordVisibility('password')">Mostrar</button>
-            </div>
-            <div class="input-container">
-                <input type="password" placeholder="Confirmar Password" id="confirm_password" name="confirm_password" required>
-                <button type="button" onclick="togglePasswordVisibility('confirm_password')">Mostrar</button>
-            </div>
-            <button name="submit" type="submit">Registar</button>
-        </form>
-        </div>
-        <div class="separator"></div>
-        <div class="login-registar">
-            <p>Se já tem conta, inicie sessão.</p>
-            <button><a href="Login.php">Login</a></button>
-        </div>
+    <main class="l">
+
     </main>
-    </main>
+
 
     <footer>
         <div class="footer-content">
@@ -82,6 +54,7 @@
             </div>
         </div>
     </footer>
+
 
     <script src="script.js"></script>
 </body>

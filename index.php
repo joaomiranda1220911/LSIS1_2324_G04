@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -14,14 +14,13 @@
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
         <nav>
-            <ul>
-                <li><a href="#">Sobre Nós</a></li>
-                <li><a href="Dados.php">Dados</a></li>
-                <li><a href="#">Análise</a></li>
-            </ul>
+            <div class="nav-buttons">
+                <button><a href="SobreNos.php">Sobre Nós</a></button>
+                <button><a href="Dados.php">Dados</a></button>
+                <button><a href="Analise.php">Análise</a></button>
+            </div>
         </nav>
         <div class="search-bar">
-            <button class="eredes_btn" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">Site oficial E-redes</button>
             <input type="text" placeholder="Pesquisar">
             <button class="search-button">Ir</button>
         </div>
@@ -31,12 +30,11 @@
                 <span>Name</span>
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
-                    <a href="#">Registo</a>
+                    <a href="Register.php">Registo</a>
                     <a href="#">Perfil</a>
                     <a href="#">Sair</a>
                 </div>
             </div>
-
     </header>
     <main>
         <section class="hero">
@@ -58,10 +56,16 @@
     </main>
     <footer>
         <div class="footer-content">
-            <img src="Imagens/isep_logo.png" alt="ISEP Logo">
-            <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+            <div class="footer-left">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+            </div>
+            <div class="footer-right">
+                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+            </div>
         </div>
     </footer>
+
 </body>
 
 </html>
