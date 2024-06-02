@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $nif = $_POST['nif']; 
 
     if (!$mysqli) {
         $error_message = "Erro ao ligar à base de dados";
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         }
     }
 }
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -81,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         </nav>
         <div class="search-bar">
             <input type="text" placeholder="Pesquisar">
-            <button class="search-button">Ir</button>
+            <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <div class="dropdown">
             <div class="user-info">
@@ -98,13 +97,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     </header>
 
     <main class="register-container">
-        <?php if (!empty($error_message)): ?>
+        <?php if (!empty($error_message)) : ?>
             <div class="error-message">
                 <?php echo $error_message; ?>
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($success_message)): ?>
+        <?php if (!empty($success_message)) : ?>
             <div class="success-message">
                 <?php echo $success_message; ?>
             </div>
@@ -122,11 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             </div>
             <div class="input-container">
                 <input type="password" placeholder="Password" id="password" name="password" required>
-                <button type="button" onclick="togglePasswordVisibility('password')">Mostrar</button>
+                <button type="button" onclick="togglePasswordVisibility('password')">
+                    Mostrar
+                </button>
             </div>
             <div class="input-container">
                 <input type="password" placeholder="Confirmar Password" id="confirm_password" name="confirm_password" required>
-                <button type="button" onclick="togglePasswordVisibility('confirm_password')">Mostrar</button>
+                <button type="button" onclick="togglePasswordVisibility('confirm_password')">
+                    Mostrar
+                </button>
             </div>
             <button name="submit" type="submit">Registar</button>
         </form>
@@ -141,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         <div class="footer-content">
             <div class="footer-left">
                 <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>

@@ -7,7 +7,6 @@ body {
 
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: #FFDC00;
     color: black;
@@ -16,19 +15,24 @@ header {
 
 .logo img {
     height: 40px;
+    cursor: pointer;
+    margin-right: 30px;
 }
 
 .search-bar {
     display: flex;
     align-items: center;
+    border-color: 1px #898989 solid;
+    margin-left: 550px;
 }
 
 .search-bar input[type="text"] {
     padding: 10px 10px 10px 10px;
     width: 400px;
     border: 1px solid;
-    border-radius: 4px;
-    margin-right: 10px;
+    border-color: 1px #898989 solid;
+    border-radius: 10px;
+    margin-right: 0px;
     margin-left: 40px;
     background-color: rgb(250, 250, 250);
 }
@@ -37,19 +41,21 @@ input[type="text"]::placeholder {
     color: black;
 }
 
-.search-bar .search-button {
-    padding: 10px 10px 10px 10px;
-    border: 1px solid black;
-    border-radius: 4px;
-    background-color: black;
-    color: white;
+.search-button {
+    padding: 10px;
+    background-color: transparent;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 40px;
 }
 
-.search-bar .search-button:hover {
-    background-color: #FFDC00;
-    color: black;
+.search-button img {
+    height: 30px;
+    width: 30px;
+    border-radius: 10px;
 }
 
 .user-info {
@@ -75,6 +81,9 @@ main {
 .hero img {
     width: 100%;
     height: auto;
+    border-radius: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.782);
+    transition: box-shadow 0.3s ease;
 }
 
 .hero-text {
@@ -83,31 +92,34 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.624);
+    padding: 50px;
     border-radius: 10px;
 }
 
 .dashboards {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 60px;
 }
 
 .dashboard {
     text-align: center;
-    background-color: white;
+    background-color: #f4f4f4;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex: 1;
-    margin: 10px;
+    margin: 0px 15px 40px 15px;
+    background-color: #FFDC00;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.782);
 }
 
-.dashboard img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px 10px 0 0;
+.dashboard img,
+.dashboard iframe {
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    margin: 40px 0 40px 0;
 }
 
 .dashboard p {
@@ -137,12 +149,12 @@ main {
     margin-right: 40px;
 }
 
-
 .footer-content img {
     height: 30px;
     margin-right: 10px;
     margin-left: 10px;
     order: 1;
+    cursor: pointer;
 }
 
 .isep_img {
@@ -231,11 +243,23 @@ main {
 }
 
 .dropdown-content a:hover {
-    background-color: #f9f9f9;
+    background-color: #a2a2a2;
 }
 
 .user-info:hover .dropdown-content {
     display: block;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1;
 }
 
 .footer-content {
@@ -245,11 +269,12 @@ main {
     align-items: center;
     color: black;
     padding: 10px 20px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: auto;
+    margin-top: auto;
 }
 
 .login-container,
@@ -268,7 +293,7 @@ main {
     background-color: white;
     border-radius: 5px;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px #898989;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -343,6 +368,10 @@ main {
     margin-top: 10px;
 }
 
+.login-box button{
+    margin-left: 100px;
+}
+
 .login-box button a,
 .login-registar button a,
 .register-box button a {
@@ -388,4 +417,19 @@ form input[type="text"]::placeholder {
 
 .login-box h2 {
     text-align: center;
+}
+
+.input-container button img {
+    width: 40px;
+    height: auto;
+    display: flex;
+    align-items: centre;
+    justify-content: center;
+}
+
+.input-container button{
+    background-color: #dec000;
+    width: 80px;
+    height: 35px;
+
 }

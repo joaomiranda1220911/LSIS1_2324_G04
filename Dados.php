@@ -61,7 +61,7 @@ $data = json_decode($response, true);
         </nav>
         <div class="search-bar">
             <input type="text" placeholder="Pesquisar">
-            <button class="search-button">Ir</button>
+            <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <div class="dropdown">
             <div class="user-info">
@@ -113,7 +113,7 @@ $data = json_decode($response, true);
     <div class="footer-content">
         <div class="footer-left">
             <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-            <img src="Imagens/e-redes.jpg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+            <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
         </div>
         <div class="footer-right">
             <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
