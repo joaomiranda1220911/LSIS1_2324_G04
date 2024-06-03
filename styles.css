@@ -38,7 +38,7 @@ header {
     display: flex;
     align-items: center;
     border-color: 1px #898989 solid;
-    margin-left: auto; /* This will push the element to the right */
+    margin-left: auto; 
 }
 
 .search-bar input[type="text"] {
@@ -198,7 +198,7 @@ main {
     background-color: #FFDC00;
     border: 1px solid black;
     border-radius: 5px;
-    padding: 10px 20px;
+    padding: 10px 10px 10px 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     display: inline-block;
@@ -216,7 +216,6 @@ main {
 .nav-buttons a {
     color: inherit;
     text-decoration: none;
-    font-weight: bold;
     display: block;
 }
 
@@ -339,7 +338,8 @@ main {
 .login-box input[type="password"],
 .register-box input[type="text"],
 .register-box input[type="email"],
-.register-box input[type="password"] {
+.register-box input[type="password"],
+.input-container select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -350,8 +350,20 @@ main {
 
 .register-box input[type="text"],
 .register-box input[type="email"],
-.register-box input[type="password"] {
+.register-box input[type="password"],
+.input-container select {
     width: 200px;
+}
+
+.input-container select:disabled {
+    background-color: #f8d7da;
+    color: #a2a2a2;
+    border-color: #f5c6cb;
+}
+
+.input-container select:focus {
+    outline: none;
+    border: 1px solid #555;
 }
 
 .input-container {

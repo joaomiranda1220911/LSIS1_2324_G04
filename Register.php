@@ -120,6 +120,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <input type="email" placeholder="Email" id="email" name="email" required>
             </div>
             <div class="input-container">
+                <select id="permissao" name="permissao" required>
+                    <option value="" disabled selected>Tipo de Utilizador</option>
+                    <option value="Utilizador">Utilizador</option>
+                    <option value="Admin">Admin</option>
+                    <option value="colaborador E-Redes">Colaborador E-Redes</option>
+                </select>
+            </div>
+            <div class="input-container">
                 <input type="password" placeholder="Password" id="password" name="password" required>
                 <button type="button" onclick="togglePasswordVisibility('password')">
                     Mostrar
