@@ -55,7 +55,7 @@ $data = json_decode($response, true);
         <nav>
             <div class="nav-buttons">
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
-                <button><a href="Dados.php">Dados</a></button>
+                <button><a href="home_dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
             </div>
         </nav>
@@ -96,7 +96,6 @@ $data = json_decode($response, true);
                 foreach ($data['results'] as $record) {
                     echo "<tr>";
                     foreach ($record as $key => $value) {
-                        // Adicione formatação para valores específicos, se necessário
                         // Exemplo: if ($key === 'data') { $value = date('d/m/Y', strtotime($value)); }
                         echo "<td>" . htmlspecialchars($value) . "</td>";
                     }

@@ -1,8 +1,6 @@
 <?php
 session_start();
-require 'vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 // Function to determine the SQL data type based on PHP variable type
 function determineDataType($value) {

@@ -16,7 +16,7 @@
         <nav>
             <div class="nav-buttons">
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
-                <button><a href="Dados.php">Dados</a></button>
+                <button><a href="home_dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
             </div>
         </nav>

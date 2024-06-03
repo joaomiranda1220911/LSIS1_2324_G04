@@ -466,3 +466,32 @@ form input[type="text"]::placeholder {
     width: 60px;
     height: 35px;
 }
+
+/* Estilos para os botões de Importação e Exportação */
+.custom-button button {
+    padding: 15px 30px; 
+    background-color: #FFDC00;
+    color: #fff;
+    border: none;
+    border-radius: 20px; 
+    cursor: pointer;
+    width: auto;
+    transition: background-color 0.3s;
+    font-size: 14px; 
+    text-align: center; 
+    margin: 10px 20px 10px 10px; 
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Alinhar os botões à direita */
+}
+
+.custom-button {
+    margin-left: 10px; 
+}
+
+.custom-button button:hover {
+    background-color: #dec000;
+}
+

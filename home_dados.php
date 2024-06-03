@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Login</title>
+    <title>Dados</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -16,7 +16,7 @@
         <nav>
             <div class="nav-buttons">
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
-                <button><a href="Dados.php">Dados</a></button>
+                <button><a href="home_dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
             </div>
         </nav>
@@ -35,13 +35,17 @@
                     <a href="#">Sair</a>
                 </div>
             </div>
-
+        </div>
     </header>
 
+    <div class="button-container">
+        <div class="custom-button">
+            <button onclick="window.location.href='Import.php'">Importar Dados</button>
+        </div>
+    </div>
+
     <main class="l">
-
     </main>
-
 
     <footer>
         <div class="footer-content">
@@ -54,7 +58,6 @@
             </div>
         </div>
     </footer>
-
 
     <script src="script.js"></script>
 </body>
