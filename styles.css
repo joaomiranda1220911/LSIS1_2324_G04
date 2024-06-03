@@ -354,14 +354,25 @@ main {
 .input-container select {
     width: 200px;
 }
-
+select {
+    display: block;
+    appearance: none;
+    color: #a2a2a2;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23666" d="M6.516 7.548c0.436-0.446 1.043-0.481 1.576 0l2.411 2.317 2.362-2.317c0.533-0.481 1.141-0.446 1.576 0 0.436 0.445 0.408 1.197 0 1.615l-3.038 2.974c-0.408 0.418-1.141 0.418-1.549 0l-3.038-2.974c-0.408-0.418-0.436-1.17 0-1.615z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
 .input-container select:disabled {
     background-color: #f8d7da;
     color: #a2a2a2;
     border-color: #f5c6cb;
 }
 
-.input-container select:focus {
+.input-container select:focus,
+.input-container input[type="text"]:focus,
+.input-container input[type="email"]:focus,
+.input-container input[type="password"]:focus {
     outline: none;
     border: 1px solid #555;
 }
