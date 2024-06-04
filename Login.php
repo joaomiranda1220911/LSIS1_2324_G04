@@ -31,7 +31,7 @@
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
-                    <a href="#">Perfil</a>
+                    <a href="User.php">Perfil</a>
                     <a href="#">Sair</a>
                 </div>
             </div>

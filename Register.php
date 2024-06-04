@@ -12,8 +12,9 @@ $error_message = "";
 $success_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
-    $name = $_POST['name'];
+    $nome = $_POST['name'];
     $email = $_POST['email'];
+    $permissao = $_POST['permissao'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         $error_message = "Erro ao ligar à base de dados";
     } else {
         // Verificar se o email já existe
-        $query = "SELECT email FROM usuario WHERE email='" . $email . "'";
+        $query = "SELECT email FROM utilizador WHERE email='" . $email . "'";
         $result = mysqli_query($mysqli, $query);
         if ($result) {
             $n = mysqli_num_rows($result);
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         // Inserir dados na base de dados se não houver erro
         if ($flag == false) {
             $pass = md5($password);
-            $insere = "INSERT INTO usuario (email, nome, nif, password) VALUES ('" . $email . "','" . $name . "','" . $nif . "','" . $pass . "')";
+            $insere = "INSERT INTO utilizador (email, nome, permissao, password) VALUES ('" . $email . "','" . $nome . "','" . $password . "','" . $permissao . "')";
             $result = mysqli_query($mysqli, $insere);
             if ($result) {
                 $success_message = "Dados inseridos com sucesso";
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
-                    <a href="#">Perfil</a>
+                    <a href="User.php">Perfil</a>
                     <a href="#">Sair</a>
                 </div>
             </div>
