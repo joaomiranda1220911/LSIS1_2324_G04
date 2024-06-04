@@ -45,8 +45,8 @@
     </div>
 
     <div class="menu">
-        
-        <div class="menu-hover" <h2> Filtros </h2> </div>
+        <h2> Filtros </h2>
+        <div class="menu-hover" </div>
             <ul>
                 <li>
                     <input type="checkbox" id="Consumos e Energia">
