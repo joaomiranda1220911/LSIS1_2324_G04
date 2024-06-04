@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Login</title>
+    <title>Sobre Nós</title>
+    <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 
     <style>

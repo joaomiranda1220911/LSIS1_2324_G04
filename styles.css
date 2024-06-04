@@ -540,8 +540,6 @@ form input[type="text"]::placeholder {
 
 .menu li {
     margin-bottom: 10px;
-<<<<<<< HEAD
-=======
 }
 
 .conteudo {
@@ -630,5 +628,4 @@ form input[type="text"]::placeholder {
     margin: 10px; 
     margin-top: 20px;
     border-radius: 10px;
->>>>>>> fbc978529d82546df7c5e83988b26c7f3d9ca512
 }
