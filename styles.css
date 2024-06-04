@@ -494,13 +494,21 @@ form input[type="text"]::placeholder {
 .custom-button button:hover {
     background-color: #dec000;
 }
-
 .menu {
     width: 200px;
-    background-color: #ccc; /* Cinza Rato */
     height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+    background-color: #333; /* Cor de fundo do menu */
+    color: #fff; /* Cor do texto no menu */
+    visibility: hidden; /* Por padrão, o menu está oculto */
+    opacity: 0; /* Por padrão, o menu é transparente */
+    transition: visibility 0s, opacity 0.5s; /* Transição suave */
+}
+
+.menu:hover {
+    visibility: visible; 
+    opacity: 1; 
 }
 
 .menu h2 {
@@ -515,8 +523,3 @@ form input[type="text"]::placeholder {
 .menu li {
     margin-bottom: 10px;
 }
-
-.conteudo {
-    padding: 20px;
-}
-

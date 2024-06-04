@@ -45,19 +45,43 @@
     </div>
 
     <div class="menu">
-        <div class="button-container">
-            <div class="custom-button">
-                <button onclick="window.location.href='Import.php'">Pesquisar</button>
+        
+        <div class="menu-hover" <h2> Filtros </h2> </div>
+            <ul>
+                <li>
+                    <input type="checkbox" id="Consumos e Energia">
+                    <label for="Consumos e Energia">Consumos e Energia</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Mobilidade Elétrica">
+                    <label for="Mobilidade Elétrica">Mobilidade Elétrica</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Operação e Qualidade de Serviço">
+                    <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Rede Elétrica">
+                    <label for="Rede Elétrica">Rede Elétrica</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Operação e Qualidade de Serviço">
+                    <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Renováveis">
+                    <label for="Renováveis">Renováveis</label>
+                </li>
+            </ul>
+
+            <div class="button-container">
+                <div class="custom-button">
+                    <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                </div>
             </div>
         </div>
-        <h2>Filtros</h2>
-        <ul>
-            <li><input type="checkbox" id="filtro1"><label for="filtro1">Filtro 1</label></li>
-            <li><input type="checkbox" id="filtro2"><label for="filtro2">Filtro 2</label></li>
-            <li><input type="checkbox" id="filtro3"><label for="filtro3">Filtro 3</label></li>
-        </ul>
     </div>
-    </div>
+
     <main class="l">
     </main>
 
