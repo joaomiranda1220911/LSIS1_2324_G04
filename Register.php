@@ -45,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         // Inserir dados na base de dados se não houver erro
         if ($flag == false) {
             $pass = md5($password);
-            $insere = "INSERT INTO utilizador (email, nome, permissao, password) VALUES ('" . $email . "','" . $nome . "','" . $password . "','" . $permissao . "')";
+            $insere = "INSERT INTO utilizador (email, password, nome, permissao) VALUES ('" . $email . "','" . $password . "','" . $nome . "','" . $permissao . "')";
             $result = mysqli_query($mysqli, $insere);
             if ($result) {
-                $success_message = "Dados inseridos com sucesso";
+                echo "<script>alert('Conta criada com sucesso')</script>";
             } else {
                 $error_message = "Dados não inseridos: " . mysqli_error($mysqli);
             }
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             </div>
         <?php endif; ?>
 
-        <form action="Registo.php" method="POST" class="register-box" style="border: 1px solid #cccccc; padding: 20px; border-radius: 5px;">
+        <form action="Register.php" method="POST" class="register-box" style="border: 1px solid #cccccc; padding: 20px; border-radius: 5px;">
             <div>
                 <h2>Criar Conta</h2>
             </div>
