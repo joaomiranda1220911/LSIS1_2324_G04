@@ -44,6 +44,13 @@
         </div>
     </div>
 
+    <div class="Filtros">
+        <div class="button-container">
+            <div class="custom-button">
+                <button onclick="window.location.href='Import.php'">Importar Dados</button>
+            </div>
+        </div>
+    </div>
     <main class="l">
     </main>
 

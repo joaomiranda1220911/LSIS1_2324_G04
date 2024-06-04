@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = md5($_POST['password']);
 
-    $query = "SELECT * FROM usuario WHERE email='" . $email . "'";
+    $query = "SELECT * FROM utilizador WHERE email='" . $email . "'";
     $result = mysqli_query($mysqli, $query);
     $user = mysqli_fetch_assoc($result);
 
@@ -14,16 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $_SESSION["password"] = $password;
 
     if ($user) {
-        if ($password == $user['password']) {
+        if (password_verify($_POST['password'], $user['password'])) {
+            // Login bem sucedido
             header("Location: index.php");
             exit;
         } else {
             echo "<script>alert('Senha incorreta');</script>";
         }
     } else {
-        echo "<script>alert('Usuário não encontrado');</script>";
+        echo "<script>alert('Utilizador não encontrado');</script>";
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div>
                     <h2>Iniciar Sessão</h2>
                 </div>
-                <input type="email" placeholder="Email">
+                <input type="email" placeholder="Email" id="email" name="email" required>
                 <input type="password" placeholder="Password" id="password" name="password" required>
                 <button name="submit" type="submit">Iniciar Sessão</button>
             </form>

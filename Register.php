@@ -44,11 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
         // Inserir dados na base de dados se não houver erro
         if ($flag == false) {
-            $pass = md5($password);
-            $insere = "INSERT INTO utilizador (email, password, nome, permissao) VALUES ('" . $email . "','" . $password . "','" . $nome . "','" . $permissao . "')";
+            // Hash da senha
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $insere = "INSERT INTO utilizador (email, password, nome, permissao) VALUES ('" . $email . "','" . $hashed_password . "','" . $nome . "','" . $permissao . "')";
             $result = mysqli_query($mysqli, $insere);
             if ($result) {
-                echo "<script>alert('Conta criada com sucesso')</script>";
+                $success_message = "Conta criada com sucesso";
             } else {
                 $error_message = "Dados não inseridos: " . mysqli_error($mysqli);
             }
@@ -65,6 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function togglePasswordVisibility(inputId) {
+            var input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+            } else {
+                input.type = "password";
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -156,12 +167,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
-                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-
-</html>
+                <p
