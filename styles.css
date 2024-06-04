@@ -615,6 +615,7 @@ form input[type="text"]::placeholder {
     width: 200px;
     height: 200px;
     border-radius: 10px; 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
 .quemsomos_objetivo {
@@ -625,7 +626,6 @@ form input[type="text"]::placeholder {
 .quem_somos,
 .objetivo {
     flex: 1 0 25%;
-    margin: 10px; 
-    margin-top: 20px;
+    margin: 20px 80px 20px 80px; 
     border-radius: 10px;
 }

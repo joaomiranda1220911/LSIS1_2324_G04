@@ -51,7 +51,7 @@
     <main>
         <div class="quemsomos_objetivo">
             <div class="quem_somos">
-                <h1>Quem somos</h1>
+                <h1>Quem somos?</h1>
                 <p>Bem-vindo ao site do Grupo 4 do segundo ano da Licenciatura em Engenharia
                     de Sistemas! Somos um grupo de estudantes dedicados e apaixonados por explorar,
                     inovar e aplicar os princípios da engenharia para resolver problemas
