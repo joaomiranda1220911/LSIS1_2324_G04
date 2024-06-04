@@ -8,9 +8,13 @@ body {
 header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: #FFDC00;
     color: black;
     padding: 10px 20px;
+    width: 100%;
+    max-width: 100vw; /* Define a largura máxima igual à largura da tela */
+    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
 }
 
 .nav {
@@ -148,6 +152,9 @@ main {
     align-items: center;
     color: black;
     padding: 10px 20px;
+    width: 100%;
+    max-width: 100vw; /* Define a largura máxima igual à largura da tela */
+    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
 }
 
 .footer-left {
@@ -180,7 +187,7 @@ main {
 
 .footer-content p {
     order: 2;
-    margin-right: 40px;
+    margin-right: 10px;
 }
 
 .eredes_btn {
@@ -289,7 +296,7 @@ main {
     bottom: auto;
     left: auto;
     right: auto;
-    width: auto;
+    width: 100%;
     margin-top: auto;
 }
 
