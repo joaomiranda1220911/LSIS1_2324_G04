@@ -512,13 +512,21 @@ form input[type="text"]::placeholder {
 .custom-button button:hover {
     background-color: #dec000;
 }
-
 .menu {
     width: 200px;
-    background-color: #ccc; /* Cinza Rato */
     height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+    background-color: #333; /* Cor de fundo do menu */
+    color: #fff; /* Cor do texto no menu */
+    visibility: hidden; /* Por padrão, o menu está oculto */
+    opacity: 0; /* Por padrão, o menu é transparente */
+    transition: visibility 0s, opacity 0.5s; /* Transição suave */
+}
+
+.menu:hover {
+    visibility: visible; 
+    opacity: 1; 
 }
 
 .menu h2 {
@@ -532,6 +540,8 @@ form input[type="text"]::placeholder {
 
 .menu li {
     margin-bottom: 10px;
+<<<<<<< HEAD
+=======
 }
 
 .conteudo {
@@ -620,4 +630,5 @@ form input[type="text"]::placeholder {
     margin: 10px; 
     margin-top: 20px;
     border-radius: 10px;
+>>>>>>> fbc978529d82546df7c5e83988b26c7f3d9ca512
 }
