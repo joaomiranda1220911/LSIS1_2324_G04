@@ -1,3 +1,31 @@
+<?php
+session_start();
+include("ImportSQL.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+
+    $query = "SELECT * FROM usuario WHERE email='" . $email . "'";
+    $result = mysqli_query($mysqli, $query);
+    $user = mysqli_fetch_assoc($result);
+
+    $_SESSION["email"] = $email;
+    $_SESSION["password"] = $password;
+
+    if ($user) {
+        if ($password == $user['password']) {
+            header("Location: index.php");
+            exit;
+        } else {
+            echo "<script>alert('Senha incorreta');</script>";
+        }
+    } else {
+        echo "<script>alert('Usuário não encontrado');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
