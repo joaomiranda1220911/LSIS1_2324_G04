@@ -495,3 +495,28 @@ form input[type="text"]::placeholder {
     background-color: #dec000;
 }
 
+.menu {
+    width: 200px;
+    background-color: #ccc; /* Cinza Rato */
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.menu h2 {
+    margin-top: 0;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menu li {
+    margin-bottom: 10px;
+}
+
+.conteudo {
+    padding: 20px;
+}
+

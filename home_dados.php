@@ -32,7 +32,7 @@
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
-                    <a href="#">Sair</a>
+                    <a href="Logout.php">Sair</a>
                 </div>
             </div>
         </div>
@@ -44,12 +44,19 @@
         </div>
     </div>
 
-    <div class="Filtros">
+    <div class="menu">
         <div class="button-container">
             <div class="custom-button">
-                <button onclick="window.location.href='Import.php'">Importar Dados</button>
+                <button onclick="window.location.href='Import.php'">Pesquisar</button>
             </div>
         </div>
+        <h2>Filtros</h2>
+        <ul>
+            <li><input type="checkbox" id="filtro1"><label for="filtro1">Filtro 1</label></li>
+            <li><input type="checkbox" id="filtro2"><label for="filtro2">Filtro 2</label></li>
+            <li><input type="checkbox" id="filtro3"><label for="filtro3">Filtro 3</label></li>
+        </ul>
+    </div>
     </div>
     <main class="l">
     </main>

@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
-                    <a href="#">Sair</a>
+                    <a href="Logout.php">Sair</a>
                 </div>
             </div>
 

@@ -71,7 +71,7 @@ $data = json_decode($response, true);
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
-                    <a href="#">Sair</a>
+                    <a href="Logout.php">Sair</a>
                 </div>
             </div>
         </div>
