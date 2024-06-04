@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $confirm_password = $_POST['confirm_password'];
 
     if (!$mysqli) {
-        $error_message = "Erro ao ligar à base de dados";
+        echo "<script>alert('Erro ao ligar a base de dados.')</script>";
     } else {
         // Verificar se o email já existe
         $query = "SELECT email FROM utilizador WHERE email='" . $email . "'";
@@ -29,17 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             if ($n > 0) {
                 $flag = true;
                 $flag_email = true;
-                $error_message = "Email já existente";
+                echo "<script>alert('Este email já se encontra registado.')</script>";
             }
         } else {
-            $error_message = "Erro ao executar a consulta: " . mysqli_error($mysqli);
+            echo "<script>alert('Erro ao executar a consulta: ' '". mysqli_error($mysqli). "')</script>";
         }
 
         // Validação da password
         if ($password != $confirm_password || $password == "") {
             $flag = true;
             $flag_pass = true;
-            $error_message = "As passwords não coincidem ou estão vazias";
+            echo "<script>alert('As passwords não coincidem ou estão vazias.')</script>";
         }
 
         // Inserir dados na base de dados se não houver erro
@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             $insere = "INSERT INTO utilizador (email, password, nome, permissao) VALUES ('" . $email . "','" . $hashed_password . "','" . $nome . "','" . $permissao . "')";
             $result = mysqli_query($mysqli, $insere);
             if ($result) {
-                $success_message = "Conta criada com sucesso";
+                echo "<script>alert('Conta criada com sucesso!')</script>";
             } else {
-                $error_message = "Dados não inseridos: " . mysqli_error($mysqli);
+                echo "<script>alert('Dados não inseridos: ' '". mysqli_error($mysqli). "')</script>";
             }
         }
     }
@@ -95,16 +95,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <div class="dropdown">
-            <div class="user-info">
+            <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
                 <span>Name</span>
+            </button>
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
                     <a href="Logout.php">Sair</a>
                 </div>
-            </div>
         </div>
     </header>
 
@@ -167,4 +167,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
-                <p
+                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>

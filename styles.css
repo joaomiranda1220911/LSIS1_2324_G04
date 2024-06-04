@@ -219,45 +219,51 @@ main {
     display: block;
 }
 
+.dropdown .dropdown-content {
+    display: none;
+    background-color: #FFDC00;
+    position: absolute;
+    min-width: 100px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    z-index: 20;
+    border: none;
+    border-radius: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    top: 100%;
+    border-radius: 10px;
+}
 
 .dropdown {
     position: relative;
+    z-index: 10;
+}
+
+.dropdown div {
     display: inline-block;
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 1;
-    width: 75px;
+.dropdown button {
+    background-color: #FFDC00;
+    color: rgb(0, 0, 0);
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
 }
 
-.dropdown-content li {
-    margin-bottom: 8px;
-}
-
-.dropdown-content a {
-    color: #333;
+.dropdown a{
+    display: block;
+    color: black;
     text-decoration: none;
-    display: block;
-    padding: 8px 12px;
-    border-radius: 3px;
-    transition: background-color 0.3s;
+    padding: 10px 15px;
+    border-radius: 10px;
 }
 
-.dropdown-content a:hover {
-    background-color: #a2a2a2;
-}
-
-.user-info:hover .dropdown-content {
-    display: block;
+.dropdown a:hover {
+    background-color: rgb(255, 255, 255);
+    transition: .5s;
 }
 
 body {
@@ -361,16 +367,17 @@ main {
 select {
     display: block;
     appearance: none;
-    color: #a2a2a2;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23666" d="M6.516 7.548c0.436-0.446 1.043-0.481 1.576 0l2.411 2.317 2.362-2.317c0.533-0.481 1.141-0.446 1.576 0 0.436 0.445 0.408 1.197 0 1.615l-3.038 2.974c-0.408 0.418-1.141 0.418-1.549 0l-3.038-2.974c-0.408-0.418-0.436-1.17 0-1.615z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 16px 16px;
 }
-.input-container select:disabled {
-    background-color: #f8d7da;
+select:disabled {
     color: #a2a2a2;
-    border-color: #f5c6cb;
+}
+
+select option:checked {
+    color: black; 
 }
 
 .input-container select:focus,
@@ -431,7 +438,6 @@ select {
 
 .login-container p {
     margin-top: 10px;
-    margin-left: 40px;
     text-align: center;
 }
 
@@ -570,4 +576,41 @@ form input[type="text"]::placeholder {
 .form-container h2 {
     display: flex;
     justify-content: center;
+}
+
+.quem_somos{
+    width: 500px;
+    margin-left: 50px;
+    margin-top: 40px;
+}
+
+.equipa {
+    width: 500px;
+    margin-left: 50px;
+}
+
+.fotos_equipa {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    margin: 10px 60px 0 60px;
+}
+
+.fotos_equipa img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px; 
+}
+
+.quemsomos_objetivo {
+    display: flex; 
+    flex-wrap: wrap;
+}
+
+.quem_somos,
+.objetivo {
+    flex: 1 0 25%;
+    margin: 10px; 
+    margin-top: 20px;
+    border-radius: 10px;
 }

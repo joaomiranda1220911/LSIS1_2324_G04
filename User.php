@@ -58,7 +58,7 @@
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
     } else {
-        echo "Erro ao encontrar os dados do utilizador.";
+        echo "<script>alert('Erro ao encontrar os dados do utilizador.')</script>";
         exit();
     }
 
@@ -71,7 +71,7 @@
                 echo "<script>alert('Nome atualizado com sucesso');</script>";
                 $user['nome'] = $newName; // Atualiza o nome na variável $user
             } else {
-                echo "Erro ao atualizar o nome: " . $mysqli->error;
+                echo "<script>alert('Erro ao atualizar o nome: ' '". mysqli_error($mysqli). "')</script>";
             }
         }
 
@@ -84,7 +84,7 @@
                 $_SESSION['email'] = $newEmail; // Atualiza o email na sessão
                 $user['email'] = $newEmail; // Atualiza o email na variável $user
             } else {
-                echo "Erro ao atualizar o email: " . $mysqli->error;
+                echo "<script>alert('Erro ao atualizar o email: ' '". mysqli_error($mysqli). "')</script>";
             }
         }
 
@@ -97,10 +97,10 @@
                 if ($mysqli->query($sql) === TRUE) {
                     echo "<script>alert('Senha atualizada com sucesso');</script>";
                 } else {
-                    echo "Erro ao atualizar a senha: " . $mysqli->error;
+                    echo "<script>alert('Erro ao atualizar a password: ' '". mysqli_error($mysqli). "')</script>";
                 }
             } else {
-                echo "As senhas não coincidem.";
+                echo "<script>alert('As passwords não coincidem')</script>";
             }
         }
     }
@@ -124,7 +124,7 @@
             </div>
 
             <div class="form-row">
-                <label for="password">Nova Senha:</label>
+                <label for="password">Nova Password:</label>
                 <input type="password" id="password" name="password" placeholder="Nova Password">
             </div>
             <div class="form-row">
