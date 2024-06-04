@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     if ($user) {
         if (password_verify($_POST['password'], $user['password'])) {
-            // Login bem sucedido
+
             header("Location: index.php");
             exit;
         } else {

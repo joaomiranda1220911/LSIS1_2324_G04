@@ -288,7 +288,7 @@ main {
 }
 
 .login-container,
-.register-container {
+.register-container{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -339,7 +339,10 @@ main {
 .register-box input[type="text"],
 .register-box input[type="email"],
 .register-box input[type="password"],
-.input-container select {
+.input-container select,
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -354,6 +357,7 @@ main {
 .input-container select {
     width: 200px;
 }
+
 select {
     display: block;
     appearance: none;
@@ -461,7 +465,8 @@ form input[type="text"]::placeholder {
     justify-content: center;
 }
 
-.input-container button{
+.input-container button,
+.form_container button {
     background-color: #dec000;
     width: 60px;
     height: 35px;
@@ -520,3 +525,49 @@ form input[type="text"]::placeholder {
     padding: 20px;
 }
 
+.form-container {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #898989;
+}
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-row button {
+    padding: 10px 10px;
+    background-color: #dec000;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.form-row button:hover {
+    background-color: #a2a2a2;
+}
+
+.form-row span {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #a2a2a2;
+}
+
+.form-container h2 {
+    display: flex;
+    justify-content: center;
+}

@@ -2,14 +2,39 @@
 <html lang="pt">
 
 <head>
-    <title> LSIS1 </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Utilizador</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <header>
+        <div class="logo" onclick="window.location.href='index.php'">
+            <img src="Imagens/casa_icon.png" alt="Logo">
+        </div>
+        <nav>
+            <div class="nav-buttons">
+                <button><a href="SobreNos.php">Sobre Nós</a></button>
+                <button><a href="Dados.php">Dados</a></button>
+                <button><a href="Analise.php">Análise</a></button>
+            </div>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar">
+            <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
+        </div>
+        <div class="dropdown">
+            <div class="user-info">
+                <img src="Imagens/user_icon.png" alt="User Icon">
+                <span>Name</span>
+                <div class="dropdown-content">
+                    <a href="Login.php">Login</a>
+                    <a href="Register.php">Registo</a>
+                    <a href="User.php">Perfil</a>
+                    <a href="Logout.php">Sair</a>
+                </div>
+            </div>
 
     </header>
 
@@ -19,7 +44,7 @@
 
     <?php
     session_start();
-    include 'db_connection.php'; // Arquivo que contém a conexão com o banco de dados
+    include ("ImportSQL.php"); 
 
     if (!isset($_SESSION['email'])) {
         header("Location: login.php");
@@ -27,7 +52,7 @@
     }
 
     $email = $_SESSION['email'];
-    $sql = "SELECT nome, email, nif FROM utilizador WHERE email = '$email'";
+    $sql = "SELECT nome, email FROM utilizador WHERE email = '$email'";
     $result = $mysqli->query($sql);
 
     if ($result->num_rows > 0) {
@@ -41,7 +66,7 @@
         // Processar a submissão do nome
         if (isset($_POST['submitName']) && !empty($_POST['name'])) {
             $newName = $_POST['name'];
-            $sql = "UPDATE usuario SET nome = '$newName' WHERE email = '$email'";
+            $sql = "UPDATE utilizador SET nome = '$newName' WHERE email = '$email'";
             if ($mysqli->query($sql) === TRUE) {
                 echo "<script>alert('Nome atualizado com sucesso');</script>";
                 $user['nome'] = $newName; // Atualiza o nome na variável $user
@@ -53,7 +78,7 @@
         // Processar a submissão do email
         if (isset($_POST['submitEmail']) && !empty($_POST['email'])) {
             $newEmail = $_POST['email'];
-            $sql = "UPDATE usuario SET email = '$newEmail' WHERE email = '$email'";
+            $sql = "UPDATE utilizador SET email = '$newEmail' WHERE email = '$email'";
             if ($mysqli->query($sql) === TRUE) {
                 echo "<script>alert('Email atualizado com sucesso');</script>";
                 $_SESSION['email'] = $newEmail; // Atualiza o email na sessão
@@ -68,7 +93,7 @@
         if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
             if ($_POST['password'] === $_POST['confirm_password']) {
                 $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $sql = "UPDATE usuario SET senha = '$newPassword' WHERE email = '$email'";
+                $sql = "UPDATE utilizador SET password = '$newPassword' WHERE email = '$email'";
                 if ($mysqli->query($sql) === TRUE) {
                     echo "<script>alert('Senha atualizada com sucesso');</script>";
                 } else {
@@ -82,7 +107,7 @@
     ?>
 
     <div class="form-container">
-        <h2>Dados do Usuário</h2>
+        <h2>Dados do Utilizador</h2>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-row">
@@ -100,16 +125,30 @@
 
             <div class="form-row">
                 <label for="password">Nova Senha:</label>
-                <input type="password" id="password" name="password" placeholder="Nova Senha">
-                <button type="submit" name="submitPassword">Alterar Senha</button>
+                <input type="password" id="password" name="password" placeholder="Nova Password">
             </div>
             <div class="form-row">
-                <label for="confirm_password">Confirmar Nova Senha:</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar Nova Senha">
+                <label for="confirm_password">Confirmar Nova Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar a Nova Password">
+                <button type="submit" name="submitPassword">Alterar Password</button>
             </div>
         </form>
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+            </div>
+            <div class="footer-right">
+                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="script.js"></script>
 </body>
 
 </html>
