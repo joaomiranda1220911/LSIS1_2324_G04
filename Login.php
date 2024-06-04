@@ -15,14 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     if ($user) {
         if (password_verify($_POST['password'], $user['password'])) {
-            // Login bem sucedido
+
             header("Location: index.php");
             exit;
         } else {
-            echo "<script>alert('Senha incorreta');</script>";
+            echo "<script>alert('Senha incorreta.');</script>";
         }
     } else {
-        echo "<script>alert('Utilizador não encontrado');</script>";
+        echo "<script>alert('Utilizador não encontrado.');</script>";
     }
 }
 
@@ -55,16 +55,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <div class="dropdown">
-            <div class="user-info">
+            <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
                 <span>Name</span>
+            </button>
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
                     <a href="Logout.php">Sair</a>
                 </div>
-            </div>
+        </div>
 
     </header>
 
@@ -76,13 +77,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 </div>
                 <input type="email" placeholder="Email" id="email" name="email" required>
                 <input type="password" placeholder="Password" id="password" name="password" required>
-                <button name="submit" type="submit">Iniciar Sessão</button>
+                <button name="submit" type="submit">Login</button>
             </form>
         </div>
         <div class="separator"></div>
         <div class="login-registar">
             <p>Se ainda não tem conta, crie aqui e comece a tirar partido.</p>
-            <button><a href="Register.php">Criar Conta</a></button>
+            <button><a href="Register.php">Registar</a></button>
         </div>
     </main>
 

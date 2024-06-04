@@ -64,16 +64,16 @@ $data = json_decode($response, true);
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <div class="dropdown">
-            <div class="user-info">
+            <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
                 <span>Name</span>
+            </button>
                 <div class="dropdown-content">
                     <a href="Login.php">Login</a>
                     <a href="Register.php">Registo</a>
                     <a href="User.php">Perfil</a>
                     <a href="Logout.php">Sair</a>
                 </div>
-            </div>
         </div>
     </header>
     <table>

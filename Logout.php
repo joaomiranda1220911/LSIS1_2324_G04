@@ -12,4 +12,3 @@ session_destroy();
 // Redireciona para a página de login após o logout
 header("Location: Login.php");
 exit();
-?>
