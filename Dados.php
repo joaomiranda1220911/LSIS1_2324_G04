@@ -57,6 +57,7 @@ $data = json_decode($response, true);
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
                 <button><a href="home_dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
+                <button><a href="Mapa.php">Mapa</a></button>
             </div>
         </nav>
         <div class="search-bar">
