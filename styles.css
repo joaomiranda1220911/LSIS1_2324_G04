@@ -485,11 +485,11 @@ form input[type="text"]::placeholder {
     height: 35px;
 }
 
-/* Estilos para os botões de Importação e Exportação */
+
 .custom-button button {
     padding: 15px 30px; 
     background-color: #FFDC00;
-    color: #fff;
+    color: #000000;
     border: none;
     border-radius: 20px; 
     cursor: pointer;
@@ -502,7 +502,7 @@ form input[type="text"]::placeholder {
 
 .button-container {
     display: flex;
-    justify-content: flex-end; /* Alinhar os botões à direita */
+    justify-content: flex-end; 
 }
 
 .custom-button {
@@ -512,21 +512,43 @@ form input[type="text"]::placeholder {
 .custom-button button:hover {
     background-color: #dec000;
 }
-.menu {
-    width: 200px;
-    height: 100vh;
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
-    box-sizing: border-box;
-    background-color: #333; /* Cor de fundo do menu */
-    color: #fff; /* Cor do texto no menu */
-    visibility: hidden; /* Por padrão, o menu está oculto */
-    opacity: 0; /* Por padrão, o menu é transparente */
-    transition: visibility 0s, opacity 0.5s; /* Transição suave */
 }
 
-.menu:hover {
-    visibility: visible; 
-    opacity: 1; 
+.menu-container {
+    position: relative;
+    width: 200px;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.menu {
+    width: 300px; /* Alargar o menu */
+    background-color: rgba(51, 51, 51, 0.8); /* Cor de fundo do menu com transparência */
+    color: #fff; 
+    height: 400px; /* Diminuir a altura do menu */
+    padding: 20px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: -15px; /* Ajustar para alargar o menu para a esquerda */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s;
+}
+
+.menu-container:hover .menu {
+    visibility: visible;
+    opacity: 0.9;
 }
 
 .menu h2 {
@@ -542,17 +564,14 @@ form input[type="text"]::placeholder {
     margin-bottom: 10px;
 }
 
-.conteudo {
+main {
     padding: 20px;
 }
 
-.form-container {
-    width: 400px;
-    margin: 0 auto;
-    margin-top: 40px;
-    margin-bottom: 40px;
+.dataset-details {
+    background-color: #f4f4f4;
+    margin-bottom: 20px;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 20px #898989;
 }
@@ -588,20 +607,8 @@ form input[type="text"]::placeholder {
     color: #a2a2a2;
 }
 
-.form-container h2 {
-    display: flex;
-    justify-content: center;
-}
-
-.quem_somos{
-    width: 500px;
-    margin-left: 50px;
-    margin-top: 40px;
-}
-
-.equipa {
-    width: 500px;
-    margin-left: 50px;
+.dataset-info p {
+    margin: 5px 0;
 }
 
 .fotos_equipa {
@@ -628,4 +635,7 @@ form input[type="text"]::placeholder {
     flex: 1 0 25%;
     margin: 20px 80px 20px 80px; 
     border-radius: 10px;
+.dataset-info ul {
+    list-style-type: disc;
+    padding-left: 20px;
 }
