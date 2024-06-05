@@ -1,0 +1,288 @@
+﻿city;city_ascii;lat;lng
+Lisbon;Lisbon;38.7253;-9.1500
+Aves;Aves;41.4400;-8.3000
+Sintra;Sintra;38.7992;-9.3883
+Vila Nova de Gaia;Vila Nova de Gaia;41.1333;-8.6167
+Cascais;Cascais;38.7000;-9.4167
+Loures;Loures;38.8333;-9.1667
+Seixal;Seixal;38.6500;-9.1000
+Braga;Braga;41.5503;-8.4200
+Almada;Almada;38.6803;-9.1583
+Matosinhos;Matosinhos;41.1833;-8.7000
+Amadora;Amadora;38.7333;-9.2333
+Oeiras;Oeiras;38.6833;-9.3167
+Gondomar;Gondomar;41.1500;-8.5333
+Guimarães;Guimaraes;41.4500;-8.3000
+Odivelas;Odivelas;38.7903;-9.1797
+Coimbra;Coimbra;40.2028;-8.4139
+Vila Franca de Xira;Vila Franca de Xira;38.9500;-8.9833
+Maia;Maia;41.2333;-8.6167
+Famalicão;Famalicao;41.4000;-8.5167
+Leiria;Leiria;39.7500;-8.8000
+Barcelos;Barcelos;41.5167;-8.6167
+Viseu;Viseu;40.6667;-7.9167
+Valongo;Valongo;41.1833;-8.5000
+Viana do Castelo;Viana do Castelo;41.7000;-8.8333
+Paredes;Paredes;41.2064;-8.3333
+Vila do Conde;Vila do Conde;41.3528;-8.7444
+Torres Vedras;Torres Vedras;39.0833;-9.2667
+Aveiro;Aveiro;40.6333;-8.6500
+Barreiro;Barreiro;38.6667;-9.0667
+Queluz;Queluz;38.7514;-9.2664
+Mafra;Mafra;38.9411;-9.3319
+Penafiel;Penafiel;41.2060;-8.2840
+Santo Tirso;Santo Tirso;41.3333;-8.4667
+Loulé;Loule;37.1500;-8.0000
+Ponta Delgada;Ponta Delgada;37.7411;-25.6806
+Moita;Moita;38.6500;-8.9833
+Faro;Faro;37.0161;-7.9350
+Póvoa de Varzim;Povoa de Varzim;41.3800;-8.7608
+Palmela;Palmela;38.5667;-8.9000
+Santarém;Santarem;39.2339;-8.6861
+Figueira da Foz;Figueira da Foz;40.1500;-8.8500
+Felgueiras;Felgueiras;41.3667;-8.2000
+Paços de Ferreira;Pacos de Ferreira;41.2667;-8.4000
+Amarante;Amarante;41.2703;-8.0808
+Castelo Branco;Castelo Branco;39.8167;-7.5000
+Portimão;Portimao;37.1369;-8.5383
+Ovar;Ovar;40.8667;-8.6333
+Pombal;Pombal;39.9161;-8.6281
+Alcobaça;Alcobaca;39.5528;-8.9778
+Évora;Evora;38.5667;-7.9000
+Marco de Canavezes;Marco de Canavezes;41.1833;-8.1500
+Vila Real;Vila Real;41.2958;-7.7461
+Covilhã;Covilha;40.2833;-7.5000
+Caldas da Rainha;Caldas da Rainha;39.4072;-9.1358
+Montijo;Montijo;38.6833;-8.9000
+Rio Tinto;Rio Tinto;41.1780;-8.5600
+Fafe;Fafe;41.4500;-8.1667
+Sesimbra;Sesimbra;38.4437;-9.0996
+Amora;Amora;38.6230;-9.1200
+Vila Verde;Vila Verde;41.6500;-8.4333
+Águeda;Agueda;40.5744;-8.4481
+Vale de Cavalos;Vale de Cavalos;38.6500;-9.1500
+Lousada;Lousada;41.3000;-8.2400
+Rio de Mouro;Rio de Mouro;38.7840;-9.3220
+Corroios;Corroios;38.6500;-9.1500
+Ourém;Ourem;39.6500;-8.5667
+Olhão;Olhao;37.0260;-7.8410
+Albufeira;Albufeira;37.0897;-8.2458
+Ponte de Lima;Ponte de Lima;41.7667;-8.5667
+Alenquer;Alenquer;39.0500;-9.0167
+Santa Cruz;Santa Cruz;32.6833;-16.8000
+Guarda;Guarda;40.5333;-7.3333
+Chaves;Chaves;41.7406;-7.4714
+Tomar;Tomar;39.6000;-8.4167
+Abrantes;Abrantes;39.4633;-8.1975
+Marinha Grande;Marinha Grande;39.7500;-8.9333
+Trofa;Trofa;41.3500;-8.5500
+Mafamude;Mafamude;41.1350;-8.6170
+Ermezinde;Ermezinde;41.2170;-8.5500
+Silves;Silves;37.1869;-8.4389
+Torres Novas;Torres Novas;39.4667;-8.5333
+Cantanhede;Cantanhede;40.3500;-8.5833
+Beja;Beja;38.0333;-7.8833
+Agualva;Agualva;38.7700;-9.2988
+Câmara de Lobos;Camara de Lobos;32.6953;-16.9781
+Angra do Heroísmo;Angra do Heroismo;38.6556;-27.2194
+Bragança;Braganca;41.8067;-6.7589
+Esposende;Esposende;41.5333;-8.7833
+Ribeira Grande;Ribeira Grande;37.8225;-25.5181
+Ílhavo;Ilhavo;40.6000;-8.6667
+Lagos;Lagos;37.1028;-8.6728
+Espinho;Espinho;41.0000;-8.6333
+Charneca;Charneca;38.6300;-9.2000
+Santiago do Cacém;Santiago do Cacem;38.0167;-8.7000
+Perafita;Perafita;41.2240;-8.6980
+Funchal;Funchal;32.6500;-16.9167
+Póvoa de Santa Iria;Povoa de Santa Iria;38.8620;-9.0690
+Fundão;Fundao;40.1333;-7.5000
+Anadia;Anadia;40.4408;-8.4350
+Benavente;Benavente;38.9667;-8.8000
+Senhora da Hora;Senhora da Hora;41.1860;-8.6510
+Tondela;Tondela;40.5167;-8.0833
+Arrentela;Arrentela;38.6270;-9.1030
+Massamá;Massama;38.7570;-9.2750
+Águas Santas;Aguas Santas;41.2090;-8.5890
+Estarreja;Estarreja;40.7500;-8.5667
+Lamego;Lamego;41.1008;-7.8100
+Peniche;Peniche;39.3500;-9.3667
+Estoril;Estoril;38.7042;-9.3983
+Montemor-o-Velho;Montemor-o-Velho;40.1667;-8.6833
+Tavira;Tavira;37.1167;-7.6500
+Odemira;Odemira;37.5833;-8.6333
+Lourinhã;Lourinha;39.2333;-9.3000
+Albergaria-a-Velha;Albergaria-a-Velha;40.6933;-8.4811
+Pinhal Novo;Pinhal Novo;38.6310;-8.9140
+Portalegre;Portalegre;39.3167;-7.4167
+Cartaxo;Cartaxo;39.1500;-8.7833
+Porto de Mós;Porto de Mos;39.6017;-8.8175
+Pontinha;Pontinha;38.7769;-9.2039
+Mirandela;Mirandela;41.4853;-7.1817
+Vizela;Vizela;41.3667;-8.2667
+Almeirim;Almeirim;39.2000;-8.6167
+Caniço;Canico;32.6510;-16.8410
+São Mamede de Infesta;Sao Mamede de Infesta;41.2000;-8.6000
+Fânzeres;Fanzeres;41.1667;-8.5333
+Oliveira do Bairro;Oliveira do Bairro;40.5167;-8.5000
+Lagoa;Lagoa;37.1333;-8.4500
+Vale de Cambra;Vale de Cambra;40.8500;-8.4000
+Vagos;Vagos;40.5500;-8.6833
+Arcos de Valdevez;Arcos de Valdevez;41.8472;-8.4186
+Arouca;Arouca;40.9167;-8.2500
+Lordelo do Ouro;Lordelo do Ouro;41.1600;-8.6580
+Salvaterra de Magos;Salvaterra de Magos;39.0167;-8.7833
+Meixedo;Meixedo;41.8070;-6.7540
+Póvoa de Lanhoso;Povoa de Lanhoso;41.5667;-8.2667
+Machico;Machico;32.7000;-16.7667
+Azambuja;Azambuja;39.0667;-8.8667
+Seia;Seia;40.4167;-7.7000
+São João da Madeira;Sao Joao da Madeira;40.8972;-8.4889
+Bougado;Bougado;41.3370;-8.5590
+Cacém;Cacem;38.7704;-9.3081
+Vialonga;Vialonga;38.8740;-9.0820
+Rio Maior;Rio Maior;39.3333;-8.9333
+Belas;Belas;38.7772;-9.2608
+Praia da Vitória;Praia da Vitoria;38.7333;-27.0664
+Laranjeira;Laranjeira;38.6570;-9.1500
+Oliveira do Hospital;Oliveira do Hospital;40.3589;-7.8625
+Ul;Ul;40.8400;-8.4750
+Oliveira de Azemeis;Oliveira de Azemeis;40.8400;-8.4750
+Elvas;Elvas;38.8667;-7.1500
+Baião;Baiao;41.1667;-8.0333
+Costas de Cão;Costas de Cao;38.6640;-9.2000
+Caparica;Caparica;38.6640;-9.2000
+Mealhada;Mealhada;40.3833;-8.4500
+Cinfães;Cinfaes;41.1000;-8.1333
+Entroncamento;Entroncamento;39.4653;-8.4681
+Celorico de Basto;Celorico de Basto;41.3833;-8.0000
+Alfena;Alfena;41.2380;-8.5250
+Coruche;Coruche;38.9569;-8.5269
+Piedade;Piedade;38.6740;-9.1560
+Soure;Soure;40.0500;-8.6333
+Monção;Moncao;42.0764;-8.4819
+Vila Real de Santo António;Vila Real de Santo Antonio;37.1939;-7.4158
+Amares;Amares;41.6167;-8.3333
+Camarate;Camarate;38.7980;-9.1339
+Sacavém;Sacavem;38.7944;-9.1053
+Mangualde;Mangualde;40.6042;-7.7611
+Santa Iria da Azóia;Santa Iria da Azoia;38.8464;-9.0881
+São Tiago de Custoias;Sao Tiago de Custoias;41.2000;-8.6330
+Parede;Parede;38.6933;-9.3569
+Lousã;Lousa;40.1167;-8.2500
+Alcochete;Alcochete;38.7500;-8.9667
+Montemor-o-Novo;Montemor-o-Novo;38.6500;-8.2167
+Peso da Régua;Peso da Regua;41.1653;-7.7764
+Condeixa-a-Nova;Condeixa-a-Nova;40.1167;-8.5000
+São Pedro do Sul;Sao Pedro do Sul;40.7500;-8.0667
+Sobrado de Paiva;Sobrado de Paiva;41.0667;-8.2500
+Ponte de Sôr;Ponte de Sor;39.2500;-8.0167
+Cabeceiras de Basto;Cabeceiras de Basto;41.5333;-8.0167
+Quarteira;Quarteira;37.0690;-8.1030
+Sertã;Serta;39.8000;-8.1000
+Batalha;Batalha;39.6500;-8.8000
+Macedo de Cavaleiros;Macedo de Cavaleiros;41.5389;-6.9608
+Ramada;Ramada;38.8040;-9.1910
+Serpa;Serpa;37.9447;-7.5989
+Castro Daire;Castro Daire;40.9000;-7.9333
+Penacova;Penacova;40.2706;-8.2833
+Moura;Moura;38.1333;-7.4500
+Sobreda;Sobreda;38.6480;-9.1850
+Nazaré;Nazare;39.6011;-9.0706
+Grândola;Grandola;38.1700;-8.5600
+Anta;Anta;41.0073;-8.6250
+Falagueira;Falagueira;38.7589;-9.2261
+Cadaval;Cadaval;39.2333;-9.1000
+Lagoa;Lagoa;37.7486;-25.5403
+Valbom;Valbom;41.1333;-8.5667
+Horta;Horta;38.5794;-28.7164
+Estremoz;Estremoz;38.8500;-7.5833
+Sines;Sines;37.9547;-8.8644
+São Martinho do Bispo;Sao Martinho do Bispo;40.2131;-8.4694
+Valença;Valenca;42.0167;-8.6333
+Gouveia;Gouveia;40.5000;-7.6000
+Nelas;Nelas;40.5167;-7.8500
+Gafanha da Nazaré;Gafanha da Nazare;40.6350;-8.7140
+Alcanena;Alcanena;39.4667;-8.6667
+Arruda dos Vinhos;Arruda dos Vinhos;38.9833;-9.0667
+Ribeira Brava;Ribeira Brava;32.6833;-17.0500
+Aldeia de Paio Pires;Aldeia de Paio Pires;38.6270;-9.0760
+Fátima;Fatima;39.6256;-8.6658
+Bombarral;Bombarral;39.2681;-9.1553
+Vila Pouca de Aguiar;Vila Pouca de Aguiar;41.5006;-7.6422
+Miranda do Corvo;Miranda do Corvo;40.1000;-8.3333
+Lamaçães;Lamacaes;41.5280;-8.4130
+Alcácer do Sal;Alcacer do Sal;38.3725;-8.5136
+Vieira do Minho;Vieira do Minho;41.6333;-8.1333
+Moreira;Moreira;41.2490;-8.6500
+Aldoar;Aldoar;41.1710;-8.6710
+São Félix da Marinha;Sao Felix da Marinha;41.0340;-8.6230
+Sabugal;Sabugal;40.3500;-7.0833
+Mira;Mira;40.4333;-8.7333
+Sátão;Satao;40.7333;-7.7333
+Arcozelo;Arcozelo;41.0500;-8.6460
+Sever do Vouga;Sever do Vouga;40.7333;-8.3667
+Arganil;Arganil;40.2180;-8.0540
+Tábua;Tabua;40.3603;-8.0292
+Ponte da Barca;Ponte da Barca;41.8000;-8.4000
+Eiras;Eiras;40.2350;-8.4178
+Alijó;Alijo;41.2761;-7.4750
+Vendas Novas;Vendas Novas;38.6833;-8.4500
+Portela;Portela;38.7847;-9.1136
+Costa de Caparica;Costa de Caparica;38.6450;-9.2370
+Óbidos;Obidos;39.3581;-9.1578
+Ansião;Ansiao;39.9167;-8.4333
+Santa Comba Dão;Santa Comba Dao;40.4000;-8.1167
+Calheta;Calheta;32.7258;-17.1658
+Esmoriz;Esmoriz;40.9550;-8.6270
+São João das Lampas;Sao Joao das Lampas;38.8700;-9.4210
+Resende;Resende;41.1060;-7.9640
+Vila Frescainha;Vila Frescainha;41.5350;-8.6150
+Feira;Feira;40.9300;-8.5520
+Avintes;Avintes;41.1070;-8.5510
+Reguengos de Monsaraz;Reguengos de Monsaraz;38.4167;-7.5333
+Oliveirinha;Oliveirinha;40.6030;-8.6050
+Valadares;Valadares;41.1000;-8.6400
+São Brás de Alportel;Sao Bras de Alportel;37.1500;-7.8833
+Santo André;Santo Andre;38.0500;-8.7500
+Murtosa;Murtosa;40.7333;-8.6333
+São João de Ver;Sao Joao de Ver;40.9540;-8.5510
+Grijó;Grijo;41.0333;-8.5833
+Vouzela;Vouzela;40.7167;-8.0833
+Montalegre;Montalegre;41.8231;-7.7917
+Cunha Alta;Cunha Alta;40.6100;-7.7700
+Melres;Melres;41.0667;-8.4000
+Vila Franca do Campo;Vila Franca do Campo;37.7167;-25.4333
+Estreito de Câmara de Lobos;Estreito de Camara de Lobos;32.6758;-16.9772
+Oliveira de Frades;Oliveira de Frades;40.7167;-8.1833
+Ericeira;Ericeira;38.9620;-9.4180
+Moimenta da Beira;Moimenta da Beira;40.9797;-7.6136
+Sobral de Monte Agraço;Sobral de Monte Agraco;39.0180;-9.1520
+Setúbal;Setubal;38.5243;-8.8926
+Praia do Carvoeiro;Praia do Carvoeiro;37.1200;-8.4600
+Santa Clara;Santa Clara;40.1908;-8.4383
+Maceira;Maceira;39.6833;-8.9000
+Trancoso;Trancoso;40.7833;-7.3500
+Carregal do Sal;Carregal do Sal;40.4333;-8.0000
+Idanha-a-Nova;Idanha-a-Nova;39.9167;-7.2333
+Guifões;Guifoes;41.2011;-8.6650
+Pinhel;Pinhel;40.7833;-7.0667
+Mortágua;Mortagua;40.4333;-8.2333
+Tavarede;Tavarede;40.1670;-8.8450
+Aljustrel;Aljustrel;37.9167;-8.1667
+Melgaço;Melgaco;42.1000;-8.2500
+Paredes de Coura;Paredes de Coura;41.9000;-8.5500
+Gondizalves;Gondizalves;41.5360;-8.4400
+Rebordosa;Rebordosa;41.2200;-8.4120
+Vinhais;Vinhais;41.8167;-7.0000
+Carregado;Carregado;39.0167;-8.9667
+Caxias;Caxias;38.7020;-9.2760
+Almargem;Almargem;38.8475;-9.2714
+Aver-o-Mar;Aver-o-Mar;41.4000;-8.7667
+Vila Nova de Cerveira;Vila Nova de Cerveira;41.9667;-8.6833
+Rabo de Peixe;Rabo de Peixe;37.8103;-25.5861
+Ponta do Sol;Ponta do Sol;32.6806;-17.1042
+Lourosa;Lourosa;40.9880;-8.5460
+Ferreira do Zêzere;Ferreira do Zezere;39.6833;-8.2833
+Torre de Moncorvo;Torre de Moncorvo;41.2000;-7.1333
+Chamusca;Chamusca;39.3500;-8.4833

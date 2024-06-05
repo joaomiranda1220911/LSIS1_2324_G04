@@ -611,6 +611,10 @@ main {
     margin: 5px 0;
 }
 
+.equipa h1{
+    margin-left: 60px;
+}
+
 .fotos_equipa {
     display: flex; 
     flex-wrap: wrap; 
@@ -623,6 +627,7 @@ main {
     height: 200px;
     border-radius: 10px; 
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    margin-top: 20px;
 }
 
 .quemsomos_objetivo {
@@ -635,6 +640,8 @@ main {
     flex: 1 0 25%;
     margin: 20px 80px 20px 80px; 
     border-radius: 10px;
+}
+
 .dataset-info ul {
     list-style-type: disc;
     padding-left: 20px;
