@@ -696,3 +696,8 @@ tr:nth-child(even) {
     background-color: #FFDC00;
     color: white;
 }
+
+h1 {
+    text-align: center; /* Alinha o texto ao centro */
+    width: 100%; /* Define a largura do contêiner para ocupar toda a largura disponível */
+}

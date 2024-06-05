@@ -7,20 +7,6 @@ include("ImportSQL.php");
 
 ?>
 
-<?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "colecoes";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Check if the form is submitted
 if (isset($_POST['export'])) {

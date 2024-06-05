@@ -14,10 +14,11 @@
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
         <nav>
-            <div class="nav-buttons">
+        <div class="nav-buttons">
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
                 <button><a href="Dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
+                <button><a href="Mapa.php">Mapa</a></button>
             </div>
         </nav>
         <div class="search-bar">
@@ -82,32 +83,36 @@
     </div>
 
     <main>
-        <section class="dataset-details">
-        <a href="Dados.php"> <h2> Titulo 1 </h2></a>
-            <div class="dataset-info">
-                <p><strong>Tags:</strong> tag1, tag2, tag3</p>
-                <p><strong>Tipo de Importação:</strong> Tipo A</p>
-                <p><strong>Número de Dados:</strong> 1000</p>
-                <p><strong>Dashboards que utilizam este dataset:</strong></p>
-                <ul>
-                    <li>Dashboard 1</li>
-                    <li>Dashboard 2</li>
-                </ul>
-            </div>
-        </section>
-        <section class="dataset-details">
-            <h2>Título</h2>
-            <div class="dataset-info">
-                <p><strong>Tags:</strong> tag1, tag2, tag3</p>
-                <p><strong>Tipo de Importação:</strong> Tipo B</p>
-                <p><strong>Número de Dados:</strong> 2000</p>
-                <p><strong>Dashboards que utilizam este dataset:</strong></p>
-                <ul>
-                    <li>Dashboard 3</li>
-                    <li>Dashboard 4</li>
-                </ul>
-            </div>
-        </section>
+        <?php
+        // Incluir o arquivo de configuração da conexão com o banco de dados
+        include("ImportSQL.php");
+
+        // Verificar se a sessão já está ativa
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Consulta SQL para buscar os dados
+        $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao FROM dataset";
+        $result = mysqli_query($mysqli, $sql);
+
+        if ($result) {
+            // Exibir os dados encontrados
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<section class='dataset-details'>";
+                echo "<a href='Dados.php'> <h2>" . $row["nomeTabela"] . "</h2></a>";
+                echo "<div class='dataset-info'>";
+                echo "<p><strong>Tags:</strong> " . $row["tags"] . "</p>";
+                echo "<p><strong>Tipo de Importação:</strong> " . $row["tipoImportacao"] . "</p>";
+                echo "<p><strong>Número de Dados:</strong> " . $row["numeroLinhas"] . "</p>";
+                echo "<p><strong>Informação sobre os dados:</strong> " . $row["informacao"] . "</p>";
+                echo "</div>";
+                echo "</section>";
+            }
+        } else {
+            echo "Erro na consulta: " . mysqli_error($mysqli);
+        }
+        ?>
     </main>
 
     <footer>
