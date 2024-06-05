@@ -69,6 +69,7 @@
                 <div class="button-container">
                     <div class="custom-button">
                         <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                        /** botao ainda nao esta operacional */
                     </div>
                 </div>
             </div>
@@ -82,7 +83,7 @@
 
     <main>
         <section class="dataset-details">
-            <h2>Título</h2>
+        <a href="Dados.php"> <h2> Titulo 1 </h2></a>
             <div class="dataset-info">
                 <p><strong>Tags:</strong> tag1, tag2, tag3</p>
                 <p><strong>Tipo de Importação:</strong> Tipo A</p>

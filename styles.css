@@ -646,3 +646,48 @@ main {
     list-style-type: disc;
     padding-left: 20px;
 }
+
+/* Estilos para a tabela */
+table {
+    border-collapse: collapse;
+    width: 100%;
+   /* border: 1px solid #ddd; /* Borda da tabela */
+    background-color: #7070705d;
+}
+
+/* Estilos para as células da tabela */
+td, th {
+    padding: 8px;
+    text-align: center; /* Centralizar o texto */
+    border-bottom: 1px solid #ddd; /* Borda inferior das células */
+}
+
+/* Estilos para a primeira linha com tons de amarelo */
+tr:first-child th {
+    background-color: #f6da28; 
+}
+
+/* Estilos alternados para linhas */
+tr:nth-child(even) {
+    background-color: #79797940; /* Cor de fundo para linhas pares */
+}
+
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 5px 10px;
+    margin-right: 5px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+
