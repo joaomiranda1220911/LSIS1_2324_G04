@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
                 <button><a href="Dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
+                <button><a href="Mapa.php">Mapa</a></button>
             </div>
         </nav>
         <div class="search-bar">
