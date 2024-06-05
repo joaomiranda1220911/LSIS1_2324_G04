@@ -657,7 +657,7 @@ table {
 
 /* Estilos para as células da tabela */
 td, th {
-    padding: 8px;
+    padding: 5px;
     text-align: center; /* Centralizar o texto */
     border-bottom: 1px solid #ddd; /* Borda inferior das células */
 }
@@ -672,22 +672,27 @@ tr:nth-child(even) {
     background-color: #79797940; /* Cor de fundo para linhas pares */
 }
 
-
 .pagination {
     margin-top: 20px;
+    text-align: center;
+        margin-bottom: 20px;
 }
 
 .pagination a {
-    padding: 5px 10px;
-    margin-right: 5px;
+    display: inline-block;
+    padding: 8px 16px;
     text-decoration: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 3px;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 5px;
 }
 
 .pagination a:hover {
-    background-color: #0056b3;
+    background-color: #ccc;
 }
 
-
+.pagination .current {
+    background-color: #FFDC00;
+    color: white;
+}

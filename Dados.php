@@ -81,89 +81,120 @@
             <button onclick="window.location.href='Export.php'">Informação sobre os dados</button>
         </div>
     </div>
-
-    <?php
-    // Função para obter dados da API
-    function fetchData($offset, $limit)
-    {
-        $url = "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/26-centrais/records?limit={$limit}&offset={$offset}";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($ch);
-        if (curl_errno($ch)) {
-            // Tratar erros de cURL de forma mais explícita
-            die('Erro cURL: ' . curl_error($ch));
-        }
-        curl_close($ch);
-        return json_decode($response, true);
-    }
-
-    // Configurações iniciais
-    $limit = 60; // Número de registros a serem exibidos por vez
-    $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
-
-    // Função para exibir o menu de navegação
-    function displayNavigationMenu($offset, $limit)
-    {
-        echo "<div class='pagination'>";
-        // Link para a página anterior
-        if ($offset > 0) {
-            $prevOffset = max(0, $offset - $limit);
-            echo "<a href=\"?offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
-        }
-        // Número da página atual
-        $currentPage = ($offset / $limit) + 1;
-        echo " Página {$currentPage} ";
-        // Link para a próxima página
-        $nextOffset = $offset + $limit;
-        echo "<a href=\"?offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
-        echo "</div>";
-    }
-
-    // Loop para obter e exibir os dados
-    // Obter os dados da API
-    $data = fetchData($offset, $limit);
-
-    // Verificar se os dados foram obtidos corretamente e se a resposta é válida
-    if (isset($data['results']) && is_array($data['results'])) {
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        // Criar cabeçalhos da tabela com base nas chaves do primeiro registro
-        foreach ($data['results'][0] as $key => $value) {
-            echo "<th>" . htmlspecialchars($key) . "</th>";
-        }
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
-        // Iterar sobre os registros
-        foreach ($data['results'] as $record) {
-            echo "<tr>";
-            foreach ($record as $key => $value) {
-                // Utilizar htmlspecialchars apenas quando necessário
-                echo "<td>" . htmlspecialchars($value) . "</td>";
+    <main>
+        <div class="table-container">
+            <?php
+            // Função para obter dados da API
+            function fetchData($offset, $limit)
+            {
+                $url = "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/26-centrais/records?limit={$limit}&offset={$offset}";
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec($ch);
+                if (curl_errno($ch)) {
+                    // Tratar erros de cURL de forma mais explícita
+                    die('Erro cURL: ' . curl_error($ch));
+                }
+                curl_close($ch);
+                return json_decode($response, true);
             }
-            echo "</tr>";
-        }
-        echo "</tbody>";
-        echo "</table>";
 
-        // Exibir o menu de navegação
-        displayNavigationMenu($offset, $limit);
-    } else {
-        // Caso não haja registros ou erro na resposta
-        if (empty($data['results'])) {
-            echo "<p>Nenhum registro encontrado.</p>";
-        } else {
-            echo "<p>Erro ao obter dados da API.</p>";
-            echo "<pre>";
-            print_r($data); // Exibir a resposta completa para depuração
-            echo "</pre>";
-        }
-    }
-?>
+            // Configurações iniciais
+            $limit = 60; // Número de registros a serem exibidos por vez
+            $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
+            // Função para exibir o menu de navegação
+            function displayNavigationMenu($offset, $limit, $totalPages)
+            {
+                echo "<div class='pagination'>";
+                // Link para a página anterior
+                if ($offset > 0) {
+                    $prevOffset = max(0, $offset - $limit);
+                    echo "<a href=\"?offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
+                }
+                // Número da página atual e número total de páginas
+                $currentPage = ($offset / $limit) + 1;
+                echo " Página {$currentPage} de {$totalPages} ";
+                // Link para a próxima página
+                $nextOffset = $offset + $limit;
+                echo "<a href=\"?offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
+                echo "</div>";
+            }
+
+            // Obtém os dados da API
+            $data = fetchData($offset, $limit);
+
+            // Verifica se os dados foram obtidos corretamente e se a resposta é válida
+            if (isset($data['total_count'])) {
+                // Obtém o número total de registros
+                $totalRecords = intval($data['total_count']);
+
+                // Função para calcular o número total de páginas
+                function getTotalPages($totalRecords, $limit)
+                {
+                    return ceil($totalRecords / $limit);
+                }
+
+                // Obtém o número total de páginas
+                $totalPages = getTotalPages($totalRecords, $limit);
+
+                // Exibe o menu de navegação com o número total de páginas
+                displayNavigationMenu($offset, $limit, $totalPages);
+            } else {
+                // Caso não haja registros ou erro na resposta
+                if (empty($data['results'])) {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                } else {
+                    echo "<p>Erro ao obter dados da API.</p>";
+                    echo "<pre>";
+                    print_r($data); // Exibir a resposta completa para depuração
+                    echo "</pre>";
+                }
+            }
+
+            // Loop para obter e exibir os dados
+            // Verificar se os dados foram obtidos corretamente e se a resposta é válida
+            if (isset($data['results']) && is_array($data['results'])) {
+                echo "<table>";
+                echo "<thead>";
+                echo "<tr>";
+                // Criar cabeçalhos da tabela com base nas chaves do primeiro registro
+                foreach ($data['results'][0] as $key => $value) {
+                    echo "<th>" . htmlspecialchars($key) . "</th>";
+                }
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+                // Iterar sobre os registros
+                foreach ($data['results'] as $record) {
+                    echo "<tr>";
+                    foreach ($record as $key => $value) {
+                        // Utilizar htmlspecialchars apenas quando necessário
+                        echo "<td>" . htmlspecialchars($value) . "</td>";
+                    }
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
+
+                // Exibir o menu de navegação
+                displayNavigationMenu($offset, $limit, $totalPages);
+            } else {
+                // Caso não haja registros ou erro na resposta
+                if (empty($data['results'])) {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                } else {
+                    echo "<p>Erro ao obter dados da API.</p>";
+                    echo "<pre>";
+                    print_r($data); // Exibir a resposta completa para depuração
+                    echo "</pre>";
+                }
+            }
+            ?>
+
+        </div>
+    </main>
 
 </body>
 <footer>
