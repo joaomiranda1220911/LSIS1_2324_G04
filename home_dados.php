@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dados</title>
+    <title>Menu Lateral com Filtros</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -16,7 +16,7 @@
         <nav>
             <div class="nav-buttons">
                 <button><a href="SobreNos.php">Sobre Nós</a></button>
-                <button><a href="home_dados.php">Dados</a></button>
+                <button><a href="Dados.php">Dados</a></button>
                 <button><a href="Analise.php">Análise</a></button>
             </div>
         </nav>
@@ -29,60 +29,84 @@
                 <img src="Imagens/user_icon.png" alt="User Icon">
                 <span>Name</span>
             </button>
-                <div class="dropdown-content">
-                    <a href="Login.php">Login</a>
-                    <a href="Register.php">Registo</a>
-                    <a href="User.php">Perfil</a>
-                    <a href="Logout.php">Sair</a>
-                </div>
+            <div class="dropdown-content">
+                <a href="Login.php">Login</a>
+                <a href="Register.php">Registo</a>
+                <a href="User.php">Perfil</a>
+                <a href="Logout.php">Sair</a>
+            </div>
         </div>
+
     </header>
 
-    <div class="button-container">
-        <div class="custom-button">
-            <button onclick="window.location.href='Import.php'">Importar Dados</button>
-        </div>
-    </div>
-
-    <div class="menu">
-        <h2> Filtros </h2>
-        <div class="menu-hover" </div>
-            <ul>
-                <li>
-                    <input type="checkbox" id="Consumos e Energia">
-                    <label for="Consumos e Energia">Consumos e Energia</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Mobilidade Elétrica">
-                    <label for="Mobilidade Elétrica">Mobilidade Elétrica</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Operação e Qualidade de Serviço">
-                    <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Rede Elétrica">
-                    <label for="Rede Elétrica">Rede Elétrica</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Operação e Qualidade de Serviço">
-                    <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Renováveis">
-                    <label for="Renováveis">Renováveis</label>
-                </li>
-            </ul>
-
-            <div class="button-container">
-                <div class="custom-button">
-                    <button onclick="window.location.href='Import.php'">Pesquisar</button>
+    <div class="topo">
+        <div class="menu-container">
+            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon">
+            <div class="menu">
+                <h2>Filtros</h2>
+                <ul>
+                    <li>
+                        <input type="checkbox" id="Consumos e Energia">
+                        <label for="Consumos e Energia">Consumos e Energia</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Mobilidade Elétrica">
+                        <label for="Mobilidade Elétrica">Mobilidade Elétrica</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Operação e Qualidade de Serviço">
+                        <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Rede Elétrica">
+                        <label for="Rede Elétrica">Rede Elétrica</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Renováveis">
+                        <label for="Renováveis">Renováveis</label>
+                    </li>
+                </ul>
+                <div class="button-container">
+                    <div class="custom-button">
+                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="custom-button">
+                <button onclick="window.location.href='Import.php'">Importar Dados</button>
             </div>
         </div>
     </div>
 
-    <main class="l">
+    <main>
+        <section class="dataset-details">
+            <h2>Título</h2>
+            <div class="dataset-info">
+                <p><strong>Tags:</strong> tag1, tag2, tag3</p>
+                <p><strong>Tipo de Importação:</strong> Tipo A</p>
+                <p><strong>Número de Dados:</strong> 1000</p>
+                <p><strong>Dashboards que utilizam este dataset:</strong></p>
+                <ul>
+                    <li>Dashboard 1</li>
+                    <li>Dashboard 2</li>
+                </ul>
+            </div>
+        </section>
+        <section class="dataset-details">
+            <h2>Título</h2>
+            <div class="dataset-info">
+                <p><strong>Tags:</strong> tag1, tag2, tag3</p>
+                <p><strong>Tipo de Importação:</strong> Tipo B</p>
+                <p><strong>Número de Dados:</strong> 2000</p>
+                <p><strong>Dashboards que utilizam este dataset:</strong></p>
+                <ul>
+                    <li>Dashboard 3</li>
+                    <li>Dashboard 4</li>
+                </ul>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -96,6 +120,7 @@
             </div>
         </div>
     </footer>
+
 
     <script src="script.js"></script>
 </body>
