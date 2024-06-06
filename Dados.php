@@ -121,9 +121,8 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
     </div>
 
-        
+
     <?php
-    // Função para obter dados da API
     // Verifica se a função fetchData já foi definida antes de defini-la novamente
     if (!function_exists('fetchData')) {
         // Função para obter dados da API
@@ -135,7 +134,6 @@ if (session_status() == PHP_SESSION_NONE) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec($ch);
             if (curl_errno($ch)) {
-                // Tratar erros de cURL de forma mais explícita
                 die('Erro cURL: ' . curl_error($ch));
             }
             curl_close($ch);
@@ -144,70 +142,101 @@ if (session_status() == PHP_SESSION_NONE) {
     }
     ?>
 
-<?php
-            // Consulta SQL para buscar os dados
-            $sql = "SELECT nomeTabela FROM dataset";
-            $result = mysqli_query($mysqli, $sql);
+    <?php
+    // Consulta SQL para buscar os dados
+    $sql = "SELECT nomeTabela FROM dataset";
+    $result = mysqli_query($mysqli, $sql);
 
-            if ($result) {
-                // Inicializar a variável $nomeDataset como um array para armazenar os resultados
-                $nomeDataset = array();
+    if ($result) {
+        // Inicializar a variável $nomeDataset como um array para armazenar os resultados
+        $nomeDataset = array();
 
-                // Fetch results and store in the array
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $nomeDataset[] = $row['nomeTabela'];
-                }
+        // Fetch results and store in the array
+        while ($row = mysqli_fetch_assoc($result)) {
+            $nomeDataset[] = $row['nomeTabela'];
+        }
 
-                // Mostrar os resultados dentro de tags <h1>
-                foreach ($nomeDataset as $nome) {
-                    echo "<h1>" . htmlspecialchars($nome) . "</h1>";
+        // Mostrar os resultados dentro de tags <h1>
+        foreach ($nomeDataset as $nome) {
+            echo "<h1>" . htmlspecialchars($nome) . "</h1>";
 
-                    // Obtém os dados da API
-                    $data = fetchData(0, 60); // Ajust
+            $nomeTabela = htmlspecialchars($nome); // Obtém o nome da tabela
 
-                    // Verifica se os dados foram obtidos corretamente e se a resposta é válida
-                    if (isset($data['results']) && is_array($data['results'])) {
-                        // Crie uma nova tabela com o nome do título
-                        $nomeTabela = htmlspecialchars($nome); // Obtém o nome da tabela
+            // Variáveis para controle de offset e limite
+            $offset = 0;
+            $limit = 60;
 
-                        // Primeira linha dos dados, que contém os nomes das colunas
+            // Loop para buscar e inserir todos os dados
+            do {
+                // Obtém os dados da API
+                $data = fetchData($offset, $limit);
+
+                // Verifica se os dados foram obtidos corretamente e se a resposta é válida
+                if (isset($data['results']) && is_array($data['results'])) {
+                    if ($offset == 0) {
+                        // Criar tabela na primeira iteração
                         $columns = array_keys($data['results'][0]);
                         $createTableSQL = "CREATE TABLE IF NOT EXISTS `{$nomeTabela}` (id INT AUTO_INCREMENT PRIMARY KEY, ";
                         foreach ($columns as $column) {
                             $createTableSQL .= "`{$column}` VARCHAR(255), ";
                         }
                         $createTableSQL = rtrim($createTableSQL, ", ") . ")";
-                        if (mysqli_query($mysqli, $createTableSQL)) {
-                            // Insira os dados na nova tabela
-                            foreach ($data['results'] as $record) {
-                                $insertValues = array_map(function ($value) use ($mysqli) {
-                                    return mysqli_real_escape_string($mysqli, $value);
-                                }, $record);
-                                $insertValues = "'" . implode("','", $insertValues) . "'";
-                                $insertSQL = "INSERT INTO `{$nomeTabela}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
-                                if (!mysqli_query($mysqli, $insertSQL)) {
-                                    echo "Erro ao inserir dados: " . mysqli_error($mysqli);
-                                }
-                            }
-                        } else {
+                        if (!mysqli_query($mysqli, $createTableSQL)) {
                             echo "Erro ao criar tabela: " . mysqli_error($mysqli);
-                        }
-                    } else {
-                        // Caso não haja registros ou erro na resposta
-                        if (empty($data['results'])) {
-                            echo "<p>Nenhum registro encontrado.</p>";
-                        } else {
-                            echo "<p>Erro ao obter dados da API.</p>";
-                            echo "<pre>";
-                            print_r($data); // Exibir a resposta completa para depuração
-                            echo "</pre>";
+                            break;
                         }
                     }
+
+                    // Inserir dados na tabela
+                    foreach ($data['results'] as $record) {
+                        $insertValues = array_map(function ($value) use ($mysqli) {
+                            return mysqli_real_escape_string($mysqli, $value);
+                        }, $record);
+                        $insertValues = "'" . implode("','", $insertValues) . "'";
+
+                        // Verificar se o registro já existe
+                        $verifica = "SELECT * FROM `{$nomeTabela}` WHERE ";
+                        $dataOrigem = explode(",", $insertValues);
+                        for ($i = 0; $i < count($columns); $i++) {
+                            if ($i == count($columns) - 1) {
+                                $verifica .= "$columns[$i] = $dataOrigem[$i] ";
+                            } else {
+                                $verifica .= "$columns[$i] = $dataOrigem[$i] AND ";
+                            }
+                        }
+
+                        //echo $verifica . "<br>";
+                        $res = mysqli_query($mysqli, $verifica);
+                        $rowcount = mysqli_num_rows($res);
+                        if ($rowcount == 0) {
+                            $insertSQL = "INSERT INTO `{$nomeTabela}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
+                            echo $insertSQL . "<br>";
+                            if (!mysqli_query($mysqli, $insertSQL)) {
+                                echo "Erro ao inserir dados: " . mysqli_error($mysqli);
+                            }
+                        }
+                    }
+
+                    // Incrementar o offset para o próximo lote de dados
+                    $offset += $limit;
+                } else {
+                    if (empty($data['results'])) {
+                        echo "<p>Nenhum registro encontrado.</p>";
+                    } else {
+                        echo "<p>Erro ao obter dados da API.</p>";
+                        echo "<pre>";
+                        print_r($data);
+                        echo "</pre>";
+                    }
+                    break;
                 }
-            } else {
-                echo "Erro na consulta: " . mysqli_error($mysqli);
-            }
-            ?>
+            } while (count($data['results']) == $limit);
+        }
+    } else {
+        echo "Erro na consulta: " . mysqli_error($mysqli);
+    }
+    ?>
+
     <main>
         <div class="table-container">
             <?php
