@@ -2,21 +2,97 @@
 // Incluir o arquivo de configuração da conexão com o banco de dados
 include("ImportSQL.php");
 
-// Função para obter dados da API
-function fetchData($offset, $limit)
-{
-    $url = "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/26-centrais/records?limit={$limit}&offset={$offset}";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec($ch);
-    if (curl_errno($ch)) {
-        // Tratar erros de cURL de forma mais explícita
-        die('Erro cURL: ' . curl_error($ch));
+// Consulta SQL para buscar os nomes das tabelas
+$sql = "SELECT nomeTabela FROM dataset";
+$result = mysqli_query($mysqli, $sql);
+
+if ($result) {
+    // Inicializar um array para armazenar os nomes das tabelas
+    $nomeDataset = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $nomeDataset[] = $row['nomeTabela'];
     }
-    curl_close($ch);
-    return json_decode($response, true);
+
+    // Verificar se existe alguma tabela na base de dados
+    if (!empty($nomeDataset)) {
+        // Obter o nome da primeira tabela no array
+        $nomeTabelaAtual = htmlspecialchars($nomeDataset[0]);
+        // Definir o título da página com base no nome da tabela atual
+        $tituloPagina = "Dados - " . $nomeTabelaAtual;
+    } else {
+        // Definir um título padrão caso não haja tabelas na base de dados
+        $tituloPagina = "Dados";
+    }
+} else {
+    // Definir um título padrão em caso de erro na consulta SQL
+    $tituloPagina = "Dados";
 }
+
+// Função para obter dados da API
+function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
+{
+    // Consultar a base de dados para obter o URL da API com base no nome da tabela atual
+    $sql = "SELECT linkAPI FROM dataset WHERE nomeTabela = '{$nomeTabelaAtual}'";
+    $result = mysqli_query($mysqli, $sql);
+
+    if ($result) {
+        // Verificar se há resultados
+        if (mysqli_num_rows($result) > 0) {
+            // Obter a URL da API a partir do resultado da consulta
+            $row = mysqli_fetch_assoc($result);
+            $url = $row['linkAPI'];
+
+            // Iniciar uma requisição cURL
+            $ch = curl_init();
+            if (!$ch) {
+                die("Falha ao inicializar a requisição cURL.");
+            }
+
+            // Configurar a URL e outras opções
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Tempo limite de conexão em segundos
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Tempo limite total da operação em segundos
+
+            // Executar a requisição cURL
+            $response = curl_exec($ch);
+
+            // Verificar erros de cURL
+            if (curl_errno($ch)) {
+                // Tratar erros de cURL
+                $error_message = curl_error($ch);
+                curl_close($ch);
+                die("Erro cURL: " . $error_message);
+            }
+
+            // Fechar a conexão cURL
+            curl_close($ch);
+
+            // Verificar se a resposta é válida
+            if ($response === false) {
+                die("Erro ao obter resposta da API.");
+            }
+
+            // Decodificar a resposta como array associativo
+            $data = json_decode($response, true);
+
+            // Verificar se houve erro na decodificação
+            if ($data === null) {
+                die("Erro ao decodificar a resposta da API.");
+            }
+
+            // Retornar os dados obtidos da API
+            return $data;
+        } else {
+            // Caso nenhuma URL seja encontrada na tabela
+            die('Nenhuma URL encontrada na tabela dataset.');
+        }
+    } else {
+        // Em caso de erro na consulta SQL
+        die('Erro na consulta SQL: ' . mysqli_error($mysqli));
+    }
+}
+
 
 // Função para exibir o menu de navegação
 function displayNavigationMenu($offset, $limit, $totalPages)
@@ -47,12 +123,12 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Dados</title>
+    <title><?php echo $tituloPagina; ?></title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -68,40 +144,10 @@ if (session_status() == PHP_SESSION_NONE) {
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
-
-        <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
-
-        // Verificar se a sessão já está ativa
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Definir um nome padrão
-        $nome_utilizador = "Utilizador";
-
-        // Verificar se o usuário está logado
-        if (isset($_SESSION['email'])) {
-            $email = $_SESSION['email'];
-
-            // Query para selecionar o nome do usuário
-            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
-            $result = mysqli_query($mysqli, $sql);
-
-            if ($result) {
-                $row = mysqli_fetch_assoc($result);
-                $nome_utilizador = $row['nome'];
-            }
-        }else{
-            $nome_utilizador = "Visitante";
-        }
-        ?>
-
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
-                <span><?php echo $nome_utilizador; ?></span>
+                <span>Name</span>
             </button>
             <div class="dropdown-content">
                 <a href="Login.php">Login</a>
@@ -139,7 +185,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <div class="button-container">
                     <div class="custom-button">
                         <button onclick="window.location.href='Export.php'">Pesquisar</button>
-                        /** botao ainda nao esta operacional */
+                        <!-- botao ainda nao esta operacional -->
                     </div>
                 </div>
             </div>
@@ -151,117 +197,80 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
     </div>
 
-
     <?php
-    // Verifica se a função fetchData já foi definida antes de defini-la novamente
-    if (!function_exists('fetchData')) {
-        // Função para obter dados da API
-        function fetchData($offset, $limit)
-        {
-            $url = "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/26-centrais/records?limit={$limit}&offset={$offset}";
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            if (curl_errno($ch)) {
-                die('Erro cURL: ' . curl_error($ch));
-            }
-            curl_close($ch);
-            return json_decode($response, true);
-        }
-    }
-    ?>
+    // Verificar se a variável $tituloPagina está definida
+    if (isset($tituloPagina)) {
+        echo "<h1>"  . $tituloPagina . "</h1>";
 
-    <?php
-    // Consulta SQL para buscar os dados
-    $sql = "SELECT nomeTabela FROM dataset";
-    $result = mysqli_query($mysqli, $sql);
+        // Variáveis para controle de offset e limite
+        $offset = 0;
+        $limit = 60;
 
-    if ($result) {
-        // Inicializar a variável $nomeDataset como um array para armazenar os resultados
-        $nomeDataset = array();
+        // Loop para buscar e inserir todos os dados
+        do {
+            // Obtém os dados da API
+            $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
 
-        // Fetch results and store in the array
-        while ($row = mysqli_fetch_assoc($result)) {
-            $nomeDataset[] = $row['nomeTabela'];
-        }
-
-        // Mostrar os resultados dentro de tags <h1>
-        foreach ($nomeDataset as $nome) {
-            echo "<h1>" . htmlspecialchars($nome) . "</h1>";
-
-            $nomeTabela = htmlspecialchars($nome); // Obtém o nome da tabela
-
-            // Variáveis para controle de offset e limite
-            $offset = 0;
-            $limit = 60;
-
-            // Loop para buscar e inserir todos os dados
-            do {
-                // Obtém os dados da API
-                $data = fetchData($offset, $limit);
-
-                // Verifica se os dados foram obtidos corretamente e se a resposta é válida
-                if (isset($data['results']) && is_array($data['results'])) {
-                    if ($offset == 0) {
-                        // Criar tabela na primeira iteração
-                        $columns = array_keys($data['results'][0]);
-                        $createTableSQL = "CREATE TABLE IF NOT EXISTS `{$nomeTabela}` (id INT AUTO_INCREMENT PRIMARY KEY, ";
-                        foreach ($columns as $column) {
-                            $createTableSQL .= "`{$column}` VARCHAR(255), ";
-                        }
-                        $createTableSQL = rtrim($createTableSQL, ", ") . ")";
-                        if (!mysqli_query($mysqli, $createTableSQL)) {
-                            echo "Erro ao criar tabela: " . mysqli_error($mysqli);
-                            break;
-                        }
+            // Verifica se os dados foram obtidos corretamente e se a resposta é válida
+            if (isset($data['results']) && is_array($data['results'])) {
+                if ($offset == 0) {
+                    // Criar tabela na primeira iteração
+                    $columns = array_keys($data['results'][0]);
+                    $createTableSQL = "CREATE TABLE IF NOT EXISTS `{$tituloPagina}` (id INT AUTO_INCREMENT PRIMARY KEY, ";
+                    foreach ($columns as $column) {
+                        $createTableSQL .= "`{$column}` VARCHAR(255), ";
                     }
-
-                    // Inserir dados na tabela
-                    foreach ($data['results'] as $record) {
-                        $insertValues = array_map(function ($value) use ($mysqli) {
-                            return mysqli_real_escape_string($mysqli, $value);
-                        }, $record);
-                        $insertValues = "'" . implode("','", $insertValues) . "'";
-
-                        // Verificar se o registro já existe
-                        $verifica = "SELECT * FROM `{$nomeTabela}` WHERE ";
-                        $dataOrigem = explode(",", $insertValues);
-                        for ($i = 0; $i < count($columns); $i++) {
-                            if ($i == count($columns) - 1) {
-                                $verifica .= "$columns[$i] = $dataOrigem[$i] ";
-                            } else {
-                                $verifica .= "$columns[$i] = $dataOrigem[$i] AND ";
-                            }
-                        }
-
-                        //echo $verifica . "<br>";
-                        $res = mysqli_query($mysqli, $verifica);
-                        $rowcount = mysqli_num_rows($res);
-                        if ($rowcount == 0) {
-                            $insertSQL = "INSERT INTO `{$nomeTabela}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
-                            echo $insertSQL . "<br>";
-                            if (!mysqli_query($mysqli, $insertSQL)) {
-                                echo "Erro ao inserir dados: " . mysqli_error($mysqli);
-                            }
-                        }
+                    $createTableSQL = rtrim($createTableSQL, ", ") . ")";
+                    if (!mysqli_query($mysqli, $createTableSQL)) {
+                        echo "Erro ao criar tabela: " . mysqli_error($mysqli);
+                        break;
                     }
-
-                    // Incrementar o offset para o próximo lote de dados
-                    $offset += $limit;
-                } else {
-                    if (empty($data['results'])) {
-                        echo "<p>Nenhum registro encontrado.</p>";
-                    } else {
-                        echo "<p>Erro ao obter dados da API.</p>";
-                        echo "<pre>";
-                        print_r($data);
-                        echo "</pre>";
-                    }
-                    break;
                 }
-            } while (count($data['results']) == $limit);
-        }
+
+                // Inserir dados na tabela
+                foreach ($data['results'] as $record) {
+                    $insertValues = array_map(function ($value) use ($mysqli) {
+                        return mysqli_real_escape_string($mysqli, $value);
+                    }, $record);
+                    $insertValues = "'" . implode("','", $insertValues) . "'";
+
+                    // Verificar se o registro já existe
+                    $verifica = "SELECT * FROM `{$tituloPagina}` WHERE ";
+                    $dataOrigem = explode(",", $insertValues);
+                    for ($i = 0; $i < count($columns); $i++) {
+                        if ($i == count($columns) - 1) {
+                            $verifica .= "$columns[$i] = $dataOrigem[$i] ";
+                        } else {
+                            $verifica .= "$columns[$i] = $dataOrigem[$i] AND ";
+                        }
+                    }
+
+                    //echo $verifica . "<br>";
+                    $res = mysqli_query($mysqli, $verifica);
+                    $rowcount = mysqli_num_rows($res);
+                    if ($rowcount == 0) {
+                        $insertSQL = "INSERT INTO `{$tituloPagina}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
+                        echo $insertSQL . "<br>";
+                        if (!mysqli_query($mysqli, $insertSQL)) {
+                            echo "Erro ao inserir dados: " . mysqli_error($mysqli);
+                        }
+                    }
+                }
+
+                // Incrementar o offset para o próximo lote de dados
+                $offset += $limit;
+            } else {
+                if (empty($data['results'])) {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                } else {
+                    echo "<p>Erro ao obter dados da API.</p>";
+                    echo "<pre>";
+                    print_r($data);
+                    echo "</pre>";
+                }
+                break;
+            }
+        } while (count($data['results']) == $limit);
     } else {
         echo "Erro na consulta: " . mysqli_error($mysqli);
     }
@@ -275,7 +284,7 @@ if (session_status() == PHP_SESSION_NONE) {
             $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
             // Obtém os dados da API
-            $data = fetchData($offset, $limit);
+            $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
 
             // Verifica se os dados foram obtidos corretamente e se a resposta é válida
             if (isset($data['total_count'])) {

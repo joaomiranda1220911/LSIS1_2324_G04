@@ -120,16 +120,16 @@
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-
         // Consulta SQL para buscar os dados
-        $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao FROM dataset";
+        $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao, linkAPI FROM dataset";
         $result = mysqli_query($mysqli, $sql);
-
+    
         if ($result) {
             // Exibir os dados encontrados
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<section class='dataset-details'>";
-                echo "<a href='Dados.php'> <h2>" . $row["nomeTabela"] . "</h2></a>";
+                // Adicionando parâmetros de nome e linkAPI à URL do link
+                echo "<a href='Dados.php?nome=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2>" . $row["nomeTabela"] . "</h2></a>";
                 echo "<div class='dataset-info'>";
                 echo "<p><strong>Tags:</strong> " . $row["tags"] . "</p>";
                 echo "<p><strong>Tipo de Importação:</strong> " . $row["tipoImportacao"] . "</p>";
@@ -141,7 +141,7 @@
         } else {
             echo "Erro na consulta: " . mysqli_error($mysqli);
         }
-        ?>
+    ?>
     </main>
 
     <footer>
