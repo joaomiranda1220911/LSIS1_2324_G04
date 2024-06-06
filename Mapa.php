@@ -7,29 +7,29 @@
     <title>Mapa de Instalações Solares</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="styles.css">
-<style>
-    #map {
-        height: 600px;
-        width: 700px;
-        position: absolute;
-        top: 50%; /* Center the map vertically */
-        left: 50%; /* Center the map horizontally */
-        transform: translate(-50%, -50%); /* Apply the centering */
-        border: 3px solid #FFDC00; /* Add a yellow border */
-        border-radius: 10px; /* Round the corners */
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-    }
+    <style>
+        #map {
+            height: 600px;
+            width: 700px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid #FFDC00;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
 
-    .footer-content {
-        position: fixed;
-        bottom: 0;
-    }
-</style>
+        .footer-content {
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -45,10 +45,40 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
+
+        <?php
+        // Incluir o arquivo de configuração da conexão com o banco de dados
+        include("ImportSQL.php");
+
+        // Verificar se a sessão já está ativa
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Definir um nome padrão
+        $nome_utilizador = "Utilizador";
+
+        // Verificar se o usuário está logado
+        if (isset($_SESSION['email'])) {
+            $email = $_SESSION['email'];
+
+            // Query para selecionar o nome do usuário
+            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
+            $result = mysqli_query($mysqli, $sql);
+
+            if ($result) {
+                $row = mysqli_fetch_assoc($result);
+                $nome_utilizador = $row['nome'];
+            }
+        }else{
+            $nome_utilizador = "Visitante";
+        }
+        ?>
+
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
-                <span>Name</span>
+                <span><?php echo $nome_utilizador; ?></span>
             </button>
             <div class="dropdown-content">
                 <a href="Login.php">Login</a>
@@ -93,7 +123,7 @@
             const data = await response.text();
             Papa.parse(data, {
                 header: true,
-                complete: function (results) {
+                complete: function(results) {
                     results.data.forEach(row => {
                         concelhosCoords[row.Concelho] = {
                             latitude: parseFloat(row.Latitude),
@@ -112,7 +142,7 @@
             Papa.parse('concelhos.csv', {
                 header: true,
                 delimiter: ';',
-                complete: function (results) {
+                complete: function(results) {
                     const data = results.data;
 
                     // Processa cada linha do CSV
