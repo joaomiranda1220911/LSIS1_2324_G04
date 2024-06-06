@@ -611,10 +611,6 @@ main {
     margin: 5px 0;
 }
 
-.equipa h1{
-    margin-left: 60px;
-}
-
 .fotos_equipa {
     display: flex; 
     flex-wrap: wrap; 
@@ -633,12 +629,20 @@ main {
 .quemsomos_objetivo {
     display: flex; 
     flex-wrap: wrap;
+    
+}
+
+.quemsomos_objetivo p {
+    text-align: justify;
+    font-size: 16px;
+    line-height: 1.6;
+    color: black;
 }
 
 .quem_somos,
 .objetivo {
     flex: 1 0 25%;
-    margin: 20px 80px 20px 80px; 
+    margin: 0px 80px 20px 80px; 
     border-radius: 10px;
 }
 
@@ -700,4 +704,24 @@ tr:nth-child(even) {
 h1 {
     text-align: center; /* Alinha o texto ao centro */
     width: 100%; /* Define a largura do contêiner para ocupar toda a largura disponível */
+}
+
+/* Estilos gerais para o container do formulário */
+.form-container {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #898989;
+}
+
+/* Estilos para o título */
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
 }
