@@ -611,10 +611,6 @@ main {
     margin: 5px 0;
 }
 
-.equipa h1{
-    margin-left: 60px;
-}
-
 .fotos_equipa {
     display: flex; 
     flex-wrap: wrap; 
@@ -638,7 +634,7 @@ main {
 .quem_somos,
 .objetivo {
     flex: 1 0 25%;
-    margin: 20px 80px 20px 80px; 
+    margin: 0px 80px 50px 80px; 
     border-radius: 10px;
 }
 
