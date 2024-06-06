@@ -701,3 +701,23 @@ h1 {
     text-align: center; /* Alinha o texto ao centro */
     width: 100%; /* Define a largura do contêiner para ocupar toda a largura disponível */
 }
+
+/* Estilos gerais para o container do formulário */
+.form-container {
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #898989;
+}
+
+/* Estilos para o título */
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
