@@ -15,7 +15,7 @@
         top: 50%; /* Center the map vertically */
         left: 50%; /* Center the map horizontally */
         transform: translate(-50%, -50%); /* Apply the centering */
-        border: 12px solid #FFDC00; /* Add a yellow border */
+        border: 3px solid #FFDC00; /* Add a yellow border */
         border-radius: 10px; /* Round the corners */
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
     }
