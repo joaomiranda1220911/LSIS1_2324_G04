@@ -13,8 +13,10 @@ header {
     color: black;
     padding: 10px 20px;
     width: 100%;
-    max-width: 100vw; /* Define a largura máxima igual à largura da tela */
-    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
+    max-width: 100vw;
+    /* Define a largura máxima igual à largura da tela */
+    box-sizing: border-box;
+    /* Garante que o padding e a borda estejam incluídos na largura total */
 }
 
 .nav {
@@ -42,7 +44,7 @@ header {
     display: flex;
     align-items: center;
     border-color: 1px #898989 solid;
-    margin-left: auto; 
+    margin-left: auto;
 }
 
 .search-bar input[type="text"] {
@@ -153,8 +155,10 @@ main {
     color: black;
     padding: 10px 20px;
     width: 100%;
-    max-width: 100vw; /* Define a largura máxima igual à largura da tela */
-    box-sizing: border-box; /* Garante que o padding e a borda estejam incluídos na largura total */
+    max-width: 100vw;
+    /* Define a largura máxima igual à largura da tela */
+    box-sizing: border-box;
+    /* Garante que o padding e a borda estejam incluídos na largura total */
 }
 
 .footer-left {
@@ -260,7 +264,7 @@ main {
     cursor: pointer;
 }
 
-.dropdown a{
+.dropdown a {
     display: block;
     color: black;
     text-decoration: none;
@@ -301,7 +305,7 @@ main {
 }
 
 .login-container,
-.register-container{
+.register-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -379,12 +383,13 @@ select {
     background-position: right 10px center;
     background-size: 16px 16px;
 }
+
 select:disabled {
     color: #a2a2a2;
 }
 
 select option:checked {
-    color: black; 
+    color: black;
 }
 
 .input-container select:focus,
@@ -420,7 +425,7 @@ select option:checked {
     margin-top: 10px;
 }
 
-.login-box button{
+.login-box button {
     margin-left: 100px;
 }
 
@@ -487,26 +492,26 @@ form input[type="text"]::placeholder {
 
 
 .custom-button button {
-    padding: 15px 30px; 
+    padding: 15px 30px;
     background-color: #FFDC00;
     color: #000000;
     border: none;
-    border-radius: 20px; 
+    border-radius: 20px;
     cursor: pointer;
     width: auto;
     transition: background-color 0.3s;
-    font-size: 14px; 
-    text-align: center; 
-    margin: 10px 20px 10px 10px; 
+    font-size: 14px;
+    text-align: center;
+    margin: 10px 20px 10px 10px;
 }
 
 .button-container {
     display: flex;
-    justify-content: flex-end; 
+    justify-content: flex-end;
 }
 
 .custom-button {
-    margin-left: 10px; 
+    margin-left: 10px;
 }
 
 .custom-button button:hover {
@@ -532,15 +537,19 @@ form input[type="text"]::placeholder {
 }
 
 .menu {
-    width: 300px; /* Alargar o menu */
-    background-color: rgba(51, 51, 51, 0.8); /* Cor de fundo do menu com transparência */
-    color: #fff; 
-    height: 400px; /* Diminuir a altura do menu */
+    width: 300px;
+    /* Alargar o menu */
+    background-color: rgba(51, 51, 51, 0.8);
+    /* Cor de fundo do menu com transparência */
+    color: #fff;
+    height: 400px;
+    /* Diminuir a altura do menu */
     padding: 20px;
     box-sizing: border-box;
     position: absolute;
     top: 0;
-    left: -15px; /* Ajustar para alargar o menu para a esquerda */
+    left: -15px;
+    /* Ajustar para alargar o menu para a esquerda */
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.5s;
@@ -612,8 +621,8 @@ main {
 }
 
 .fotos_equipa {
-    display: flex; 
-    flex-wrap: wrap; 
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin: 10px 60px 0 60px;
 }
@@ -621,15 +630,15 @@ main {
 .fotos_equipa img {
     width: 200px;
     height: 200px;
-    border-radius: 10px; 
+    border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
     margin-top: 20px;
 }
 
 .quemsomos_objetivo {
-    display: flex; 
+    display: flex;
     flex-wrap: wrap;
-    
+
 }
 
 .quemsomos_objetivo p {
@@ -642,7 +651,7 @@ main {
 .quem_somos,
 .objetivo {
     flex: 1 0 25%;
-    margin: 0px 80px 20px 80px; 
+    margin: 0px 80px 20px 80px;
     border-radius: 10px;
 }
 
@@ -655,31 +664,35 @@ main {
 table {
     border-collapse: collapse;
     width: 100%;
-   /* border: 1px solid #ddd; /* Borda da tabela */
+    /* border: 1px solid #ddd; /* Borda da tabela */
     background-color: #7070705d;
 }
 
 /* Estilos para as células da tabela */
-td, th {
+td,
+th {
     padding: 5px;
-    text-align: center; /* Centralizar o texto */
-    border-bottom: 1px solid #ddd; /* Borda inferior das células */
+    text-align: center;
+    /* Centralizar o texto */
+    border-bottom: 1px solid #ddd;
+    /* Borda inferior das células */
 }
 
 /* Estilos para a primeira linha com tons de amarelo */
 tr:first-child th {
-    background-color: #f6da28; 
+    background-color: #f6da28;
 }
 
 /* Estilos alternados para linhas */
 tr:nth-child(even) {
-    background-color: #79797940; /* Cor de fundo para linhas pares */
+    background-color: #79797940;
+    /* Cor de fundo para linhas pares */
 }
 
 .pagination {
     margin-top: 20px;
     text-align: center;
-        margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .pagination a {
@@ -702,8 +715,10 @@ tr:nth-child(even) {
 }
 
 h1 {
-    text-align: center; /* Alinha o texto ao centro */
-    width: 100%; /* Define a largura do contêiner para ocupar toda a largura disponível */
+    text-align: center;
+    /* Alinha o texto ao centro */
+    width: 100%;
+    /* Define a largura do contêiner para ocupar toda a largura disponível */
 }
 
 /* Estilos gerais para o container do formulário */
@@ -724,4 +739,64 @@ h1 {
     margin-bottom: 20px;
     color: #333;
     font-size: 24px;
+}
+
+
+/*Formulario*/
+.form-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container select,
+.form-container textarea {
+    width: calc(100% - 20px);
+    /* Ajusta a largura dos inputs */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-container select {
+    width: 100%;
+}
+
+.form-container textarea {
+    height: 100px;
+    /* Define a altura do textarea */
+}
+
+.form-container input[type="file"] {
+    width: calc(100% - 20px);
+    /* Ajusta a largura do input de arquivo */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-container input[type="file"]:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.form-container .submit-button {
+    display: block;
+    margin: 0 auto;
+    /* Centraliza o botão */
+    background-color: #FFDC00;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.form-container .submit-button:hover {
+    background-color: #333;
+    color: #FFDC00;
 }
