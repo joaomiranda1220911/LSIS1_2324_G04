@@ -219,7 +219,7 @@ main {
 
 .eredes_btn:hover,
 .nav-buttons button:hover {
-    background-color: black;
+    background-color: #333;
     color: #FFDC00;
 }
 
@@ -273,7 +273,8 @@ main {
 }
 
 .dropdown a:hover {
-    background-color: rgb(255, 255, 255);
+    background-color: #333;
+    color: #FFDC00;
     transition: .5s;
 }
 
@@ -348,7 +349,9 @@ main {
     width: 1px;
     height: 60%;
     background-color: gray;
-    margin: 0 70px 0 70px;
+    margin: 0 70px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .login-box input[type="email"],
@@ -360,10 +363,10 @@ main {
 .form-row input[type="text"],
 .form-row input[type="email"],
 .form-row input[type="password"] {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid gray;
+    border: 1px solid #ccc;
     border-radius: 3px;
     box-sizing: border-box;
 }
@@ -375,20 +378,25 @@ main {
     width: 200px;
 }
 
-select {
+.input-container select {
     display: block;
     appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="%23666" d="M6.516 7.548c0.436-0.446 1.043-0.481 1.576 0l2.411 2.317 2.362-2.317c0.533-0.481 1.141-0.446 1.576 0 0.436 0.445 0.408 1.197 0 1.615l-3.038 2.974c-0.408 0.418-1.141 0.418-1.549 0l-3.038-2.974c-0.408-0.418-0.436-1.17 0-1.615z"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 16px 16px;
-}
-
-select:disabled {
     color: #a2a2a2;
 }
 
-select option:checked {
+.input-container select:disabled {
+    color: #a2a2a2;
+}
+
+.input-container select option:checked {
+    color: black;
+}
+
+.input-container select.valid {
     color: black;
 }
 
@@ -397,7 +405,7 @@ select option:checked {
 .input-container input[type="email"]:focus,
 .input-container input[type="password"]:focus {
     outline: none;
-    border: 1px solid #555;
+    border: 1px solid #a2a2a2;
 }
 
 .input-container {
@@ -408,7 +416,8 @@ select option:checked {
 }
 
 .input-container button:hover {
-    background-color: rgb(119, 119, 119);
+    background-color: #333;
+    color: #FFDC00;
 }
 
 .login-box button,
@@ -445,7 +454,8 @@ select option:checked {
 .login-registar button:hover,
 .register-box button:hover,
 .register-container button:hover {
-    background-color: rgb(119, 119, 119);
+    background-color: #333;
+    color: #FFDC00;
 }
 
 .login-container p {
@@ -467,8 +477,11 @@ select option:checked {
     transition: background-color 0.3s ease;
 }
 
-form input[type="text"]::placeholder {
-    color: rgb(187, 187, 187);
+form input[type="text"]::placeholder,
+form input[type="email"]::placeholder,
+form input[type="password"]::placeholder,
+.select {
+    color: #a3a3a3;
 }
 
 .login-box h2 {
@@ -515,7 +528,8 @@ form input[type="text"]::placeholder {
 }
 
 .custom-button button:hover {
-    background-color: #dec000;
+    background-color: #333;
+    color: #FFDC00;
 }
 
 .topo {
@@ -606,7 +620,8 @@ main {
 }
 
 .form-row button:hover {
-    background-color: #a2a2a2;
+    background-color: #333;
+    color: #FFDC00;
 }
 
 .form-row span {
@@ -752,8 +767,8 @@ h1 {
 .form-container input[type="number"],
 .form-container select,
 .form-container textarea {
-    width: calc(100% - 20px);
     /* Ajusta a largura dos inputs */
+    width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -766,6 +781,7 @@ h1 {
 
 .form-container textarea {
     height: 100px;
+    width: calc(100% - 20px)
     /* Define a altura do textarea */
 }
 

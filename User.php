@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -51,7 +51,7 @@
                 $row = mysqli_fetch_assoc($result);
                 $nome_utilizador = $row['nome'];
             }
-        }else{
+        } else {
             $nome_utilizador = "Visitante";
         }
         ?>
@@ -76,7 +76,7 @@
 
     <?php
     session_start();
-    include ("ImportSQL.php"); 
+    include("ImportSQL.php");
 
     if (!isset($_SESSION['email'])) {
         header("Location: login.php");
@@ -103,7 +103,7 @@
                 echo "<script>alert('Nome atualizado com sucesso');</script>";
                 $user['nome'] = $newName; // Atualiza o nome na variável $user
             } else {
-                echo "<script>alert('Erro ao atualizar o nome: ' '". mysqli_error($mysqli). "')</script>";
+                echo "<script>alert('Erro ao atualizar o nome: ' '" . mysqli_error($mysqli) . "')</script>";
             }
         }
 
@@ -116,7 +116,7 @@
                 $_SESSION['email'] = $newEmail; // Atualiza o email na sessão
                 $user['email'] = $newEmail; // Atualiza o email na variável $user
             } else {
-                echo "<script>alert('Erro ao atualizar o email: ' '". mysqli_error($mysqli). "')</script>";
+                echo "<script>alert('Erro ao atualizar o email: ' '" . mysqli_error($mysqli) . "')</script>";
             }
         }
 
@@ -129,7 +129,7 @@
                 if ($mysqli->query($sql) === TRUE) {
                     echo "<script>alert('Senha atualizada com sucesso');</script>";
                 } else {
-                    echo "<script>alert('Erro ao atualizar a password: ' '". mysqli_error($mysqli). "')</script>";
+                    echo "<script>alert('Erro ao atualizar a password: ' '" . mysqli_error($mysqli) . "')</script>";
                 }
             } else {
                 echo "<script>alert('As passwords não coincidem')</script>";
@@ -144,15 +144,17 @@
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
             <div class="form-row">
                 <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" placeholder="Nome">
-                <span>Atual: <?php echo htmlspecialchars($user['nome']); ?></span>
-                <button type="submit" name="submitName">Alterar Nome</button>
+                <input type="text" id="name" name="name" placeholder="Atual: <?php echo htmlspecialchars($user['nome']); ?>">
+                <div class="atual_alterar">
+                    <button type="submit" name="submitName">Alterar Nome</button>
+                </div>
             </div>
             <div class="form-row">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Email">
-                <span>Atual: <?php echo htmlspecialchars($user['email']); ?></span>
-                <button type="submit" name="submitEmail">Alterar Email</button>
+                <input type="email" id="email" name="email" placeholder="Atual: <?php echo htmlspecialchars($user['email']); ?>">
+                <div class="atual_alterar">
+                    <button type="submit" name="submitEmail">Alterar Email</button>
+                </div>
             </div>
 
             <div class="form-row">
@@ -162,7 +164,7 @@
             <div class="form-row">
                 <label for="confirm_password">Confirmar Nova Password:</label>
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar a Nova Password">
-                <button type="submit" name="submitPassword">Alterar Password</button>
+                <button type="submit" name="submitPassword" style="margin-right: auto;">Alterar Password</button>
             </div>
         </form>
     </div>
