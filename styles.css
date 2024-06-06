@@ -629,12 +629,20 @@ main {
 .quemsomos_objetivo {
     display: flex; 
     flex-wrap: wrap;
+    
+}
+
+.quemsomos_objetivo p {
+    text-align: justify;
+    font-size: 16px;
+    line-height: 1.6;
+    color: black;
 }
 
 .quem_somos,
 .objetivo {
     flex: 1 0 25%;
-    margin: 0px 80px 50px 80px; 
+    margin: 0px 80px 20px 80px; 
     border-radius: 10px;
 }
 
