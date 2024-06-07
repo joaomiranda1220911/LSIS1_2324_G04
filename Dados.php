@@ -46,6 +46,10 @@ function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
             $row = mysqli_fetch_assoc($result);
             $url = $row['linkAPI'];
 
+            // Substituir os placeholders pelo offset e limit
+            $url = str_replace('{$limit}', $limit, $url);
+            $url = str_replace('{$offset}', $offset, $url);
+
             // Iniciar uma requisição cURL
             $ch = curl_init();
             if (!$ch) {
