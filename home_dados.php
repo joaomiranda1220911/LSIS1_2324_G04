@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -28,7 +28,7 @@
 
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
+        include ("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -38,21 +38,30 @@
         // Definir um nome padrão
         $nome_utilizador = "Utilizador";
 
+        // Definir uma variável de permissão de usuário padrão
+        $permissao_utilizador = "Visitante";
+
         // Verificar se o usuário está logado
         if (isset($_SESSION['email'])) {
             $email = $_SESSION['email'];
 
-            // Query para selecionar o nome do usuário
-            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
+            // Query para selecionar o nome e permissão do usuário
+            $sql = "SELECT nome, permissao FROM utilizador WHERE email = '$email'";
             $result = mysqli_query($mysqli, $sql);
 
             if ($result) {
                 $row = mysqli_fetch_assoc($result);
                 $nome_utilizador = $row['nome'];
+                $permissao_utilizador = $row['permissao'];
+            } else {
+                echo "Erro na consulta SQL: " . mysqli_error($mysqli);
             }
         } else {
             $nome_utilizador = "Visitante";
         }
+
+        // Exibir variáveis de depuração
+        echo "<!-- Debug Info: email = $email, nome_utilizador = $nome_utilizador, permissao_utilizador = $permissao_utilizador -->";
         ?>
 
         <div class="dropdown">
@@ -99,14 +108,21 @@
                 <div class="button-container">
                     <div class="custom-button">
                         <button onclick="window.location.href='Import.php'">Pesquisar</button>
-                        /** botao ainda nao esta operacional */
+                        <!-- botao ainda nao esta operacional -->
                     </div>
                 </div>
             </div>
         </div>
         <div class="button-container">
             <div class="custom-button">
-                <button onclick="window.location.href='formImport.php'">Importar Dados</button>
+                <?php
+                // Verificar se o usuário tem permissão para acessar a página de importação
+                if ($permissao_utilizador == 'Admin' || $permissao_utilizador == 'Colaborador E-Redes') {
+                    echo '<button onclick="window.location.href=\'formImport.php\'">Importar Dados</button>';
+                } else {
+                    echo '<button onclick="alert(\'Você não tem permissão para acessar esta página.\')">Importar Dados</button>';
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -114,7 +130,7 @@
     <main>
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
+        include ("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -123,7 +139,7 @@
         // Consulta SQL para buscar os dados
         $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao, linkAPI FROM dataset";
         $result = mysqli_query($mysqli, $sql);
-    
+
         if ($result) {
             // Exibir os dados encontrados
             while ($row = mysqli_fetch_assoc($result)) {
@@ -141,21 +157,22 @@
         } else {
             echo "Erro na consulta: " . mysqli_error($mysqli);
         }
-    ?>
+        ?>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
+                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
+                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
             </div>
         </div>
     </footer>
-
 
     <script src="script.js"></script>
 </body>
