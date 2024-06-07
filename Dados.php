@@ -16,7 +16,11 @@ if ($result) {
     // Verificar se existe alguma tabela na base de dados
     if (!empty($nomeDataset)) {
         // Obter o nome da primeira tabela no array
-        $nomeTabelaAtual = htmlspecialchars($nomeDataset[0]);
+
+
+        $nomeTabelaAtual = htmlspecialchars($nomeDataset[0]); // ERRO NESTA LINHA QUALQUER DATASET QUE SE CLIQUE NA HOME_DADOS.PHP ABRE O DATASET DA POSICAO ENTRE [] !!!
+        
+        
         // Definir o título da página com base no nome da tabela atual
         $tituloPagina = "Dados - " . $nomeTabelaAtual;
     } else {
@@ -128,7 +132,7 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 
 <body>
-    <header>
+<header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -144,10 +148,40 @@ if (session_status() == PHP_SESSION_NONE) {
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
+
+        <?php
+        // Incluir o arquivo de configuração da conexão com o banco de dados
+        include("ImportSQL.php");
+
+        // Verificar se a sessão já está ativa
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Definir um nome padrão
+        $nome_utilizador = "Utilizador";
+
+        // Verificar se o usuário está logado
+        if (isset($_SESSION['email'])) {
+            $email = $_SESSION['email'];
+
+            // Query para selecionar o nome do usuário
+            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
+            $result = mysqli_query($mysqli, $sql);
+
+            if ($result) {
+                $row = mysqli_fetch_assoc($result);
+                $nome_utilizador = $row['nome'];
+            }
+        } else {
+            $nome_utilizador = "Visitante";
+        }
+        ?>
+
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
-                <span>Name</span>
+                <span><?php echo $nome_utilizador; ?></span>
             </button>
             <div class="dropdown-content">
                 <a href="Login.php">Login</a>
@@ -250,7 +284,6 @@ if (session_status() == PHP_SESSION_NONE) {
                     $rowcount = mysqli_num_rows($res);
                     if ($rowcount == 0) {
                         $insertSQL = "INSERT INTO `{$tituloPagina}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
-                        echo $insertSQL . "<br>";
                         if (!mysqli_query($mysqli, $insertSQL)) {
                             echo "Erro ao inserir dados: " . mysqli_error($mysqli);
                         }
