@@ -744,7 +744,7 @@ h1 {
     width: 400px;
     margin: 0 auto;
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
