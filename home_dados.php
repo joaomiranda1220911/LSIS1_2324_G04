@@ -28,7 +28,7 @@
 
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include ("ImportSQL.php");
+        include("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -80,8 +80,8 @@
 
     <div class="topo">
         <div class="menu-container">
-            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon">
-            <div class="menu">
+            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
+            <div class="menu" id="menu">
                 <h2>Filtros</h2>
                 <ul>
                     <li>
@@ -130,7 +130,7 @@
     <main>
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include ("ImportSQL.php");
+        include("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -163,10 +163,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
-                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
-                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
@@ -175,6 +173,12 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("visible");
+        }
+    </script>
 </body>
 
 </html>

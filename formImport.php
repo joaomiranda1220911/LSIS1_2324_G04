@@ -7,13 +7,6 @@
     <title>Página Inicial</title>
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
-
-    <style>
-        .footer-content {
-            position: fixed;
-            bottom: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -36,7 +29,7 @@
 
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include ("ImportSQL.php");
+        include("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -108,8 +101,7 @@
             <input type="number" id="numero_linhas" name="numero_linhas" required>
 
             <label for="upload_ficheiro">Upload de Ficheiro:</label>
-            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls"
-                required>
+            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls" required>
 
             <input type="submit" value="Importar Dados" class="submit-button">
         </form>
@@ -118,10 +110,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
-                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
-                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>

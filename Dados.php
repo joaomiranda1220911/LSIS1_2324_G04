@@ -19,8 +19,8 @@ if ($result) {
 
 
         $nomeTabelaAtual = htmlspecialchars($nomeDataset[0]); // ERRO NESTA LINHA QUALQUER DATASET QUE SE CLIQUE NA HOME_DADOS.PHP ABRE O DATASET DA POSICAO ENTRE [] !!!
-        
-        
+
+
         // Definir o título da página com base no nome da tabela atual
         $tituloPagina = "Dados - " . $nomeTabelaAtual;
     } else {
@@ -132,7 +132,7 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 
 <body>
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -194,8 +194,8 @@ if (session_status() == PHP_SESSION_NONE) {
 
     <div class="topo">
         <div class="menu-container">
-            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon">
-            <div class="menu">
+            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
+            <div class="menu" id="menu">
                 <h2>Filtros</h2>
                 <ul>
                     <li>
@@ -399,6 +399,14 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("visible");
+        }
+    </script>
+
 </body>
 
 </html>

@@ -551,28 +551,31 @@ form input[type="password"]::placeholder,
 }
 
 .menu {
-    width: 300px;
-    /* Alargar o menu */
-    background-color: rgba(51, 51, 51, 0.8);
-    /* Cor de fundo do menu com transparência */
-    color: #fff;
-    height: 400px;
-    /* Diminuir a altura do menu */
-    padding: 20px;
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: -15px;
-    /* Ajustar para alargar o menu para a esquerda */
+    /* Your existing menu styles */
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.5s;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Disable mouse events */
+    position: absolute;
+    z-index: -1;
+    /* Initially behind other content */
+    background-color: #333;
+    border-radius: 20px;
+    color: white;
+    padding: 20px 20px 20px 20px;
+    box-shadow: rgba(0, 0, 0, 0.782);
 }
 
-.menu-container:hover .menu {
+.menu.visible {
     visibility: visible;
-    opacity: 0.9;
+    opacity: 1;
+    pointer-events: auto;
+    /* Enable mouse events */
+    z-index: 1000;
+    /* Bring the menu to the front */
 }
+
 
 .menu h2 {
     margin-top: 0;
@@ -782,7 +785,7 @@ h1 {
 .form-container textarea {
     height: 100px;
     width: calc(100% - 20px)
-    /* Define a altura do textarea */
+        /* Define a altura do textarea */
 }
 
 .form-container input[type="file"] {
