@@ -26,27 +26,16 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
-
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
-
-        // Verificar se a sessão já está ativa
+        include ("ImportSQL.php");
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-
-        // Definir um nome padrão
         $nome_utilizador = "Utilizador";
-
-        // Verificar se o usuário está logado
         if (isset($_SESSION['email'])) {
             $email = $_SESSION['email'];
-
-            // Query para selecionar o nome do usuário
             $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
             $result = mysqli_query($mysqli, $sql);
-
             if ($result) {
                 $row = mysqli_fetch_assoc($result);
                 $nome_utilizador = $row['nome'];
@@ -55,7 +44,6 @@
             $nome_utilizador = "Visitante";
         }
         ?>
-
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
@@ -69,15 +57,11 @@
             </div>
         </div>
     </header>
-
     <div class="form-container">
         <h2>Importar Dados</h2>
-
-        <form method="POST" enctype="multipart/form-data">
-
+        <form method="POST" enctype="multipart/form-data" action="process_form.php">
             <label for="nome_tabela">Nome da Tabela:</label>
             <input type="text" id="nome_tabela" name="nome_tabela" required>
-
             <label for="tag_tabela">Tags da Tabela:</label>
             <div id="tag_tabela" name="tag_tabela[]">
                 <input type="checkbox" id="tag1" name="tag_tabela[]" value="Operação e Qualidade de Serviço">
@@ -91,27 +75,24 @@
                 <input type="checkbox" id="tag5" name="tag_tabela[]" value="Renováveis">
                 <label for="tag5">Renováveis</label>
             </div>
-
             <div id="uploadFieldContainer"></div>
-
             <label for="informacao_tabela">Informação da Tabela:</label>
             <textarea id="informacao_tabela" name="informacao_tabela" rows="4" cols="50" required></textarea>
-
             <label for="numero_linhas">Número de Linhas:</label>
             <input type="number" id="numero_linhas" name="numero_linhas" required>
-
             <label for="upload_ficheiro">Upload de Ficheiro:</label>
-            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls" required>
-
+            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls"
+                required>
             <input type="submit" value="Importar Dados" class="submit-button">
         </form>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
+                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
+                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
