@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Instalações Solares</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <link rel="stylesheet" href="styles.css">
     <style>
         #map {
             height: 600px;
             width: 700px;
             position: absolute;
-            top: 50%;
+            top: 52%;
             left: 50%;
             transform: translate(-50%, -50%);
             border: 3px solid #FFDC00;
@@ -23,6 +25,24 @@
         .footer-content {
             position: fixed;
             bottom: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .titulo_mapa {
+            flex: 1;
+            margin-right: 20px; /* Espaçamento entre o título e o mapa */
+            margin-top: 3px;
+        }
+
+        .titulo_mapa h1 {
+            margin: 0; /* Remover margem padrão do título */
+        }
+
+        .menu-container{
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -57,8 +77,35 @@
             </div>
         </div>
     </header>
+    <div class="container">
+        <div class="titulo_mapa">
+            <h1>Postos de Transformação Distribuição (PTD)</h1>
+        </div>
+        <div id="map"></div>
+    </div>
 
-    <div id="map"></div>
+    <div class="menu-container">
+            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
+            <div class="menu" id="menu">
+                <h2>Filtros</h2>
+                <ul>
+                    <li>
+                        <input type="checkbox" id="Nível de Utilização">
+                        <label for="CNível de Utilização">Nível de Utilização</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Potência instalada">
+                        <label for="Potência instalada">Potência instalada</label>
+                    </li>
+                </ul>
+                <div class="button-container">
+                    <div class="custom-button">
+                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                        <!-- botao ainda nao esta operacional -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <footer>
         <div class="footer-content">
@@ -74,6 +121,7 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script>
         // Inicializa o mapa
         const map = L.map('map').setView([41.17820882715362, -8.608457297299513], 12); // Coordenadas centrais de Portugal
@@ -83,48 +131,51 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Função para carregar os marcadores do dataset
-        function carregarMarcadores(offset) {
-            // Chama a função fetchData para obter os dados da API com base no offset
-            fetch(`get_data.php?offset=${offset}&limit=100&nomeTabela=postos-transformacao-distribuicao`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.error('Erro:', data.error);
-                        return;
-                    }
+        // Cria um novo grupo de clusters
+        const clusters = L.markerClusterGroup();
 
-                    console.log('Dados recebidos:', data);
+        // Adiciona o grupo de clusters ao mapa
+        map.addLayer(clusters);
 
-                    // Adiciona os marcadores ao mapa
-                    data.records.forEach(record => {
-                        if (record.geometry && record.geometry.coordinates) {
-                            const latitude = record.geometry.coordinates[1];
-                            const longitude = record.geometry.coordinates[0];
-                            const nome = record.fields.nome || "Sem Nome";
-                            const descricao = record.fields.descricao || "Sem Descrição";
+        // Função para carregar os marcadores do ficheiro CSV
+        function carregarMarcadores() {
+            Papa.parse("postos-transformacao-distribuicao.csv", {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    console.log('Dados recebidos:', results.data);
 
-                            console.log(`Adicionando marcador: ${nome} (${latitude}, ${longitude})`);
+                    // Adiciona os marcadores ao grupo de clusters
+                    results.data.forEach(record => {
+                        if (record["Coordenadas Geográficas"]) {
+                            const [latitude, longitude] = record["Coordenadas Geográficas"].split(',').map(coord => parseFloat(coord.trim()));
+                            const nivelUtilizacao = record["Nível de Utilização [%]"] || "Sem Informação";
+                            const potenciaInstalada = record["Potência instalada [kVA]"] || "Sem Informação";
 
-                            L.marker([latitude, longitude])
-                                .bindPopup(`<b>${nome}</b><br>${descricao}`)
-                                .addTo(map);
+                            console.log(`Adicionando marcador: ${nivelUtilizacao}, ${potenciaInstalada} (${latitude}, ${longitude})`);
+
+                            const marcador = L.marker([latitude, longitude])
+                                .bindPopup(`<b>Nível de Utilização:</b> ${nivelUtilizacao}<br><b>Potência instalada:</b> ${potenciaInstalada} kVA`);
+
+                            clusters.addLayer(marcador); // Adiciona o marcador ao grupo de clusters
                         } else {
                             console.warn('Registro sem coordenadas:', record);
                         }
                     });
-                })
-                .catch(error => console.error('Erro ao carregar marcadores:', error));
+                },
+                error: function(error) {
+                    console.error('Erro ao carregar marcadores:', error);
+                }
+            });
         }
 
         // Carrega os marcadores ao carregar a página
-        carregarMarcadores(0);
-
-        // Função para carregar mais marcadores incrementando o offset
-        function carregarMaisMarcadores() {
-            // Incrementa o offset para carregar mais registros
-            const offset = 100; // Ajustar conforme necessário
-            carregarMarcadores(offset);
+        carregarMarcadores();
+    </script>
+        <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("visible");
         }
     </script>
 </body>
