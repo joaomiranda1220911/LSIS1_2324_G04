@@ -142,22 +142,27 @@
 
         if ($result) {
             // Exibir os dados encontrados
+            echo "<div class='lista-datasets'>";
+
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<section class='dataset-details'>";
                 // Adicionando parâmetros de nome e linkAPI à URL do link
-                echo "<a href='dados.php?nomeTabela=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2>" . htmlspecialchars($row["nomeTabela"]) . "</h2></a>";
+                echo "<a href='dados.php?nomeTabela=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2 class='titulo'>" . htmlspecialchars($row["nomeTabela"]) . "</h2></a>";
                 echo "<div class='dataset-info'>";
-                echo "<p><strong>Tags:</strong> " . $row["tags"] . "</p>";
-                echo "<p><strong>Tipo de Importação:</strong> " . $row["tipoImportacao"] . "</p>";
-                echo "<p><strong>Número de Dados:</strong> " . $row["numeroLinhas"] . "</p>";
-                echo "<p><strong>Informação sobre os dados:</strong> " . $row["informacao"] . "</p>";
+                echo "<p><strong>Tags:</strong> " . htmlspecialchars($row["tags"]) . "</p>";
+                echo "<p><strong>Tipo de Importação:</strong> " . htmlspecialchars($row["tipoImportacao"]) . "</p>";
+                echo "<p><strong>Número de Dados:</strong> " . htmlspecialchars($row["numeroLinhas"]) . "</p>";
+                echo "<p><strong>Informação sobre os dados:</strong> " . htmlspecialchars($row["informacao"]) . "</p>";
                 echo "</div>";
                 echo "</section>";
             }
+
+            echo "</div>"; // Fechar a div lista-datasets após o loop
         } else {
             echo "Erro na consulta: " . mysqli_error($mysqli);
         }
         ?>
+
     </main>
 
     <footer>

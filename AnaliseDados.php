@@ -101,7 +101,7 @@
             if (!empty($coluna1) && !empty($coluna2)) {
                 $nomeTabelaAtual = "`" . str_replace("`", "``", $nomeTabelaAtual) . "`";
                 $sql = "SELECT $coluna1, $coluna2 FROM $nomeTabelaAtual";
-                echo "Consulta SQL: $sql"; // Adicionado para depuração
+                
                 $result = mysqli_query($mysqli, $sql);
 
                 if ($result) {

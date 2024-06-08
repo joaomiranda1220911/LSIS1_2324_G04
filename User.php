@@ -75,7 +75,7 @@
     </nav>
 
     <?php
-    session_start();
+    //session_start();
     include("ImportSQL.php");
 
     if (!isset($_SESSION['email'])) {

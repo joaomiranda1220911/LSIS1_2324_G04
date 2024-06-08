@@ -118,6 +118,30 @@ main {
     border-radius: 10px;
 }
 
+.lista-datasets {
+    list-style-type: none; /* Remove as marcas de lista */
+    padding: 0; /* Remove o preenchimento */
+    margin: 0; /* Remove a margem */
+}
+
+.lista-datasets li {
+    margin-bottom: 10px; /* Espaço entre itens da lista */
+}
+
+.lista-datasets a {
+    color: #000000; /* Cor do texto */
+    font-size: 20px; /* Tamanho da fonte */
+    text-decoration: none; /* Sem sublinhado */
+    transition: color 0.3s; /* Transição suave na mudança de cor */
+}
+
+.lista-datasets a:hover {
+    color: #d93025; /* Cor do texto ao passar o rato */
+    text-decoration: underline; /* Sublinhado ao passar o rato */
+}
+
+ 
+
 .dashboards {
     display: flex;
     justify-content: space-around;
@@ -821,8 +845,9 @@ h1 {
 }
 
 #graficoProcessosConcluidos {
-    max-width: 500px;
-    max-height: 500px; 
+    height: auto; 
     align-items: center;
     align-self: center;
 }
+
+
