@@ -28,7 +28,6 @@
 </head>
 
 <body>
-
     <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
@@ -45,36 +44,6 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
-
-        <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
-
-        // Verificar se a sessão já está ativa
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Definir um nome padrão
-        $nome_utilizador = "Utilizador";
-
-        // Verificar se o usuário está logado
-        if (isset($_SESSION['email'])) {
-            $email = $_SESSION['email'];
-
-            // Query para selecionar o nome do usuário
-            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
-            $result = mysqli_query($mysqli, $sql);
-
-            if ($result) {
-                $row = mysqli_fetch_assoc($result);
-                $nome_utilizador = $row['nome'];
-            }
-        }else{
-            $nome_utilizador = "Visitante";
-        }
-        ?>
-
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
@@ -114,57 +83,49 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Objeto para armazenar as coordenadas dos concelhos
-        const concelhosCoords = {};
+        // Função para carregar os marcadores do dataset
+        function carregarMarcadores(offset) {
+            // Chama a função fetchData para obter os dados da API com base no offset
+            fetch(`get_data.php?offset=${offset}&limit=100&nomeTabela=postos-transformacao-distribuicao`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Erro:', data.error);
+                        return;
+                    }
 
-        // Função para carregar as coordenadas dos concelhos de Portugal
-        async function loadConcelhosCoords() {
-            const response = await fetch('concelhos.csv');
-            const data = await response.text();
-            Papa.parse(data, {
-                header: true,
-                complete: function(results) {
-                    results.data.forEach(row => {
-                        concelhosCoords[row.Concelho] = {
-                            latitude: parseFloat(row.Latitude),
-                            longitude: parseFloat(row.Longitude)
-                        };
-                    });
-                }
-            });
-        }
+                    console.log('Dados recebidos:', data);
 
-        // Função para adicionar marcadores ao mapa
-        async function addMarkers() {
-            await loadConcelhosCoords();
+                    // Adiciona os marcadores ao mapa
+                    data.records.forEach(record => {
+                        if (record.geometry && record.geometry.coordinates) {
+                            const latitude = record.geometry.coordinates[1];
+                            const longitude = record.geometry.coordinates[0];
+                            const nome = record.fields.nome || "Sem Nome";
+                            const descricao = record.fields.descricao || "Sem Descrição";
 
-            // Processa o ficheiro CSV com os dados das instalações solares
-            Papa.parse('concelhos.csv', {
-                header: true,
-                delimiter: ';',
-                complete: function(results) {
-                    const data = results.data;
+                            console.log(`Adicionando marcador: ${nome} (${latitude}, ${longitude})`);
 
-                    // Processa cada linha do CSV
-                    data.forEach(row => {
-                        const concelho = row.Concelho;
-                        const numeroPaineis = parseInt(row['Número de instalacões']);
-
-                        // Verifica se há coordenadas para o concelho
-                        if (concelhosCoords[concelho]) {
-                            const coords = concelhosCoords[concelho];
-
-                            // Adiciona marcador ao mapa
-                            L.marker([coords.latitude, coords.longitude]).addTo(map)
-                                .bindPopup(`${concelho}: ${numeroPaineis} painéis solares`);
+                            L.marker([latitude, longitude])
+                                .bindPopup(`<b>${nome}</b><br>${descricao}`)
+                                .addTo(map);
+                        } else {
+                            console.warn('Registro sem coordenadas:', record);
                         }
                     });
-                }
-            });
+                })
+                .catch(error => console.error('Erro ao carregar marcadores:', error));
         }
 
-        // Chama a função para adicionar marcadores
-        addMarkers();
+        // Carrega os marcadores ao carregar a página
+        carregarMarcadores(0);
+
+        // Função para carregar mais marcadores incrementando o offset
+        function carregarMaisMarcadores() {
+            // Incrementa o offset para carregar mais registros
+            const offset = 100; // Ajustar conforme necessário
+            carregarMarcadores(offset);
+        }
     </script>
 </body>
 

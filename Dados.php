@@ -4,6 +4,7 @@ include("ImportSQL.php");
 // Consulta SQL para buscar os nomes das tabelas
 if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     $nomeTabelaAtual = htmlspecialchars($_GET['nomeTabela']);
+    $linkAPI = htmlspecialchars($_GET['linkAPI']); // Adicionado
 
     // Definir o título da página com base no nome da tabela atual
     $tituloPagina = "Dados - " . $nomeTabelaAtual;
@@ -11,6 +12,7 @@ if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     // Redirecionar ou mostrar mensagem de erro caso os parâmetros não estejam presentes
     die('Parâmetros necessários não foram passados pela URL.');
 }
+
 // Função para obter dados da API
 function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
 {
@@ -70,23 +72,25 @@ function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
         die('Erro na consulta SQL: ' . mysqli_error($mysqli));
     }
 }
+
 // Função para exibir o menu de navegação
-function displayNavigationMenu($offset, $limit, $totalPages)
+function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
 {
     echo "<div class='pagination'>";
     // Link para a página anterior
     if ($offset > 0) {
         $prevOffset = max(0, $offset - $limit);
-        echo "<a href=\"?offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
+        echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
     }
     // Número da página atual e número total de páginas
     $currentPage = ($offset / $limit) + 1;
     echo " Página {$currentPage} de {$totalPages} ";
     // Link para a próxima página
     $nextOffset = $offset + $limit;
-    echo "<a href=\"?offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
+    echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
     echo "</div>";
 }
+
 // Verificar se a sessão já está ativa
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -282,7 +286,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 // Obtém o número total de páginas
                 $totalPages = getTotalPages($totalRecords, $limit);
                 // Exibe o menu de navegação com o número total de páginas
-                displayNavigationMenu($offset, $limit, $totalPages);
+                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI); // Adicionado os parâmetros
             } else {
                 // Caso não haja registros ou erro na resposta
                 if (empty($data['results'])) {
@@ -318,7 +322,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo "</tbody>";
                 echo "</table>";
                 // Exibir o menu de navegação
-                displayNavigationMenu($offset, $limit, $totalPages);
+                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI); // Adicionado os parâmetros
             } else {
                 // Caso não haja registros ou erro na resposta
                 if (empty($data['results'])) {
