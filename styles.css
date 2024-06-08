@@ -821,8 +821,8 @@ h1 {
 }
 
 #graficoProcessosConcluidos {
-    max-width: 400px; /* Defina a largura máxima desejada */
-    max-height: 300px; /* Defina a altura máxima desejada */
-    width: 100%; /* Garante que o gráfico se ajuste ao contêiner */
-    height: auto; 
+    max-width: 500px;
+    max-height: 500px; 
+    align-items: center;
+    align-self: center;
 }

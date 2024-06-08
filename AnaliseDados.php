@@ -80,113 +80,100 @@
         if (isset($_GET['nomeTabelaAtual'])) {
             // Receber o valor do parâmetro
             $nomeTabelaAtual = $_GET['nomeTabelaAtual'];
-            echo "Parâmetro nomeTabelaAtual: $nomeTabelaAtual"; // Depuração
-
+            echo "<h1>$nomeTabelaAtual</h1>"; // Depuração
 
             // Verificar o título da tabela e definir as colunas correspondentes
-            if ($nomeTabelaAtual == "total_de_unidades_de_produção_para_autoconsumo") {
-                // Relacionar as colunas para esta tabela
-                echo "<h1>Total de Unidades de Produção para Autoconsumo</h1>";
+            if ($nomeTabelaAtual == "Total_de_unidades_de_produção_para_autoconsumo") {
+                $titulo = "Total de Unidades de Produção para Autoconsumo";
                 $coluna1 = "numero_de_instalacoes";
                 $coluna2 = "potencia_total_instalada_upac_kw";
-            } elseif ($nomeTabelaAtual == "novas_unidades_de_produção_para_autoconsumo") {
-                // Relacionar as colunas para esta tabela
-                echo "<h1>Novas Unidades de Produção para Autoconsumo</h1>";
+            } elseif ($nomeTabelaAtual == "Novas_unidades_de_produção_para_Autoconsumo") {
+                $titulo = "Novas Unidades de Produção para Autoconsumo";
                 $coluna1 = "ano";
                 $coluna2 = "processos_concluidos";
-            } elseif ($nomeTabelaAtual == "caracterização_de_pontos_de_consumo_(cpes),_com_contratos ativos") {
-                echo "<h1>Caracterização de Pontos de Consumo (CPES) com Contratos Ativos</h1>";
-                $coluna1 = "tipo_de_instalacao";
-                $coluna2 = "cpes";
-            } else {
-                // Se o título da tabela não corresponder a nenhum dos casos anteriores
-                $titulo = "Título da Tabela Desconhecido";
-                $coluna1 = "";
-                $coluna2 = "";
+            } elseif ($nomeTabelaAtual == "Caracterização_de_Pontos_de_Consumo_(CPEs),_com_contratos_ativos") {
+                $titulo = "Caracterização de Pontos de Consumo (CPES) com Contratos Ativos";
+                $coluna1 = "cpes";
+                $coluna2 = "ano";
             }
 
-            // Consultar o banco de dados para obter os dados necessários para o gráfico
-            // Consultar o banco de dados para obter os dados necessários para o gráfico
-            $sql = "SELECT $coluna1, $coluna2 FROM $nomeTabelaAtual";
-            echo "Consulta SQL: $sql"; // Adicionado para depuração
-            $result = mysqli_query($mysqli, $sql);
+            // Verificar se as colunas estão definidas corretamente
+            if (!empty($coluna1) && !empty($coluna2)) {
+                $nomeTabelaAtual = "`" . str_replace("`", "``", $nomeTabelaAtual) . "`";
+                $sql = "SELECT $coluna1, $coluna2 FROM $nomeTabelaAtual";
+                echo "Consulta SQL: $sql"; // Adicionado para depuração
+                $result = mysqli_query($mysqli, $sql);
 
-            if ($result) {
-                // Inicializar arrays para armazenar os dados do gráfico
-                $dcoluna1 = array();
-                $dcoluna2 = array();
+                if ($result) {
+                    // Inicializar arrays para armazenar os dados do gráfico
+                    $dcoluna1 = array();
+                    $dcoluna2 = array();
 
-                // Iterar sobre os resultados da consulta e armazenar os dados nos arrays
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $dcoluna1[] = $row[$coluna1];
-                    $dcoluna2[] = $row[$coluna2];
+                    // Iterar sobre os resultados da consulta e armazenar os dados nos arrays
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $dcoluna1[] = $row[$coluna1];
+                        $dcoluna2[] = $row[$coluna2];
+                    }
+                } else {
+                    // Em caso de erro na consulta SQL
+                    echo "Erro na consulta SQL: " . mysqli_error($mysqli);
                 }
             } else {
-                // Em caso de erro na consulta SQL
-                echo "Erro na consulta SQL: " . mysqli_error($mysqli);
+                echo "Erro: colunas não foram definidas corretamente.";
             }
-        } else {
-            // Caso o parâmetro não tenha sido recebido
-            echo "Erro: parâmetro 'nomeTabelaAtual' não foi recebido na URL.";
         }
         ?>
 
+        <!-- Conteúdo principal aqui -->
+        <canvas id="graficoProcessosConcluidos"></canvas>
+    </main>
 
-
-        <main>
-            <!-- Conteúdo principal aqui -->
-            <canvas id="graficoProcessosConcluidos" width="400" height="400"></canvas>
-        </main>
-
-
-        <footer>
-            <div class="footer-content">
-                <div class="footer-left">
-                    <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                    <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
-                </div>
-                <div class="footer-right">
-                    <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
-                </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
-        </footer>
+            <div class="footer-right">
+                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
+            </div>
+        </div>
+    </footer>
 
-
-        <script>
-            // Obter referência para o elemento canvas
-            var ctx = document.getElementById('graficoProcessosConcluidos').getContext('2d');
-
-            // Definir os dados para o gráfico com base nos valores obtidos do PHP
-            var data = {
-                labels: <?php echo json_encode($dcoluna1); ?>,
-                datasets: [{
-                    label: '<?php echo $titulo; ?>',
-                    data: <?php echo json_encode($dcoluna2); ?>,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo do gráfico
-                    borderColor: 'rgba(255, 99, 132, 1)', // Cor da borda do gráfico
-                    borderWidth: 1
-                }]
-            };
-
-
-            // Configurar as opções do gráfico
-            var options = {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            };
-
-            // Criar o gráfico de linha
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: options
-            });
-        </script>
 </body>
-
 </html>
+
+<script>
+    // Obter referência para o elemento canvas
+    var ctx = document.getElementById('graficoProcessosConcluidos').getContext('2d');
+
+    // Definir os dados para o gráfico com base nos valores obtidos do PHP
+    var data = {
+        labels: <?php echo json_encode($dcoluna1); ?>,
+        datasets: [{
+            label: '<?php echo $titulo; ?>',
+            data: <?php echo json_encode($dcoluna2); ?>,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo do gráfico
+            borderColor: 'rgba(255, 99, 132, 1)', // Cor da borda do gráfico
+            borderWidth: 1
+        }]
+    };
+
+    // Configurar as opções do gráfico
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Criar o gráfico de linha
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+</script>
