@@ -192,8 +192,19 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="button-container">
             <div class="custom-button">
                 <button onclick="window.location.href='Export.php'">Exportar Dados</button>
+                <?php
+                if (isset($nomeTabelaAtual)) {
+                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                    echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+                } else {
+                    // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
+                    echo "Erro: Nome da tabela não definido";
+                }
+                ?>
             </div>
         </div>
+
+    </div>
     </div>
     <?php
     // Verificar se a variável $tituloPagina está definida

@@ -819,3 +819,10 @@ h1 {
     background-color: #333;
     color: #FFDC00;
 }
+
+#graficoProcessosConcluidos {
+    max-width: 400px; /* Defina a largura máxima desejada */
+    max-height: 300px; /* Defina a altura máxima desejada */
+    width: 100%; /* Garante que o gráfico se ajuste ao contêiner */
+    height: auto; 
+}
