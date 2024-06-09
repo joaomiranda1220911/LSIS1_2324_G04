@@ -64,6 +64,34 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
+        <?php
+        // Incluir o arquivo de configuração da conexão com o banco de dados
+        include("ImportSQL.php");
+
+        // Verificar se a sessão já está ativa
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Definir um nome padrão
+        $nome_utilizador = "Utilizador";
+
+        // Verificar se o usuário está logado
+        if (isset($_SESSION['email'])) {
+            $email = $_SESSION['email'];
+
+            // Query para selecionar o nome do usuário
+            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
+            $result = mysqli_query($mysqli, $sql);
+
+            if ($result) {
+                $row = mysqli_fetch_assoc($result);
+                $nome_utilizador = $row['nome'];
+            }
+        } else {
+            $nome_utilizador = "Visitante";
+        }
+        ?>
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
