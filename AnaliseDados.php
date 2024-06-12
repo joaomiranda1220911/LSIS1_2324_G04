@@ -8,6 +8,32 @@
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 200px); /* Altura total da viewport menos o espaço do header e footer */
+            padding: 20px;
+            background-color: #f4f4f4; 
+            box-shadow: none;
+            border: none;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 1500px;
+            height: 500px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: white;
+            margin: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -71,7 +97,7 @@
         </div>
     </header>
 
-    <main class="l">
+    <main class="dashboard">
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
         include("ImportSQL.php");
@@ -125,7 +151,9 @@
         ?>
 
         <!-- Conteúdo principal aqui -->
-        <canvas id="graficoProcessosConcluidos"></canvas>
+        <div class="chart-container">
+            <canvas id="graficoProcessosConcluidos"></canvas>
+        </div>
     </main>
 
     <footer>
@@ -155,7 +183,8 @@
             data: <?php echo json_encode($dcoluna2); ?>,
             backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo do gráfico
             borderColor: 'rgba(255, 99, 132, 1)', // Cor da borda do gráfico
-            borderWidth: 1
+            borderWidth: 1,
+            fill: true
         }]
     };
 
