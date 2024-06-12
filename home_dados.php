@@ -1,3 +1,40 @@
+<?php
+// Incluir o arquivo de configuração da conexão com o banco de dados
+include("ImportSQL.php");
+
+// Verificar se a sessão já está ativa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Definir um nome padrão
+$nome_utilizador = "Visitante";
+
+// Definir uma variável de permissão de usuário padrão
+$permissao_utilizador = "Visitante";
+
+// Verificar se o usuário está logado
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+
+    // Query para selecionar o nome e permissão do usuário
+    $sql = "SELECT nome, permissao FROM utilizador WHERE email = '$email'";
+    $result = mysqli_query($mysqli, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $nome_utilizador = $row['nome'];
+        $permissao_utilizador = $row['permissao'];
+    } else {
+        $nome_utilizador = "Visitante";
+        echo "Erro na consulta SQL: " . mysqli_error($mysqli);
+    }
+}
+
+// Fechar a conexão com o banco de dados (não é necessário neste ponto)
+//$mysqli->close();
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -26,44 +63,6 @@
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
 
-        <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
-
-        // Verificar se a sessão já está ativa
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // Definir um nome padrão
-        $nome_utilizador = "Utilizador";
-
-        // Definir uma variável de permissão de usuário padrão
-        $permissao_utilizador = "Visitante";
-
-        // Verificar se o usuário está logado
-        if (isset($_SESSION['email'])) {
-            $email = $_SESSION['email'];
-
-            // Query para selecionar o nome e permissão do usuário
-            $sql = "SELECT nome, permissao FROM utilizador WHERE email = '$email'";
-            $result = mysqli_query($mysqli, $sql);
-
-            if ($result) {
-                $row = mysqli_fetch_assoc($result);
-                $nome_utilizador = $row['nome'];
-                $permissao_utilizador = $row['permissao'];
-            } else {
-                echo "Erro na consulta SQL: " . mysqli_error($mysqli);
-            }
-        } else {
-            $nome_utilizador = "Visitante";
-        }
-
-        // Exibir variáveis de depuração
-        echo "<!-- Debug Info: email = $email, nome_utilizador = $nome_utilizador, permissao_utilizador = $permissao_utilizador -->";
-        ?>
-
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
@@ -83,86 +82,138 @@
             <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
             <div class="menu" id="menu">
                 <h2>Filtros</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" id="Consumos e Energia">
-                        <label for="Consumos e Energia">Consumos e Energia</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Mobilidade Elétrica">
-                        <label for="Mobilidade Elétrica">Mobilidade Elétrica</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Operação e Qualidade de Serviço">
-                        <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Rede Elétrica">
-                        <label for="Rede Elétrica">Rede Elétrica</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Renováveis">
-                        <label for="Renováveis">Renováveis</label>
-                    </li>
-                </ul>
-                <div class="button-container">
-                    <div class="custom-button">
-                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
-                        <!-- botao ainda nao esta operacional -->
+                <form id="tagsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST"> <!-- Adicionando um formulário para enviar os dados -->
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="Consumos e Energia" name="tags[]" value="Consumos e Energia">
+                            <label for="Consumos e Energia">Consumos e Energia</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Mobilidade Elétrica" name="tags[]" value="Mobilidade Elétrica">
+                            <label for="Mobilidade Elétrica">Mobilidade Elétrica</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Operação e Qualidade de Serviço" name="tags[]" value="Operação e Qualidade de Serviço">
+                            <label for="Operação e Qualidade de Serviço">Operação e Qualidade de Serviço</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Rede Elétrica" name="tags[]" value="Rede Elétrica">
+                            <label for="Rede Elétrica">Rede Elétrica</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="Renováveis" name="tags[]" value="Renováveis">
+                            <label for="Renováveis">Renováveis</label>
+                        </li>
+                    </ul>
+                    <div class="button-container">
+                        <div class="custom-button">
+                            <button type="submit">Pesquisar</button> <!-- Alterando o botão para enviar o formulário -->
+                        </div>
+                        <div class="custom-button">
+                            <button onclick="window.location.href='home_dados.php'">Limpar filtro</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
-        <div class="button-container">
-            <div class="custom-button">
-                <?php
-                // Verificar se o usuário tem permissão para acessar a página de importação
-                if ($permissao_utilizador == 'Admin' || $permissao_utilizador == 'Colaborador E-Redes') {
-                    echo '<button onclick="window.location.href=\'formImport.php\'">Importar Dados</button>';
-                } else {
-                    echo '<button onclick="alert(\'Você não tem permissão para acessar esta página.\')">Importar Dados</button>';
-                }
-                ?>
-            </div>
+    </div>
+
+    <div class="button-container">
+        <div class="custom-button">
+            <?php
+            // Verificar se o usuário tem permissão para acessar a página de importação
+            if ($permissao_utilizador == 'Admin' || $permissao_utilizador == 'Colaborador E-Redes') {
+                echo '<button onclick="window.location.href=\'formImport.php\'">Importar Dados</button>';
+            } else {
+                echo '<button onclick="alert(\'Você não tem permissão para acessar esta página.\')">Importar Dados</button>';
+            }
+            ?>
         </div>
     </div>
 
     <main>
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
+        // Verificar se os filtros foram enviados via POST
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tags'])) {
+            // Obtendo os filtros selecionados
+            $selected_tags = $_POST['tags'];
 
-        // Verificar se a sessão já está ativa
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        // Consulta SQL para buscar os dados
-        $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao, linkAPI FROM dataset";
-        $result = mysqli_query($mysqli, $sql);
+            // Preparar a consulta SQL
+            $sql = "SELECT * FROM dataset WHERE ";
+            $conditions = [];
 
-        if ($result) {
-            // Exibir os dados encontrados
-            echo "<div class='lista-datasets'>";
-
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<section class='dataset-details'>";
-                // Adicionando parâmetros de nome e linkAPI à URL do link
-                echo "<a href='dados.php?nomeTabela=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2 class='titulo'>" . htmlspecialchars($row["nomeTabela"]) . "</h2></a>";
-                echo "<div class='dataset-info'>";
-                echo "<p><strong>Tags:</strong> " . htmlspecialchars($row["tags"]) . "</p>";
-                echo "<p><strong>Tipo de Importação:</strong> " . htmlspecialchars($row["tipoImportacao"]) . "</p>";
-                echo "<p><strong>Número de Dados:</strong> " . htmlspecialchars($row["numeroLinhas"]) . "</p>";
-                echo "<p><strong>Informação sobre os dados:</strong> " . htmlspecialchars($row["informacao"]) . "</p>";
-                echo "</div>";
-                echo "</section>";
+            // Adicionar as condições para cada filtro selecionado
+            foreach ($selected_tags as $tag) {
+                $conditions[] = "tags LIKE '%" . $mysqli->real_escape_string($tag) . "%'";
             }
 
-            echo "</div>"; // Fechar a div lista-datasets após o loop
+            // Juntar as condições com 'OR'
+            $sql .= implode(" OR ", $conditions);
+
+            // Executar a consulta
+            $result = $mysqli->query($sql);
+
+            // Verificar se a consulta retornou resultados
+            if ($result->num_rows > 0) {
+                // Inicializar um array para armazenar os resultados
+                $output = [];
+
+                // Loop através dos resultados e adicioná-los ao array de saída
+                while ($row = $result->fetch_assoc()) {
+                    $output[] = $row;
+                }
+
+                // Exibir os resultados como HTML
+                echo "<div class='lista-datasets'>";
+
+                foreach ($output as $row) {
+                    echo "<section class='dataset-details'>";
+                    // Adicionando parâmetros de nome e linkAPI à URL do link
+                    echo "<a href='dados.php?nomeTabela=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2 class='titulo'>" . htmlspecialchars($row["nomeTabela"]) . "</h2></a>";
+                    echo "<div class='dataset-info'>";
+                    echo "<p><strong>Tags:</strong> " . htmlspecialchars($row["tags"]) . "</p>";
+                    echo "<p><strong>Tipo de Importação:</strong> " . htmlspecialchars($row["tipoImportacao"]) . "</p>";
+                    echo "<p><strong>Número de Dados:</strong> " . htmlspecialchars($row["numeroLinhas"]) . "</p>";
+                    echo "<p><strong>Informação sobre os dados:</strong> " . htmlspecialchars($row["informacao"]) . "</p>";
+                    echo "</div>";
+                    echo "</section>";
+                }
+
+                echo "</div>"; // Fechar a div lista-datasets após o loop
+            } else {
+                // Se não houver resultados, exibir uma mensagem
+                echo "<p>Nenhum resultado encontrado</p>";
+            }
+            // Fechar a conexão com a base de dados
+            $mysqli->close();
         } else {
-            echo "Erro na consulta: " . mysqli_error($mysqli);
+            // Consulta SQL para buscar os dados
+            $sql = "SELECT nomeTabela, tags, numeroLinhas, tipoImportacao, informacao, linkAPI FROM dataset";
+            $result = mysqli_query($mysqli, $sql);
+
+            if ($result) {
+                // Exibir os dados encontrados
+                echo "<div class='lista-datasets'>";
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<section class='dataset-details'>";
+                    // Adicionando parâmetros de nome e linkAPI à URL do link
+                    echo "<a href='dados.php?nomeTabela=" . urlencode($row["nomeTabela"]) . "&linkAPI=" . urlencode($row["linkAPI"]) . "'> <h2 class='titulo'>" . htmlspecialchars($row["nomeTabela"]) . "</h2></a>";
+                    echo "<div class='dataset-info'>";
+                    echo "<p><strong>Tags:</strong> " . htmlspecialchars($row["tags"]) . "</p>";
+                    echo "<p><strong>Tipo de Importação:</strong> " . htmlspecialchars($row["tipoImportacao"]) . "</p>";
+                    echo "<p><strong>Número de Dados:</strong> " . htmlspecialchars($row["numeroLinhas"]) . "</p>";
+                    echo "<p><strong>Informação sobre os dados:</strong> " . htmlspecialchars($row["informacao"]) . "</p>";
+                    echo "</div>";
+                    echo "</section>";
+                }
+
+                echo "</div>"; // Fechar a div lista-datasets após o loop
+            } else {
+                echo "Erro na consulta: " . mysqli_error($mysqli);
+            }
         }
         ?>
-
     </main>
 
     <footer>
