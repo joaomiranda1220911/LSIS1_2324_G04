@@ -10,16 +10,22 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <link rel="stylesheet" href="styles.css">
     <style>
-        #map {
-            height: 600px;
-            width: 700px;
+        #map-container {
             position: absolute;
-            top: 52%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             border: 3px solid #FFDC00;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            padding: 10px;
+            background: #FFDC00;
+        }
+
+        #map {
+            height: 600px;
+            width: 700px;
         }
 
         .footer-content {
@@ -32,17 +38,16 @@
         }
 
         .titulo_mapa {
-            flex: 1;
-            margin-right: 20px; /* Espaçamento entre o título e o mapa */
-            margin-top: 3px;
+            margin: 0 0 10px 0; /* Espaçamento entre o título e o mapa */
         }
 
         .titulo_mapa h1 {
             margin: 0; /* Remover margem padrão do título */
         }
 
-        .menu-container{
+        .menu-container {
             margin-left: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -106,34 +111,36 @@
         </div>
     </header>
     <div class="container">
-        <div class="titulo_mapa">
-            <h1>Postos de Transformação Distribuição (PTD)</h1>
+        <div id="map-container">
+            <div class="titulo_mapa">
+                <h1>Postos de Transformação Distribuição (PTD)</h1>
+            </div>
+            <div id="map"></div>
         </div>
-        <div id="map"></div>
     </div>
 
     <div class="menu-container">
-            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
-            <div class="menu" id="menu">
-                <h2>Filtros</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" id="Nível de Utilização">
-                        <label for="CNível de Utilização">Nível de Utilização</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Potência instalada">
-                        <label for="Potência instalada">Potência instalada</label>
-                    </li>
-                </ul>
-                <div class="button-container">
-                    <div class="custom-button">
-                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
-                        <!-- botao ainda nao esta operacional -->
-                    </div>
+        <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
+        <div class="menu" id="menu">
+            <h2>Filtros</h2>
+            <ul>
+                <li>
+                    <input type="checkbox" id="Nível de Utilização">
+                    <label for="CNível de Utilização">Nível de Utilização</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="Potência instalada">
+                    <label for="Potência instalada">Potência instalada</label>
+                </li>
+            </ul>
+            <div class="button-container">
+                <div class="custom-button">
+                    <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                    <!-- botao ainda nao esta operacional -->
                 </div>
             </div>
         </div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -200,7 +207,7 @@
         // Carrega os marcadores ao carregar a página
         carregarMarcadores();
     </script>
-        <script>
+    <script>
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.classList.toggle("visible");
