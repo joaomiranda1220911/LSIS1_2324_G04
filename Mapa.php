@@ -10,44 +10,74 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <link rel="stylesheet" href="styles.css">
     <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0; /* Reduzido de 20px para 10px */
+            position: relative;
+        }
+
         #map-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             border: 3px solid #FFDC00;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
             text-align: center;
             padding: 10px;
             background: #FFDC00;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         #map {
-            height: 600px;
+            height: 500px;
             width: 700px;
         }
 
         .footer-content {
-            position: fixed;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #FFDC00;
             bottom: 0;
         }
 
-        .container {
-            display: flex;
-        }
-
         .titulo_mapa {
-            margin: 0 0 10px 0; /* Espaçamento entre o título e o mapa */
+            margin: 0 0 10px 0;
         }
 
         .titulo_mapa h1 {
-            margin: 0; /* Remover margem padrão do título */
+            margin: 0;
         }
 
         .menu-container {
-            margin-left: 20px;
-            margin-top: 20px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .menu-icon {
+            cursor: pointer;
+        }
+
+        .menu {
+            display: none;
+        }
+
+        .menu.visible {
+            display: block;
         }
     </style>
 </head>
@@ -110,38 +140,36 @@
             </div>
         </div>
     </header>
-    <div class="container">
+    <div class="main-content">
         <div id="map-container">
             <div class="titulo_mapa">
                 <h1>Postos de Transformação Distribuição (PTD)</h1>
             </div>
             <div id="map"></div>
         </div>
-    </div>
-
-    <div class="menu-container">
-        <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
-        <div class="menu" id="menu">
-            <h2>Filtros</h2>
-            <ul>
-                <li>
-                    <input type="checkbox" id="Nível de Utilização">
-                    <label for="CNível de Utilização">Nível de Utilização</label>
-                </li>
-                <li>
-                    <input type="checkbox" id="Potência instalada">
-                    <label for="Potência instalada">Potência instalada</label>
-                </li>
-            </ul>
-            <div class="button-container">
-                <div class="custom-button">
-                    <button onclick="window.location.href='Import.php'">Pesquisar</button>
-                    <!-- botao ainda nao esta operacional -->
+        <div class="menu-container">
+            <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
+            <div class="menu" id="menu">
+                <h2>Filtros</h2>
+                <ul>
+                    <li>
+                        <input type="checkbox" id="Nível de Utilização">
+                        <label for="Nível de Utilização">Nível de Utilização</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Potência instalada">
+                        <label for="Potência instalada">Potência instalada</label>
+                    </li>
+                </ul>
+                <div class="button-container">
+                    <div class="custom-button">
+                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
+                        <!-- botao ainda nao esta operacional -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="footer-left">
