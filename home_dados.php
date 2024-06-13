@@ -107,7 +107,7 @@ if (isset($_SESSION['email'])) {
                     </ul>
                     <div class="button-container">
                         <div class="custom-button">
-                            <button type="submit">Pesquisar</button> <!-- Alterando o botão para enviar o formulário -->
+                            <button type="submit">Pesquisar</button>
                         </div>
                         <div class="custom-button">
                             <button onclick="window.location.href='home_dados.php'">Limpar</button>

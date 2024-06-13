@@ -239,21 +239,26 @@ if (session_status() == PHP_SESSION_NONE) {
                     $insertValues = array_map(function ($value) use ($mysqli) {
                         return mysqli_real_escape_string($mysqli, $value);
                     }, $record);
-                    $insertValues = "'" . implode("','", $insertValues) . "'";
+                    $new_insertValues = "'" . implode("','", $insertValues) . "'";
+                   
                     // Verificar se o registro já existe
                     $verifica = "SELECT * FROM `{$nomeTabelaFormatado}` WHERE ";
-                    $dataOrigem = explode(",", $insertValues);
+                    //$dataOrigem = explode(",", $insertValues);
+                    
                     for ($i = 0; $i < count($columns); $i++) {
+                        
                         if ($i == count($columns) - 1) {
-                            $verifica .= "$columns[$i] = $dataOrigem[$i] ";
+                            $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "'";
                         } else {
-                            $verifica .= "$columns[$i] = $dataOrigem[$i] AND ";
+                            $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "' AND ";
                         }
+                        
                     }
                     $res = mysqli_query($mysqli, $verifica);
+                    
                     $rowcount = mysqli_num_rows($res);
                     if ($rowcount == 0) {
-                        $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
+                        $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$new_insertValues})";
                         if (!mysqli_query($mysqli, $insertSQL)) {
                             echo "Erro ao inserir dados: " . mysqli_error($mysqli);
                         }
