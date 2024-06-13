@@ -110,24 +110,24 @@ if (isset($_SESSION['email'])) {
                             <button type="submit">Pesquisar</button> <!-- Alterando o botão para enviar o formulário -->
                         </div>
                         <div class="custom-button">
-                            <button onclick="window.location.href='home_dados.php'">Limpar filtro</button>
+                            <button onclick="window.location.href='home_dados.php'">Limpar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 
-    <div class="button-container">
-        <div class="custom-button">
-            <?php
-            // Verificar se o usuário tem permissão para acessar a página de importação
-            if ($permissao_utilizador == 'Admin' || $permissao_utilizador == 'Colaborador E-Redes') {
-                echo '<button onclick="window.location.href=\'formImport.php\'">Importar Dados</button>';
-            } else {
-                echo '<button onclick="alert(\'Você não tem permissão para acessar esta página.\')">Importar Dados</button>';
-            }
-            ?>
+        <div class="button-container">
+            <div class="custom-button">
+                <?php
+                // Verificar se o usuário tem permissão para acessar a página de importação
+                if ($permissao_utilizador == 'Admin' || $permissao_utilizador == 'Colaborador E-Redes') {
+                    echo '<button onclick="window.location.href=\'formImport.php\'">Importar Dados</button>';
+                } else {
+                    echo '<button onclick="alert(\'Você não tem permissão para acessar esta página.\')">Importar Dados</button>';
+                }
+                ?>
+            </div>
         </div>
     </div>
 
