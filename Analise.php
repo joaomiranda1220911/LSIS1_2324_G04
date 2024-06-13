@@ -8,6 +8,7 @@
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         .dashboard {
             display: flex;
@@ -26,8 +27,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 300px;
-            height: 300px;
+            width: 1000px;
+            height: 400px;
             min-width: 300px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -100,15 +101,9 @@
     </header>
 
     <main class="dashboard">
-        <h1>Análise</h1>
+        <h1>Análise de Correlação</h1>
         <div class="chart-container">
-            <canvas id="chart1"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="chart2"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="chart3"></canvas>
+            <canvas id="correlationChart"></canvas>
         </div>
     </main>
 
@@ -125,83 +120,51 @@
     </footer>
 
     <script>
-        // Configurações para os gráficos
-        const ctx1 = document.getElementById('chart1').getContext('2d');
-        const ctx2 = document.getElementById('chart2').getContext('2d');
-        const ctx3 = document.getElementById('chart3').getContext('2d');
+        // Carregar e processar o arquivo CSV
+        Papa.parse('regiao_pib_novasinst.csv', {
+            download: true,
+            header: true,
+            delimiter: ';',
+            complete: function(results) {
+                const data = results.data;
 
-        const chart1 = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Exemplo de Dados',
-                    data: [12, 19, 3, 5, 2, 3, 15, 12, 10, 8, 5, 7],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                // Extrair nomes das regiões e correlações
+                const regionNames = data.map(item => item['Região']);
+                const correlationData = data.map(item => parseFloat(item['Correlacao_ProcessosConcluidos_PIB'].replace(',', '.'))); // Substituir ',' por '.' para interpretar números corretamente
+
+                // Configurar o gráfico
+                const ctx = document.getElementById('correlationChart').getContext('2d');
+                const correlationChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: regionNames,
+                        datasets: [{
+                            label: 'Correlação Processos Concluídos vs PIB',
+                            data: correlationData,
+                            backgroundColor: '#FFDC00',
+                            borderColor: 'black',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Correlação'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Região'
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        });
-
-        const chart2 = new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Exemplo de Dados',
-                    data: [3, 10, 5, 2, 20, 30, 45, 35, 25, 15, 10, 5],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        const chart3 = new Chart(ctx3, {
-            type: 'pie',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Exemplo de Dados',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
+                });
             }
         });
     </script>
