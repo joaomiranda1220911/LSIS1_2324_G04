@@ -42,7 +42,7 @@
 
         #map {
             height: 500px;
-            width: 700px;
+            width: 1000px;
         }
 
         .footer-content {
