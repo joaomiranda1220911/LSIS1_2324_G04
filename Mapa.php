@@ -23,7 +23,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px 0; /* Reduzido de 20px para 10px */
+            padding: 10px 0;
             position: relative;
         }
 
@@ -153,20 +153,74 @@
                 <h2>Filtros</h2>
                 <ul>
                     <li>
-                        <input type="checkbox" id="Nível de Utilização">
-                        <label for="Nível de Utilização">Nível de Utilização</label>
+                        <input type="checkbox" id="Aveiro" onclick="centralizarMapa('Aveiro', this)">
+                        <label for="Aveiro">Aveiro</label>
                     </li>
                     <li>
-                        <input type="checkbox" id="Potência instalada">
-                        <label for="Potência instalada">Potência instalada</label>
+                        <input type="checkbox" id="Beja" onclick="centralizarMapa('Beja', this)">
+                        <label for="Beja">Beja</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Braga" onclick="centralizarMapa('Braga', this)">
+                        <label for="Braga">Braga</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Braganca" onclick="centralizarMapa('Braganca', this)">
+                        <label for="Braganca">Bragança</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="CasteloBranco" onclick="centralizarMapa('CasteloBranco', this)">
+                        <label for="CasteloBranco">Castelo Branco</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Coimbra" onclick="centralizarMapa('Coimbra', this)">
+                        <label for="Coimbra">Coimbra</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Evora" onclick="centralizarMapa('Evora', this)">
+                        <label for="Evora">Évora</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Faro" onclick="centralizarMapa('Faro', this)">
+                        <label for="Faro">Faro</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Guarda" onclick="centralizarMapa('Guarda', this)">
+                        <label for="Guarda">Guarda</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Leiria" onclick="centralizarMapa('Leiria', this)">
+                        <label for="Leiria">Leiria</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Lisboa" onclick="centralizarMapa('Lisboa', this)">
+                        <label for="Lisboa">Lisboa</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Portalegre" onclick="centralizarMapa('Portalegre', this)">
+                        <label for="Portalegre">Portalegre</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Porto" onclick="centralizarMapa('Porto', this)">
+                        <label for="Porto">Porto</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Santarem" onclick="centralizarMapa('Santarem', this)">
+                        <label for="Santarem">Santarém</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Setubal" onclick="centralizarMapa('Setubal', this)">
+                        <label for="Setubal">Setúbal</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="VilaReal" onclick="centralizarMapa('VilaReal', this)">
+                        <label for="VilaReal">Vila Real</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Viseu" onclick="centralizarMapa('Viseu', this)">
+                        <label for="Viseu">Viseu</label>
                     </li>
                 </ul>
-                <div class="button-container">
-                    <div class="custom-button">
-                        <button onclick="window.location.href='Import.php'">Pesquisar</button>
-                        <!-- botao ainda nao esta operacional -->
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -234,6 +288,41 @@
 
         // Carrega os marcadores ao carregar a página
         carregarMarcadores();
+
+        // Coordenadas dos distritos
+        const coordenadasDistritos = {
+            "Aveiro": [40.6413, -8.6536],
+            "Beja": [38.0151, -7.8632],
+            "Braga": [41.5454, -8.4265],
+            "Braganca": [41.8058, -6.7572],
+            "CasteloBranco": [39.8222, -7.4909],
+            "Coimbra": [40.2111, -8.4291],
+            "Evora": [38.5714, -7.9137],
+            "Faro": [37.0179, -7.9307],
+            "Guarda": [40.5373, -7.2674],
+            "Leiria": [39.7476, -8.8049],
+            "Lisboa": [38.7167, -9.1399],
+            "Portalegre": [39.2936, -7.4312],
+            "Porto": [41.17820882715362, -8.608457297299513],
+            "Santarem": [39.2362, -8.6855],
+            "Setubal": [38.5244, -8.8882],
+            "Viana do Castelo": [41.6918, -8.8345],
+            "VilaReal": [41.3006, -7.7441],
+            "Viseu": [40.6610, -7.9097]
+        };
+
+        // Função para centralizar o mapa no distrito
+        function centralizarMapa(distrito, checkbox) {
+            // Desmarca todas as outras checkboxes
+            document.querySelectorAll('.menu input[type="checkbox"]').forEach(cb => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+
+            const coordenadas = coordenadasDistritos[distrito];
+            if (coordenadas) {
+                map.setView(coordenadas, 12);
+            }
+        }
     </script>
     <script>
         function toggleMenu() {
