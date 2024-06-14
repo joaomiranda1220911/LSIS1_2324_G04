@@ -173,6 +173,52 @@
             }
         });
 
+
+        // Carregar e processar o arquivo CSV para o primeiro gráfico
+        Papa.parse('regiao_pib_novasinst.csv', {
+            download: true,
+            header: true,
+            delimiter: ';',
+            complete: function(results) {
+                const data = results.data;
+                const regionNames = data.map(item => item['Região']);
+                const correlationData = data.map(item => parseFloat(item['Correlacao_ProcessosConcluidos_PIB'].replace(',', '.')));
+
+                const ctx = document.getElementById('correlationChart').getContext('2d');
+                const correlationChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: regionNames,
+                        datasets: [{
+                            label: 'Correlação Processos Concluídos vs PIB',
+                            data: correlationData,
+                            backgroundColor: '#FFDC00',
+                            borderColor: 'black',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Correlação'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Região'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
         // Carregar e processar o arquivo CSV para o segundo gráfico
         Papa.parse('escolaridade_instalacoes.csv', {
             download: true,
@@ -180,20 +226,17 @@
             delimiter: ';',
             complete: function(results) {
                 const data = results.data;
+                const educationLevels = data.map(item => item['Variável de Educação']);
+                const correlationData = data.map(item => parseFloat(item['Correlação'].replace(',', '.')));
 
-                // Extrair nomes das regiões e correlações
-                const regionNames = data.map(item => item['Nível de Escolaridade']);
-                const pibCpesData = data.map(item => parseFloat(item['Correlação'].replace(',', '.'))); // Substituir ',' por '.' para interpretar números corretamente
-
-                // Configurar o gráfico
                 const ctx2 = document.getElementById('pibCpesChart').getContext('2d');
                 const pibCpesChart = new Chart(ctx2, {
                     type: 'bar',
                     data: {
-                        labels: regionNames,
+                        labels: educationLevels,
                         datasets: [{
                             label: 'Correlação Nível de Escolaridade vs CPES',
-                            data: pibCpesData,
+                            data: correlationData,
                             backgroundColor: '#FFDC00',
                             borderColor: 'black',
                             borderWidth: 1
@@ -221,7 +264,6 @@
             }
         });
     </script>
-
 
 </body>
 

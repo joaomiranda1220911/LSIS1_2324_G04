@@ -1,7 +1,8 @@
-﻿Nível de Escolaridade;Correlação
-Sem nível de escolaridade;0,450677
-Básico - 1º ciclo;0,341743
-Básico - 2º ciclo;0,262198
-Básico - 3º ciclo;-0,548456
-Secundário e pós-secundário;-0,396183
-Superior;-0,388125
+﻿Variável de Educação;Correlação
+Sem nível de escolaridade;-0,250284511
+Básico 1º ciclo;-0,220467682
+Básico 2º ciclo;-0,024992977
+Básico 3º ciclo;0,11100674
+Secundário;0,19317988
+Médio;0,168474316
+Superior;0,239905401
