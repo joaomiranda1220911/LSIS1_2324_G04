@@ -850,8 +850,6 @@ h1 {
     align-self: center;
 }
 
-/* Estilo para a lista de colunas */
-/* Estilo para a lista de colunas */
 .menu-lista {
     list-style-type: none;
     padding: 0;
@@ -865,6 +863,8 @@ h1 {
 .menu-lista .dropdown {
     position: relative;
     display: inline-block;
+    width: 160px; /* Largura fixa para todos os botões */
+    text-align: center; /* Centraliza o texto dentro do botão */
 }
 
 .menu-lista .dropdown-content {
@@ -875,14 +875,20 @@ h1 {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra */
     z-index: 1000; /* Z-index alto para aparecer acima */
     border-radius: 4px;
+    top: 0; /* Ajusta para alinhar com o botão */
+    left: 100%; /* Faz o dropdown expandir para a direita */
+    margin-top: -35px;
 }
 
 .menu-lista .dropdown:hover .dropdown-content {
     display: block;
+    border-radius: 4px;
+    background-color: #FFDC00;
+    color: #333;
 }
 
 .menu-lista .dropbtn {
-    background-color: transparent; /* Sem fundo inicial */
+    background-color: #FFDC00; 
     color: #000; /* Cor do texto preto */
     padding: 8px 16px;
     border-radius: 4px;
@@ -892,7 +898,8 @@ h1 {
 }
 
 .menu-lista .dropbtn:hover {
-    background-color: #ddd; /* Cor de fundo no hover */
+    background-color: #333; /* Cor de fundo no hover */
+    border-radius: 4px;
 }
 
 .menu-lista .dropdown-content a {
@@ -904,6 +911,8 @@ h1 {
 }
 
 .menu-lista .dropdown-content a:hover {
-    background-color: #333; /* Cor de fundo no hover */
-    color: #FFDC00; /* Cor do texto amarelo */
+    background-color: #333;
+    color: #FFDC00; 
+    border-radius: 4px;
+
 }
