@@ -850,4 +850,60 @@ h1 {
     align-self: center;
 }
 
+/* Estilo para a lista de colunas */
+/* Estilo para a lista de colunas */
+.menu-lista {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
+.menu-lista li {
+    margin-bottom: 10px;
+}
+
+.menu-lista .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-lista .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #FFDC00; /* Cor de fundo do dropdown */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra */
+    z-index: 1000; /* Z-index alto para aparecer acima */
+    border-radius: 4px;
+}
+
+.menu-lista .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.menu-lista .dropbtn {
+    background-color: transparent; /* Sem fundo inicial */
+    color: #000; /* Cor do texto preto */
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.menu-lista .dropbtn:hover {
+    background-color: #ddd; /* Cor de fundo no hover */
+}
+
+.menu-lista .dropdown-content a {
+    color: #000; /* Cor do texto preto */
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 4px;
+}
+
+.menu-lista .dropdown-content a:hover {
+    background-color: #333; /* Cor de fundo no hover */
+    color: #FFDC00; /* Cor do texto amarelo */
+}
