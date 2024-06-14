@@ -1,7 +1,7 @@
 <?php
 // Incluir o arquivo de configuração da conexão com o banco de dados
 include("ImportSQL.php");
-// Consulta SQL para buscar os nomes das tabelas
+
 if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     $nomeTabelaAtual = htmlspecialchars($_GET['nomeTabela']);
     $linkAPI = htmlspecialchars($_GET['linkAPI']); // Adicionado
@@ -9,71 +9,51 @@ if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     // Definir o título da página com base no nome da tabela atual
     $tituloPagina = "Dados - " . $nomeTabelaAtual;
 } else {
-    // Redirecionar ou mostrar mensagem de erro caso os parâmetros não estejam presentes
     die('Parâmetros necessários não foram passados pela URL.');
 }
 
-// Função para obter dados da API
 function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
 {
-    // Consultar a base de dados para obter o URL da API com base no nome da tabela atual
     $sql = "SELECT linkAPI FROM dataset WHERE nomeTabela = '{$nomeTabelaAtual}'";
     $result = mysqli_query($mysqli, $sql);
     if ($result) {
-        // Verificar se há resultados
         if (mysqli_num_rows($result) > 0) {
-            // Obter a URL da API a partir do resultado da consulta
             $row = mysqli_fetch_assoc($result);
             $url = $row['linkAPI'];
-
-            // Substituir os placeholders pelo offset e limit
             $url = str_replace('{$limit}', $limit, $url);
             $url = str_replace('{$offset}', $offset, $url);
 
-            // Iniciar uma requisição cURL
             $ch = curl_init();
             if (!$ch) {
                 die("Falha ao inicializar a requisição cURL.");
             }
-            // Configurar a URL e outras opções
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Tempo limite de conexão em segundos
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Tempo limite total da operação em segundos
-            // Executar a requisição cURL
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
             $response = curl_exec($ch);
-            // Verificar erros de cURL
             if (curl_errno($ch)) {
-                // Tratar erros de cURL
                 $error_message = curl_error($ch);
                 curl_close($ch);
                 die("Erro cURL: " . $error_message);
             }
-            // Fechar a conexão cURL
             curl_close($ch);
-            // Verificar se a resposta é válida
             if ($response === false) {
                 die("Erro ao obter resposta da API.");
             }
-            // Decodificar a resposta como array associativo
             $data = json_decode($response, true);
-            // Verificar se houve erro na decodificação
             if ($data === null) {
                 die("Erro ao decodificar a resposta da API.");
             }
-            // Retornar os dados obtidos da API
             return $data;
         } else {
-            // Caso nenhuma URL seja encontrada na tabela
             die('Nenhuma URL encontrada na tabela dataset.');
         }
     } else {
-        // Em caso de erro na consulta SQL
         die('Erro na consulta SQL: ' . mysqli_error($mysqli));
     }
 }
 
-// Função para exibir o menu de navegação
 function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
 {
     echo "<div class='pagination'>";
@@ -123,18 +103,13 @@ if (session_status() == PHP_SESSION_NONE) {
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
         include("ImportSQL.php");
-        // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        // Definir um nome padrão
         $nome_utilizador = "Utilizador";
-        // Verificar se o usuário está logado
         if (isset($_SESSION['email'])) {
             $email = $_SESSION['email'];
-            // Query para selecionar o nome do usuário
             $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
             $result = mysqli_query($mysqli, $sql);
             if ($result) {
@@ -163,49 +138,56 @@ if (session_status() == PHP_SESSION_NONE) {
             <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
             <div class="menu" id="menu">
                 <h2>Filtros</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" id="Ano">
-                        <label for="Ano">Ano</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Semestre">
-                        <label for="Semestre">Semestre</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Concelho">
-                        <label for="Concelho">Concelho</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Potência de Ligação (kW)">
-                        <label for="Potência de Ligação (kW)">Potência de Ligação (kW)</label>
-                    </li>
-                </ul>
-                <div class="button-container">
-                    <div class="custom-button">
-                        <button onclick="window.location.href='Export.php'">Pesquisar</button>
-                        <!-- botao ainda nao esta operacional -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="button-container">
-            <div class="custom-button">
-                <button onclick="window.location.href='Export.php'">Exportar Dados</button>
                 <?php
-                if (isset($nomeTabelaAtual)) {
-                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-                    echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+                $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                $checkTableSQL = "SHOW TABLES LIKE '{$nomeTabelaFormatado}'";
+                $checkResult = mysqli_query($mysqli, $checkTableSQL);
+
+                if (mysqli_num_rows($checkResult) == 0) {
+                    die("A tabela {$nomeTabelaFormatado} não existe.");
                 } else {
-                    // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
-                    echo "Erro: Nome da tabela não definido";
+                    $sqla = "SHOW COLUMNS FROM `{$nomeTabelaFormatado}`";
+                    $resultas = mysqli_query($mysqli, $sqla);
+                    $colunas = array();
+
+                    if ($resultas) {
+                        while ($row = mysqli_fetch_assoc($resultas)) {
+                            $colunas[] = $row['Field'];
+                        }
+                    } else {
+                        echo "Erro ao obter as colunas da tabela: " . mysqli_error($mysqli);
+                    }
                 }
                 ?>
+                <ul class="menu-lista">
+                    <?php
+                    foreach ($colunas as $coluna) {
+                        $colunaFormatada = ucwords(str_replace('_', ' ', $coluna));
+                        echo "<li><a href='PaginaTabela.php?nomeTabela={$coluna}&linkAPI={$linkAPI}'>{$colunaFormatada}</a></li>";
+                    }
+                    ?>
+                </ul>
             </div>
         </div>
+    <div class="button-container">
+        <div class="custom-button">
+            <button onclick="window.location.href='Export.php'">Exportar Dados</button>
+            <?php
+            if (isset($nomeTabelaAtual)) {
+                $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+            } else {
+                // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
+                echo "Erro: Nome da tabela não definido";
+            }
+            ?>
+        </div>
+    </div>
 
     </div>
     </div>
+
+
     <?php
     // Verificar se a variável $tituloPagina está definida
     if (isset($tituloPagina)) {
@@ -240,22 +222,21 @@ if (session_status() == PHP_SESSION_NONE) {
                         return mysqli_real_escape_string($mysqli, $value);
                     }, $record);
                     $new_insertValues = "'" . implode("','", $insertValues) . "'";
-                   
+
                     // Verificar se o registro já existe
                     $verifica = "SELECT * FROM `{$nomeTabelaFormatado}` WHERE ";
                     //$dataOrigem = explode(",", $insertValues);
-                    
+
                     for ($i = 0; $i < count($columns); $i++) {
-                        
+
                         if ($i == count($columns) - 1) {
                             $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "'";
                         } else {
                             $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "' AND ";
                         }
-                        
                     }
                     $res = mysqli_query($mysqli, $verifica);
-                    
+
                     $rowcount = mysqli_num_rows($res);
                     if ($rowcount == 0) {
                         $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$new_insertValues})";
@@ -364,12 +345,11 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
         </div>
     </footer>
-    <script>
+</body>
+<script>
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.classList.toggle("visible");
         }
     </script>
-</body>
-
 </html>
