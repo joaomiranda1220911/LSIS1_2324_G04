@@ -174,7 +174,7 @@
         });
 
         // Carregar e processar o arquivo CSV para o segundo gráfico
-        Papa.parse('pib_cpes.csv', {
+        Papa.parse('escolaridade_instalacoes.csv', {
             download: true,
             header: true,
             delimiter: ';',
@@ -182,7 +182,7 @@
                 const data = results.data;
 
                 // Extrair nomes das regiões e correlações
-                const regionNames = data.map(item => item['Região']);
+                const regionNames = data.map(item => item['Nível de Escolaridade']);
                 const pibCpesData = data.map(item => parseFloat(item['Correlação'].replace(',', '.'))); // Substituir ',' por '.' para interpretar números corretamente
 
                 // Configurar o gráfico
@@ -192,7 +192,7 @@
                     data: {
                         labels: regionNames,
                         datasets: [{
-                            label: 'Correlação PIB por CPES',
+                            label: 'Correlação Nível de Escolaridade vs CPES',
                             data: pibCpesData,
                             backgroundColor: '#FFDC00',
                             borderColor: 'black',
@@ -212,7 +212,7 @@
                             x: {
                                 title: {
                                     display: true,
-                                    text: 'Região'
+                                    text: 'Nível de Escolaridade'
                                 }
                             }
                         }
