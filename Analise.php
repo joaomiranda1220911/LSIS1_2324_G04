@@ -13,9 +13,10 @@
         .dashboard {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Centro dos gráficos horizontalmente */
-            align-items: center; /* Centro dos gráficos verticalmente */
-            height: calc(100vh - 200px); /* Altura total da viewport menos o espaço do header e footer */
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            /* Permitir altura automática para acomodar todos os gráficos */
             padding: 20px;
             margin-top: 20px;
             background-color: #f4f4f4;
@@ -105,7 +106,11 @@
         <div class="chart-container">
             <canvas id="correlationChart"></canvas>
         </div>
+        <div class="chart-container">
+            <canvas id="pibCpesChart"></canvas>
+        </div>
     </main>
+
 
     <footer>
         <div class="footer-content">
@@ -120,7 +125,7 @@
     </footer>
 
     <script>
-        // Carregar e processar o arquivo CSV
+        // Carregar e processar o arquivo CSV para o primeiro gráfico
         Papa.parse('regiao_pib_novasinst.csv', {
             download: true,
             header: true,
@@ -167,7 +172,57 @@
                 });
             }
         });
+
+        // Carregar e processar o arquivo CSV para o segundo gráfico
+        Papa.parse('pib_cpes.csv', {
+            download: true,
+            header: true,
+            delimiter: ';',
+            complete: function(results) {
+                const data = results.data;
+
+                // Extrair nomes das regiões e correlações
+                const regionNames = data.map(item => item['Região']);
+                const pibCpesData = data.map(item => parseFloat(item['Correlação'].replace(',', '.'))); // Substituir ',' por '.' para interpretar números corretamente
+
+                // Configurar o gráfico
+                const ctx2 = document.getElementById('pibCpesChart').getContext('2d');
+                const pibCpesChart = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: regionNames,
+                        datasets: [{
+                            label: 'Correlação PIB por CPES',
+                            data: pibCpesData,
+                            backgroundColor: '#FFDC00',
+                            borderColor: 'black',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Correlação'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Região'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
     </script>
+
+
 </body>
 
 </html>
