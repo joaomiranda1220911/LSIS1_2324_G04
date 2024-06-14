@@ -74,10 +74,31 @@
 
         .menu {
             display: none;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
         }
 
         .menu.visible {
             display: block;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 13px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background: #FFDC00;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #FFDC00;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 220, 0, 0.5);
+        }
+
+        select option {
+            padding: 10px;
         }
     </style>
 </head>
@@ -151,76 +172,27 @@
             <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
             <div class="menu" id="menu">
                 <h2>Filtros</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" id="Aveiro" onclick="centralizarMapa('Aveiro', this)">
-                        <label for="Aveiro">Aveiro</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Beja" onclick="centralizarMapa('Beja', this)">
-                        <label for="Beja">Beja</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Braga" onclick="centralizarMapa('Braga', this)">
-                        <label for="Braga">Braga</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Braganca" onclick="centralizarMapa('Braganca', this)">
-                        <label for="Braganca">Bragança</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="CasteloBranco" onclick="centralizarMapa('CasteloBranco', this)">
-                        <label for="CasteloBranco">Castelo Branco</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Coimbra" onclick="centralizarMapa('Coimbra', this)">
-                        <label for="Coimbra">Coimbra</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Evora" onclick="centralizarMapa('Evora', this)">
-                        <label for="Evora">Évora</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Faro" onclick="centralizarMapa('Faro', this)">
-                        <label for="Faro">Faro</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Guarda" onclick="centralizarMapa('Guarda', this)">
-                        <label for="Guarda">Guarda</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Leiria" onclick="centralizarMapa('Leiria', this)">
-                        <label for="Leiria">Leiria</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Lisboa" onclick="centralizarMapa('Lisboa', this)">
-                        <label for="Lisboa">Lisboa</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Portalegre" onclick="centralizarMapa('Portalegre', this)">
-                        <label for="Portalegre">Portalegre</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Porto" onclick="centralizarMapa('Porto', this)">
-                        <label for="Porto">Porto</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Santarem" onclick="centralizarMapa('Santarem', this)">
-                        <label for="Santarem">Santarém</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Setubal" onclick="centralizarMapa('Setubal', this)">
-                        <label for="Setubal">Setúbal</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="VilaReal" onclick="centralizarMapa('VilaReal', this)">
-                        <label for="VilaReal">Vila Real</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Viseu" onclick="centralizarMapa('Viseu', this)">
-                        <label for="Viseu">Viseu</label>
-                    </li>
-                </ul>
+                <select id="districtSelect" onchange="centralizarMapa(this.value)">
+                    <option value="" disabled selected>Selecione um distrito</option>
+                    <option value="Aveiro">Aveiro</option>
+                    <option value="Beja">Beja</option>
+                    <option value="Braga">Braga</option>
+                    <option value="Braganca">Bragança</option>
+                    <option value="CasteloBranco">Castelo Branco</option>
+                    <option value="Coimbra">Coimbra</option>
+                    <option value="Evora">Évora</option>
+                    <option value="Faro">Faro</option>
+                    <option value="Guarda">Guarda</option>
+                    <option value="Leiria">Leiria</option>
+                    <option value="Lisboa">Lisboa</option>
+                    <option value="Portalegre">Portalegre</option>
+                    <option value="Porto">Porto</option>
+                    <option value="Santarem">Santarém</option>
+                    <option value="Setubal">Setúbal</option>
+                    <option value="Viana do Castelo">Viana do Castelo</option>
+                    <option value="VilaReal">Vila Real</option>
+                    <option value="Viseu">Viseu</option>
+                </select>
             </div>
         </div>
     </div>
@@ -312,19 +284,15 @@
         };
 
         // Função para centralizar o mapa no distrito
-        function centralizarMapa(distrito, checkbox) {
-            // Desmarca todas as outras checkboxes
-            document.querySelectorAll('.menu input[type="checkbox"]').forEach(cb => {
-                if (cb !== checkbox) cb.checked = false;
-            });
+        function centralizarMapa(distrito) {
+            if (distrito === "") return; // Não faz nada se a opção selecionada for inválida
 
             const coordenadas = coordenadasDistritos[distrito];
             if (coordenadas) {
                 map.setView(coordenadas, 12);
             }
         }
-    </script>
-    <script>
+
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.classList.toggle("visible");
