@@ -42,7 +42,7 @@ function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Tempo limite de conexão em segundos
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Tempo limite total da operação em segundos
+            curl_setopt($ch, CURLOPT_TIMEOUT, 180); // Tempo limite total da operação em segundos
             // Executar a requisição cURL
             $response = curl_exec($ch);
             // Verificar erros de cURL
@@ -220,7 +220,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <?php
     // Configurações iniciais
     echo "<h1>"  . $tituloPagina . "</h1>";
-    $limit = 60; // Número de registros a serem exibidos por vez
+    $limit = 35; // Número de registros a serem exibidos por vez
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
     // Obter parâmetros de ordenação

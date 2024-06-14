@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise aos Dados</title>
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
     <link rel="stylesheet" href="styles.css">
     <style>
         .dashboard {
@@ -14,9 +15,9 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 200px); /* Altura total da viewport menos o espaço do header e footer */
+            height: calc(100vh - 200px);
             padding: 20px;
-            background-color: #f4f4f4; 
+            background-color: #f4f4f4;
             box-shadow: none;
             border: none;
         }
@@ -97,64 +98,83 @@
         </div>
     </header>
 
-    <main class="dashboard">
-        <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
+    <?php
+    // Verificar se o parâmetro nomeTabelaAtual foi recebido
+    if (isset($_GET['nomeTabelaAtual'])) {
+        // Receber o valor do parâmetro
+        $nomeTabelaAtual = $_GET['nomeTabelaAtual'];
 
-        // Verificar se o parâmetro nomeTabelaAtual foi recebido
-        if (isset($_GET['nomeTabelaAtual'])) {
-            // Receber o valor do parâmetro
-            $nomeTabelaAtual = $_GET['nomeTabelaAtual'];
-            echo "<h1>$nomeTabelaAtual</h1>"; // Depuração
-
-            // Verificar o título da tabela e definir as colunas correspondentes
-            if ($nomeTabelaAtual == "Total_de_unidades_de_produção_para_autoconsumo") {
-                $titulo = "Total de Unidades de Produção para Autoconsumo";
-                $coluna1 = "numero_de_instalacoes";
-                $coluna2 = "potencia_total_instalada_upac_kw";
-            } elseif ($nomeTabelaAtual == "Novas_unidades_de_produção_para_Autoconsumo") {
-                $titulo = "Novas Unidades de Produção para Autoconsumo";
-                $coluna1 = "ano";
-                $coluna2 = "processos_concluidos";
-            } elseif ($nomeTabelaAtual == "Caracterização_de_Pontos_de_Consumo_(CPEs),_com_contratos_ativos") {
-                $titulo = "Caracterização de Pontos de Consumo (CPES) com Contratos Ativos";
-                $coluna1 = "cpes";
-                $coluna2 = "ano";
-            }
-
-            // Verificar se as colunas estão definidas corretamente
-            if (!empty($coluna1) && !empty($coluna2)) {
-                $nomeTabelaAtual = "`" . str_replace("`", "``", $nomeTabelaAtual) . "`";
-                $sql = "SELECT $coluna1, $coluna2 FROM $nomeTabelaAtual";
-                
-                $result = mysqli_query($mysqli, $sql);
-
-                if ($result) {
-                    // Inicializar arrays para armazenar os dados do gráfico
-                    $dcoluna1 = array();
-                    $dcoluna2 = array();
-
-                    // Iterar sobre os resultados da consulta e armazenar os dados nos arrays
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $dcoluna1[] = $row[$coluna1];
-                        $dcoluna2[] = $row[$coluna2];
-                    }
-                } else {
-                    // Em caso de erro na consulta SQL
-                    echo "Erro na consulta SQL: " . mysqli_error($mysqli);
+        // Função para obter nomes das colunas da tabela
+        function obterColunas($mysqli, $tabela)
+        {
+            $sql = "SHOW COLUMNS FROM $tabela";
+            $result = $mysqli->query($sql);
+            $colunas = array();
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    array_push($colunas, $row['Field']);
                 }
-            } else {
-                echo "Erro: colunas não foram definidas corretamente.";
             }
+            return $colunas;
         }
-        ?>
 
-        <!-- Conteúdo principal aqui -->
-        <div class="chart-container">
-            <canvas id="graficoProcessosConcluidos"></canvas>
-        </div>
-    </main>
+        $colunas = obterColunas($mysqli, $nomeTabelaAtual);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $xColuna = $_POST['xColuna'];
+            $yColuna = $_POST['yColuna'];
+
+            // Obter dados com base na seleção do utilizador
+            function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
+            {
+                $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela";
+                $result = $mysqli->query($sql);
+                $dataPoints = array();
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        array_push($dataPoints, array("label" => $row["x"], "y" => $row["y"]));
+                    }
+                }
+                return $dataPoints;
+            }
+
+            $dataPoints1 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna, $yColuna);
+            $dataPoints2 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna, $yColuna);
+        } else {
+            $dataPoints1 = array();
+            $dataPoints2 = array();
+        }
+    }
+    ?>
+
+    <?php
+    // Verificar se $nomeTabelaAtual está definido e ajustar o título da página
+    $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
+    echo "<h1>Análise - " . $tituloPagina . "</h1>";
+    ?>
+
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
+        <label for="xColuna">Escolhe a coluna para o eixo X:</label>
+        <select name="xColuna" id="xColuna">
+            <?php foreach ($colunas as $coluna) {
+                echo "<option value='$coluna'>$coluna</option>";
+            } ?>
+        </select>
+        <br><br>
+        <label for="yColuna">Escolhe a coluna para o eixo Y:</label>
+        <select name="yColuna" id="yColuna">
+            <?php foreach ($colunas as $coluna) {
+                echo "<option value='$coluna'>$coluna</option>";
+            } ?>
+        </select>
+        <br><br>
+        <input type="submit" value="Gerar Gráficos">
+    </form>
+
+    <div class="chart-container">
+        <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+        <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -168,41 +188,50 @@
         </div>
     </footer>
 
+    <script>
+        // Configuração dos gráficos CanvasJS
+        window.onload = function() {
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Gráfico 1"
+                },
+                axisX: {
+                    title: "Eixo X"
+                },
+                axisY: {
+                    title: "Eixo Y",
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+                }]
+            });
+            chart1.render();
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Gráfico 2"
+                },
+                axisX: {
+                    title: "Eixo X"
+                },
+                axisY: {
+                    title: "Eixo Y",
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
+                }]
+            });
+            chart2.render();
+        };
+    </script>
 </body>
+
 </html>
-
-<script>
-    // Obter referência para o elemento canvas
-    var ctx = document.getElementById('graficoProcessosConcluidos').getContext('2d');
-
-    // Definir os dados para o gráfico com base nos valores obtidos do PHP
-    var data = {
-        labels: <?php echo json_encode($dcoluna1); ?>,
-        datasets: [{
-            label: '<?php echo $titulo; ?>',
-            data: <?php echo json_encode($dcoluna2); ?>,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo do gráfico
-            borderColor: 'rgba(255, 99, 132, 1)', // Cor da borda do gráfico
-            borderWidth: 1,
-            fill: true
-        }]
-    };
-
-    // Configurar as opções do gráfico
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    };
-
-    // Criar o gráfico de linha
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: options
-    });
-</script>
