@@ -12,48 +12,71 @@ if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     die('Parâmetros necessários não foram passados pela URL.');
 }
 
+// Verificar se a sessão já está ativa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
 {
+    // Consultar a base de dados para obter o URL da API com base no nome da tabela atual
     $sql = "SELECT linkAPI FROM dataset WHERE nomeTabela = '{$nomeTabelaAtual}'";
     $result = mysqli_query($mysqli, $sql);
     if ($result) {
+        // Verificar se há resultados
         if (mysqli_num_rows($result) > 0) {
+            // Obter a URL da API a partir do resultado da consulta
             $row = mysqli_fetch_assoc($result);
             $url = $row['linkAPI'];
+
+            // Substituir os placeholders pelo offset e limit
             $url = str_replace('{$limit}', $limit, $url);
             $url = str_replace('{$offset}', $offset, $url);
 
+            // Iniciar uma requisição cURL
             $ch = curl_init();
             if (!$ch) {
                 die("Falha ao inicializar a requisição cURL.");
             }
+            // Configurar a URL e outras opções
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Tempo limite de conexão em segundos
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Tempo limite total da operação em segundos
+            // Executar a requisição cURL
             $response = curl_exec($ch);
+            // Verificar erros de cURL
             if (curl_errno($ch)) {
+                // Tratar erros de cURL
                 $error_message = curl_error($ch);
                 curl_close($ch);
                 die("Erro cURL: " . $error_message);
             }
+            // Fechar a conexão cURL
             curl_close($ch);
+            // Verificar se a resposta é válida
             if ($response === false) {
                 die("Erro ao obter resposta da API.");
             }
+            // Decodificar a resposta como array associativo
             $data = json_decode($response, true);
+            // Verificar se houve erro na decodificação
             if ($data === null) {
                 die("Erro ao decodificar a resposta da API.");
             }
+            // Retornar os dados obtidos da API
             return $data;
         } else {
+            // Caso nenhuma URL seja encontrada na tabela
             die('Nenhuma URL encontrada na tabela dataset.');
         }
     } else {
+        // Em caso de erro na consulta SQL
         die('Erro na consulta SQL: ' . mysqli_error($mysqli));
     }
 }
 
+// Função para exibir o menu de navegação
 function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
 {
     echo "<div class='pagination'>";
@@ -76,6 +99,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -160,180 +184,108 @@ if (session_status() == PHP_SESSION_NONE) {
                 }
                 ?>
                 <ul class="menu-lista">
-                    <?php
-                    foreach ($colunas as $coluna) {
-                        $colunaFormatada = ucwords(str_replace('_', ' ', $coluna));
-                        echo "<li><a href='PaginaTabela.php?nomeTabela={$coluna}&linkAPI={$linkAPI}'>{$colunaFormatada}</a></li>";
-                    }
-                    ?>
+                    <?php foreach ($colunas as $coluna) : ?>
+                        <li>
+                            <div class="dropdown">
+                                <a href="#" class="dropbtn"><?php echo ucwords(str_replace('_', ' ', $coluna)); ?></a>
+                                <div class="dropdown-content">
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=ASC'>Ordenação Ascendente</a>
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=DESC'>Ordenação Descendente</a>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
-    <div class="button-container">
-        <div class="custom-button">
-            <button onclick="window.location.href='Export.php'">Exportar Dados</button>
-            <?php
-            if (isset($nomeTabelaAtual)) {
-                $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-                echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
-            } else {
-                // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
-                echo "Erro: Nome da tabela não definido";
-            }
-            ?>
+        <div class="button-container">
+            <div class="custom-button">
+                <button onclick="window.location.href='Export.php'">Exportar Dados</button>
+                <?php
+                if (isset($nomeTabelaAtual)) {
+                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                    echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+                } else {
+                    // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
+                    echo "Erro: Nome da tabela não definido";
+                }
+                ?>
+            
+            <button onclick="window.location.href='Mapa.php'">Mapa</button>
+            <!-- nao esta iterativo -->
+            </div>
         </div>
     </div>
-
-    </div>
-    </div>
-
 
     <?php
-    // Verificar se a variável $tituloPagina está definida
-    if (isset($tituloPagina)) {
-        echo "<h1>"  . $tituloPagina . "</h1>";
-        // Variáveis para controle de offset e limite
-        $offset = 0;
-        $limit = 60;
-        // Loop para buscar e inserir todos os dados
-        do {
-            // Obtém os dados da API
-            $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
-            // Verifica se os dados foram obtidos corretamente e se a resposta é válida
-            if (isset($data['results']) && is_array($data['results'])) {
-                if ($offset == 0) {
-                    // Criar tabela na primeira iteração
-                    $columns = array_keys($data['results'][0]);
-                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-                    $createTableSQL = "CREATE TABLE IF NOT EXISTS `{$nomeTabelaFormatado}` (id INT AUTO_INCREMENT PRIMARY KEY, ";
+    // Configurações iniciais
+    echo "<h1>"  . $tituloPagina . "</h1>";
+    $limit = 60; // Número de registros a serem exibidos por vez
+    $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
-                    foreach ($columns as $column) {
-                        $createTableSQL .= "`{$column}` VARCHAR(255), ";
-                    }
-                    $createTableSQL = rtrim($createTableSQL, ", ") . ")";
-                    if (!mysqli_query($mysqli, $createTableSQL)) {
-                        echo "Erro ao criar tabela: " . mysqli_error($mysqli);
-                        break;
-                    }
-                }
-                // Inserir dados na tabela
-                foreach ($data['results'] as $record) {
-                    $insertValues = array_map(function ($value) use ($mysqli) {
-                        return mysqli_real_escape_string($mysqli, $value);
-                    }, $record);
-                    $new_insertValues = "'" . implode("','", $insertValues) . "'";
+    // Obter parâmetros de ordenação
+    $order = isset($_GET['order']) ? $_GET['order'] : 'id'; // Ordenar por 'id' por padrão
+    $direction = isset($_GET['direction']) && in_array($_GET['direction'], ['ASC', 'DESC']) ? $_GET['direction'] : 'ASC';
 
-                    // Verificar se o registro já existe
-                    $verifica = "SELECT * FROM `{$nomeTabelaFormatado}` WHERE ";
-                    //$dataOrigem = explode(",", $insertValues);
+    // Consulta SQL para obter dados da tabela com ordenação
+    $sql = "SELECT * FROM `{$nomeTabelaFormatado}` ORDER BY {$order} {$direction} LIMIT {$offset}, {$limit}";
+    $result = mysqli_query($mysqli, $sql);
 
-                    for ($i = 0; $i < count($columns); $i++) {
+    // Verificar se a consulta foi bem-sucedida
+    if ($result && mysqli_num_rows($result) > 0) {
+        // Obter o número total de registros
+        $countSQL = "SELECT COUNT(*) AS total FROM `{$nomeTabelaFormatado}`";
+        $countResult = mysqli_query($mysqli, $countSQL);
+        $totalRecords = mysqli_fetch_assoc($countResult)['total'];
 
-                        if ($i == count($columns) - 1) {
-                            $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "'";
-                        } else {
-                            $verifica .= "$columns[$i] = '" . $insertValues[$columns[$i]]  . "' AND ";
-                        }
-                    }
-                    $res = mysqli_query($mysqli, $verifica);
+        // Função para calcular o número total de páginas
+        function getTotalPages($totalRecords, $limit)
+        {
+            return ceil($totalRecords / $limit);
+        }
 
-                    $rowcount = mysqli_num_rows($res);
-                    if ($rowcount == 0) {
-                        $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$new_insertValues})";
-                        if (!mysqli_query($mysqli, $insertSQL)) {
-                            echo "Erro ao inserir dados: " . mysqli_error($mysqli);
-                        }
-                    }
-                }
-                // Incrementar o offset para o próximo lote de dados
-                $offset += $limit;
-            } else {
-                if (empty($data['results'])) {
-                    echo "<p>Nenhum registro encontrado.</p>";
-                } else {
-                    echo "<p>Erro ao obter dados da API.</p>";
-                    echo "<pre>";
-                    print_r($data);
-                    echo "</pre>";
-                }
-                break;
+        // Obtém o número total de páginas
+        $totalPages = getTotalPages($totalRecords, $limit);
+
+        // Exibe o menu de navegação com o número total de páginas
+        displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+
+        echo "<div class='table-container'>";
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        // Criar cabeçalhos da tabela com base nos nomes das colunas
+        $colunas = mysqli_fetch_fields($result);
+        foreach ($colunas as $coluna) {
+            echo "<th>" . htmlspecialchars($coluna->name) . "</th>";
+        }
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        // Iterar sobre os registros
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            foreach ($row as $value) {
+                echo "<td>" . htmlspecialchars($value) . "</td>";
             }
-        } while (count($data['results']) == $limit);
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+
+        // Exibir o menu de navegação
+        displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
     } else {
-        echo "Erro na consulta: " . mysqli_error($mysqli);
+        echo "<p>Nenhum registro encontrado ou erro na consulta SQL.</p>";
+        if ($result === false) {
+            echo "<p>Erro: " . mysqli_error($mysqli) . "</p>";
+        }
     }
+
+    // Fechar a conexão com o banco de dados
+    mysqli_close($mysqli);
     ?>
-    <main>
-        <div class="table-container">
-            <?php
-            // Configurações iniciais
-            $limit = 60; // Número de registros a serem exibidos por vez
-            $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
-            // Obtém os dados da API
-            $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
-            // Verifica se os dados foram obtidos corretamente e se a resposta é válida
-            if (isset($data['total_count'])) {
-                // Obtém o número total de registros
-                $totalRecords = intval($data['total_count']);
-                // Função para calcular o número total de páginas
-                function getTotalPages($totalRecords, $limit)
-                {
-                    return ceil($totalRecords / $limit);
-                }
-                // Obtém o número total de páginas
-                $totalPages = getTotalPages($totalRecords, $limit);
-                // Exibe o menu de navegação com o número total de páginas
-                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI); // Adicionado os parâmetros
-            } else {
-                // Caso não haja registros ou erro na resposta
-                if (empty($data['results'])) {
-                    echo "<p>Nenhum registro encontrado.</p>";
-                } else {
-                    echo "<p>Erro ao obter dados da API.</p>";
-                    echo "<pre>";
-                    print_r($data); // Exibir a resposta completa para depuração
-                    echo "</pre>";
-                }
-            }
-            // Verificar se os dados foram obtidos corretamente e se a resposta é válida
-            if (isset($data['results']) && is_array($data['results'])) {
-                echo "<table>";
-                echo "<thead>";
-                echo "<tr>";
-                // Criar cabeçalhos da tabela com base nas chaves do primeiro registro
-                foreach ($data['results'][0] as $key => $value) {
-                    echo "<th>" . htmlspecialchars($key) . "</th>";
-                }
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                // Iterar sobre os registros
-                foreach ($data['results'] as $record) {
-                    echo "<tr>";
-                    foreach ($record as $key => $value) {
-                        // Utilizar htmlspecialchars apenas quando necessário
-                        echo "<td>" . htmlspecialchars($value) . "</td>";
-                    }
-                    echo "</tr>";
-                }
-                echo "</tbody>";
-                echo "</table>";
-                // Exibir o menu de navegação
-                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI); // Adicionado os parâmetros
-            } else {
-                // Caso não haja registros ou erro na resposta
-                if (empty($data['results'])) {
-                    echo "<p>Nenhum registro encontrado.</p>";
-                } else {
-                    echo "<p>Erro ao obter dados da API.</p>";
-                    echo "<pre>";
-                    print_r($data); // Exibir a resposta completa para depuração
-                    echo "</pre>";
-                }
-            }
-            ?>
-        </div>
-    </main>
     <footer>
         <div class="footer-content">
             <div class="footer-left">
@@ -347,9 +299,10 @@ if (session_status() == PHP_SESSION_NONE) {
     </footer>
 </body>
 <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            menu.classList.toggle("visible");
-        }
-    </script>
+    function toggleMenu() {
+        var menu = document.getElementById("menu");
+        menu.classList.toggle("visible");
+    }
+</script>
+
 </html>
