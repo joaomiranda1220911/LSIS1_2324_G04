@@ -85,6 +85,13 @@
             background-color: #333;
             color: #FFDC00;
         }
+
+        footer {
+            margin-top: auto;
+            background-color: #f4f4f4;
+            color: white;
+            text-align: center;
+        }
     </style>
 </head>
 
