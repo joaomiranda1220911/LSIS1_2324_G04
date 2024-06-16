@@ -24,15 +24,66 @@
 
         .chart-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 1500px;
-            height: 500px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             background-color: white;
-            margin: 10px;
+        }
+
+        .chart {
+            width: 100%;
+            height: 370px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 660px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+        }
+
+        form label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        form select {
+            padding: 8px;
+            margin-right: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        form input[type="submit"] {
+            background-color: #FFDC00;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-left: 20px;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #333;
+            color: #FFDC00;
         }
     </style>
 </head>
@@ -154,15 +205,17 @@
     ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
-        <label for="xColuna">Escolhe a coluna para o eixo X:</label>
+        <label for="xColuna">Eixo X:</label>
         <select name="xColuna" id="xColuna">
+            <option value="" disabled selected>-</option>
             <?php foreach ($colunas as $coluna) {
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
         </select>
         <br><br>
-        <label for="yColuna">Escolhe a coluna para o eixo Y:</label>
+        <label for="yColuna">Eixo Y:</label>
         <select name="yColuna" id="yColuna">
+            <option value="" disabled selected>-</option>
             <?php foreach ($colunas as $coluna) {
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
@@ -173,7 +226,7 @@
 
     <div class="chart-container">
         <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
-        <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+        <div id="chartContainer2" style="margin-top: 30px; height: 370px; width: 100%;"></div>
     </div>
 
     <footer>

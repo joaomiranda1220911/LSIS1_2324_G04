@@ -235,7 +235,7 @@
                     data: {
                         labels: educationLevels,
                         datasets: [{
-                            label: 'Correlação Nível de Escolaridade vs CPES',
+                            label: 'Correlação Nível de Escolaridade vs Total de UPAC',
                             data: correlationData,
                             backgroundColor: '#FFDC00',
                             borderColor: 'black',
