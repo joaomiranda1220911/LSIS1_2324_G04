@@ -163,7 +163,7 @@
             $colunas = array();
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    array_push($colunas, $row['Field']);
+                    $colunas[] = $row['Field'];
                 }
             }
             return $colunas;
@@ -171,64 +171,87 @@
 
         $colunas = obterColunas($mysqli, $nomeTabelaAtual);
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $xColuna = $_POST['xColuna'];
-            $yColuna = $_POST['yColuna'];
+        $dataPoints1 = array(); // Inicializa como array vazio
 
-            // Obter dados com base na seleção do utilizador
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $xColuna1 = $_POST['xColuna1'];
+            $yColuna1 = $_POST['yColuna1'];
+
+            // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
             function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
             {
-                $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela";
-                $result = $mysqli->query($sql);
                 $dataPoints = array();
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        array_push($dataPoints, array("label" => $row["x"], "y" => $row["y"]));
+                if ($xColuna && $yColuna) {
+                    $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela ORDER BY $xColuna ASC";
+                    $result = $mysqli->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $dataPoints[] = array("label" => $row["x"], "y" => $row["y"]);
+                        }
                     }
                 }
                 return $dataPoints;
             }
 
-            $dataPoints1 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna, $yColuna);
-            $dataPoints2 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna, $yColuna);
-        } else {
-            $dataPoints1 = array();
-            $dataPoints2 = array();
+            $dataPoints1 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna1, $yColuna1);
         }
     }
-    ?>
-
-    <?php
     // Verificar se $nomeTabelaAtual está definido e ajustar o título da página
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
     ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
-        <label for="xColuna">Eixo X:</label>
-        <select name="xColuna" id="xColuna">
+        <label for="xColuna1">Eixo X:</label>
+        <select name="xColuna1" id="xColuna1">
             <option value="" disabled selected>-</option>
             <?php foreach ($colunas as $coluna) {
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
         </select>
         <br><br>
-        <label for="yColuna">Eixo Y:</label>
-        <select name="yColuna" id="yColuna">
+        <label for="yColuna1">Eixo Y:</label>
+        <select name="yColuna1" id="yColuna1">
             <option value="" disabled selected>-</option>
             <?php foreach ($colunas as $coluna) {
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
         </select>
         <br><br>
-        <input type="submit" value="Gerar Gráficos">
+        <input type="submit" value="Gerar Gráfico 1">
     </form>
 
     <div class="chart-container">
         <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
-        <div id="chartContainer2" style="margin-top: 30px; height: 370px; width: 100%;"></div>
     </div>
 
+    <script>
+        // Configuração dos gráficos CanvasJS
+        window.onload = function() {
+            var dataPoints1 = <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>;
+
+            var chart1 = new CanvasJS.Chart("chartContainer1", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Gráfico 1"
+                },
+                axisX: {
+                    title: "<?php echo isset($xColuna1) ? $xColuna1 : ''; ?>"
+                },
+                axisY: {
+                    title: "<?php echo isset($yColuna1) ? $yColuna1 : ''; ?>",
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: dataPoints1
+                }]
+            });
+
+            chart1.render();
+        };
+    </script>
     <footer>
         <div class="footer-content">
             <div class="footer-left">
@@ -240,51 +263,6 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Configuração dos gráficos CanvasJS
-        window.onload = function() {
-            var chart1 = new CanvasJS.Chart("chartContainer1", {
-                animationEnabled: true,
-                theme: "light2",
-                title: {
-                    text: "Gráfico 1"
-                },
-                axisX: {
-                    title: "Eixo X"
-                },
-                axisY: {
-                    title: "Eixo Y",
-                    includeZero: false
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-            chart1.render();
-
-            var chart2 = new CanvasJS.Chart("chartContainer2", {
-                animationEnabled: true,
-                theme: "light2",
-                title: {
-                    text: "Gráfico 2"
-                },
-                axisX: {
-                    title: "Eixo X"
-                },
-                axisY: {
-                    title: "Eixo Y",
-                    includeZero: false
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-            chart2.render();
-        };
-    </script>
 </body>
 
 </html>

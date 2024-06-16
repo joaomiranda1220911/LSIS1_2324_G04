@@ -210,9 +210,6 @@ if (session_status() == PHP_SESSION_NONE) {
                     echo "Erro: Nome da tabela não definido";
                 }
                 ?>
-            
-            <button onclick="window.location.href='Mapa.php'">Mapa</button>
-            <!-- nao esta iterativo -->
             </div>
         </div>
     </div>
