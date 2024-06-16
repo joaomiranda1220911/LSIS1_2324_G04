@@ -92,6 +92,13 @@
             color: white;
             text-align: center;
         }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -179,34 +186,43 @@
         $colunas = obterColunas($mysqli, $nomeTabelaAtual);
 
         $dataPoints1 = array(); // Inicializa como array vazio
+        $mensagemErro = ""; // Variável para armazenar a mensagem de erro
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $xColuna1 = $_POST['xColuna1'];
-            $yColuna1 = $_POST['yColuna1'];
+            $xColuna1 = isset($_POST['xColuna1']) ? $_POST['xColuna1'] : '';
+            $yColuna1 = isset($_POST['yColuna1']) ? $_POST['yColuna1'] : '';
 
-            // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
-            function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
-            {
-                $dataPoints = array();
-                if ($xColuna && $yColuna) {
-                    $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela ORDER BY $xColuna ASC";
-                    $result = $mysqli->query($sql);
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $dataPoints[] = array("label" => $row["x"], "y" => $row["y"]);
+            if (empty($xColuna1) || empty($yColuna1)) {
+                $mensagemErro = "Por favor preencha os parametros do grafico";
+            } else {
+                // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
+                function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
+                {
+                    $dataPoints = array();
+                    if ($xColuna && $yColuna) {
+                        $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela ORDER BY $xColuna ASC";
+                        $result = $mysqli->query($sql);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $dataPoints[] = array("label" => $row["x"], "y" => $row["y"]);
+                            }
                         }
                     }
+                    return $dataPoints;
                 }
-                return $dataPoints;
-            }
 
-            $dataPoints1 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna1, $yColuna1);
+                $dataPoints1 = obterDadosSelecionados($mysqli, $nomeTabelaAtual, $xColuna1, $yColuna1);
+            }
         }
     }
     // Verificar se $nomeTabelaAtual está definido e ajustar o título da página
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
     ?>
+
+    <?php if (!empty($mensagemErro)): ?>
+        <p class="error"><?php echo $mensagemErro; ?></p>
+    <?php endif; ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
         <label for="xColuna1">Eixo X:</label>
@@ -225,7 +241,7 @@
             } ?>
         </select>
         <br><br>
-        <input type="submit" value="Gerar Gráfico 1">
+        <input type="submit" value="Gerar Gráfico">
     </form>
 
     <div class="chart-container">
@@ -273,3 +289,4 @@
 </body>
 
 </html>
+
