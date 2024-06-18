@@ -2,47 +2,6 @@
 // Incluir o arquivo de configuração da conexão com o banco de dados
 include("ImportSQL.php");
 
-// Função para criar a tabela se não existir
-function createTableIfNotExists($nomeTabelaFormatado, $fields)
-{
-    global $mysqli;
-
-    // Montar a query para criar a tabela se não existir
-    $sql = "CREATE TABLE IF NOT EXISTS `{$nomeTabelaFormatado}` (";
-    foreach ($fields as $fieldName => $fieldType) {
-        $sql .= "`{$fieldName}` {$fieldType}, ";
-    }
-    $sql = rtrim($sql, ", "); // Remover a última vírgula e espaço
-    $sql .= ")";
-
-    // Executar a query para criar a tabela
-    if (mysqli_query($mysqli, $sql)) {
-        echo "Tabela criada com sucesso ou já existente.";
-    } else {
-        echo "Erro ao criar a tabela: " . mysqli_error($mysqli);
-        die();
-    }
-}
-
-// Função para exibir o menu de navegação
-function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
-{
-    echo "<div class='pagination'>";
-    // Link para a página anterior
-    if ($offset > 0) {
-        $prevOffset = max(0, $offset - $limit);
-        echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
-    }
-    // Número da página atual e número total de páginas
-    $currentPage = ($offset / $limit) + 1;
-    echo " Página {$currentPage} de {$totalPages} ";
-    // Link para a próxima página
-    $nextOffset = $offset + $limit;
-    echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
-    echo "</div>";
-}
-
-// Consulta SQL para buscar os nomes das tabelas
 if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     $nomeTabelaAtual = htmlspecialchars($_GET['nomeTabela']);
     $linkAPI = htmlspecialchars($_GET['linkAPI']); // Adicionado
@@ -50,15 +9,16 @@ if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     // Definir o título da página com base no nome da tabela atual
     $tituloPagina = "Dados - " . $nomeTabelaAtual;
 } else {
-    // Redirecionar ou mostrar mensagem de erro caso os parâmetros não estejam presentes
     die('Parâmetros necessários não foram passados pela URL.');
 }
 
-// Função para obter dados da API
-function fetchData($offset, $limit, $nomeTabelaAtual)
-{
-    global $mysqli;
+// Verificar se a sessão já está ativa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
+function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
+{
     // Consultar a base de dados para obter o URL da API com base no nome da tabela atual
     $sql = "SELECT linkAPI FROM dataset WHERE nomeTabela = '{$nomeTabelaAtual}'";
     $result = mysqli_query($mysqli, $sql);
@@ -69,6 +29,10 @@ function fetchData($offset, $limit, $nomeTabelaAtual)
             $row = mysqli_fetch_assoc($result);
             $url = $row['linkAPI'];
 
+            // Substituir os placeholders pelo offset e limit
+            $url = str_replace('{$limit}', $limit, $url);
+            $url = str_replace('{$offset}', $offset, $url);
+
             // Iniciar uma requisição cURL
             $ch = curl_init();
             if (!$ch) {
@@ -78,7 +42,7 @@ function fetchData($offset, $limit, $nomeTabelaAtual)
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Tempo limite de conexão em segundos
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Tempo limite total da operação em segundos
+            curl_setopt($ch, CURLOPT_TIMEOUT, 180); // Tempo limite total da operação em segundos
             // Executar a requisição cURL
             $response = curl_exec($ch);
             // Verificar erros de cURL
@@ -100,34 +64,6 @@ function fetchData($offset, $limit, $nomeTabelaAtual)
             if ($data === null) {
                 die("Erro ao decodificar a resposta da API.");
             }
-
-            // Nome da tabela formatado
-            $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-
-            // Criar a tabela se não existir
-            createTableIfNotExists($nomeTabelaFormatado, array_keys($data[0]));
-
-            // Preparar os dados para inserção na tabela
-            $sqlInsert = "INSERT INTO `{$nomeTabelaFormatado}` (";
-            $sqlInsert .= implode(", ", array_keys($data[0])) . ") VALUES ";
-
-            foreach ($data as $item) {
-                $values = array_map(function ($value) {
-                    global $mysqli;
-                    return "'" . mysqli_real_escape_string($mysqli, $value) . "'";
-                }, $item);
-                $sqlInsert .= "(" . implode(", ", $values) . "), ";
-            }
-            $sqlInsert = rtrim($sqlInsert, ", "); // Remover a última vírgula e espaço
-
-            // Executar a query de inserção
-            if (mysqli_query($mysqli, $sqlInsert)) {
-                echo "Dados inseridos com sucesso na tabela.";
-            } else {
-                echo "Erro ao inserir dados na tabela: " . mysqli_error($mysqli);
-                die();
-            }
-
             // Retornar os dados obtidos da API
             return $data;
         } else {
@@ -140,11 +76,30 @@ function fetchData($offset, $limit, $nomeTabelaAtual)
     }
 }
 
+// Função para exibir o menu de navegação
+function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
+{
+    echo "<div class='pagination'>";
+    // Link para a página anterior
+    if ($offset > 0) {
+        $prevOffset = max(0, $offset - $limit);
+        echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$prevOffset}\">&lt;&lt; Página Anterior</a>";
+    }
+    // Número da página atual e número total de páginas
+    $currentPage = ($offset / $limit) + 1;
+    echo " Página {$currentPage} de {$totalPages} ";
+    // Link para a próxima página
+    $nextOffset = $offset + $limit;
+    echo "<a href=\"?nomeTabela={$nomeTabelaAtual}&linkAPI={$linkAPI}&offset={$nextOffset}\">Próxima Página &gt;&gt;</a>";
+    echo "</div>";
+}
+
 // Verificar se a sessão já está ativa
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -211,12 +166,14 @@ if (session_status() == PHP_SESSION_NONE) {
                 $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
                 $checkTableSQL = "SHOW TABLES LIKE '{$nomeTabelaFormatado}'";
                 $checkResult = mysqli_query($mysqli, $checkTableSQL);
+
                 if (mysqli_num_rows($checkResult) == 0) {
                     die("A tabela {$nomeTabelaFormatado} não existe.");
                 } else {
                     $sqla = "SHOW COLUMNS FROM `{$nomeTabelaFormatado}`";
                     $resultas = mysqli_query($mysqli, $sqla);
                     $colunas = array();
+
                     if ($resultas) {
                         while ($row = mysqli_fetch_assoc($resultas)) {
                             $colunas[] = $row['Field'];
@@ -229,14 +186,16 @@ if (session_status() == PHP_SESSION_NONE) {
                 <ul class="menu-lista">
                     <?php foreach ($colunas as $coluna) : ?>
                         <li>
-                            <div class="dropdown-content">
-                                <a href='PaginaTabela.php?nomeTabela=<?php echo urlencode($nomeTabelaAtual); ?>&linkAPI=<?php echo urlencode($linkAPI); ?>&order=<?php echo urlencode($coluna); ?>&direction=ASC'>Ordenação Ascendente</a>
-                                <a href='PaginaTabela.php?nomeTabela=<?php echo urlencode($nomeTabelaAtual); ?>&linkAPI=<?php echo urlencode($linkAPI); ?>&order=<?php echo urlencode($coluna); ?>&direction=DESC'>Ordenação Descendente</a>
+                            <div class="dropdown">
+                                <a href="#" class="dropbtn"><?php echo ucwords(str_replace('_', ' ', $coluna)); ?></a>
+                                <div class="dropdown-content">
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=ASC'>Ordenação Ascendente</a>
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=DESC'>Ordenação Descendente</a>
+                                </div>
                             </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
-
             </div>
         </div>
         <div class="button-container">
@@ -252,70 +211,77 @@ if (session_status() == PHP_SESSION_NONE) {
                 }
                 ?>
             </div>
-
         </div>
     </div>
 
     <?php
-    // Verificar se a variável $tituloPagina está definida
-    if (isset($tituloPagina)) {
-        echo "<h1>" . $tituloPagina . "</h1>";
+    // Configurações iniciais
+    echo "<h1>"  . $tituloPagina . "</h1>";
+    $limit = 35; // Número de registros a serem exibidos por vez
+    $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
-        // Variáveis para controle de paginação
-        $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-        $limit = 35;
+    // Obter parâmetros de ordenação
+    $order = isset($_GET['order']) ? $_GET['order'] : 'id'; // Ordenar por 'id' por padrão
+    $direction = isset($_GET['direction']) && in_array($_GET['direction'], ['ASC', 'DESC']) ? $_GET['direction'] : 'ASC';
 
-        // Nome da tabela formatado
-        $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+    // Consulta SQL para obter dados da tabela com ordenação
+    $sql = "SELECT * FROM `{$nomeTabelaFormatado}` ORDER BY {$order} {$direction} LIMIT {$offset}, {$limit}";
+    $result = mysqli_query($mysqli, $sql);
 
-        // Consultar a tabela para obter os dados
-        $sql = "SELECT * FROM `{$nomeTabelaFormatado}` LIMIT {$limit} OFFSET {$offset}";
-        $result = mysqli_query($mysqli, $sql);
+    // Verificar se a consulta foi bem-sucedida
+    if ($result && mysqli_num_rows($result) > 0) {
+        // Obter o número total de registros
+        $countSQL = "SELECT COUNT(*) AS total FROM `{$nomeTabelaFormatado}`";
+        $countResult = mysqli_query($mysqli, $countSQL);
+        $totalRecords = mysqli_fetch_assoc($countResult)['total'];
 
-        if ($result) {
-            // Exibir o menu de navegação
-            // Calcular o número total de páginas
-            $totalSql = "SELECT COUNT(*) as total FROM `{$nomeTabelaFormatado}`";
-            $totalResult = mysqli_query($mysqli, $totalSql);
-            $totalRow = mysqli_fetch_assoc($totalResult);
-            $totalRows = $totalRow['total'];
-            $totalPages = ceil($totalRows / $limit);
-
-            // Exibir o menu de navegação no topo
-            displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
-
-            // Exibir os dados em uma tabela HTML
-            echo "<table>";
-            echo "<tr>";
-
-            // Obter os nomes das colunas
-            $fields = mysqli_fetch_fields($result);
-            foreach ($fields as $field) {
-                echo "<th>{$field->name}</th>";
-            }
-
-            echo "</tr>";
-
-            // Obter os dados da consulta
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                foreach ($row as $cell) {
-                    echo "<td>" . htmlspecialchars($cell) . "</td>";
-                }
-                echo "</tr>";
-            }
-
-            echo "</table>";
-
-            // Exibir o menu de navegação no final
-            displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
-        } else {
-            echo "Erro ao consultar a base de dados: " . mysqli_error($mysqli);
+        // Função para calcular o número total de páginas
+        function getTotalPages($totalRecords, $limit)
+        {
+            return ceil($totalRecords / $limit);
         }
+
+        // Obtém o número total de páginas
+        $totalPages = getTotalPages($totalRecords, $limit);
+
+        // Exibe o menu de navegação com o número total de páginas
+        displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+
+        echo "<div class='table-container'>";
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        // Criar cabeçalhos da tabela com base nos nomes das colunas
+        $colunas = mysqli_fetch_fields($result);
+        foreach ($colunas as $coluna) {
+            echo "<th>" . htmlspecialchars($coluna->name) . "</th>";
+        }
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        // Iterar sobre os registros
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            foreach ($row as $value) {
+                echo "<td>" . htmlspecialchars($value) . "</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+
+        // Exibir o menu de navegação
+        displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
     } else {
-        // Caso "tituloPagina" não esteja definido, você pode tratar isso aqui, se necessário
-        echo "Erro: Título da página não definido";
+        echo "<p>Nenhum registro encontrado ou erro na consulta SQL.</p>";
+        if ($result === false) {
+            echo "<p>Erro: " . mysqli_error($mysqli) . "</p>";
+        }
     }
+
+    // Fechar a conexão com o banco de dados
+    mysqli_close($mysqli);
     ?>
     <footer>
         <div class="footer-content">
@@ -328,15 +294,12 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
         </div>
     </footer>
-
-    <script src="script.js"></script>
-    <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            menu.classList.toggle("visible");
-        }
-    </script>
-
 </body>
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("menu");
+        menu.classList.toggle("visible");
+    }
+</script>
 
 </html>
