@@ -1,30 +1,36 @@
 <?php
-// Incluir o arquivo de configuração da conexão com o banco de dados
+// Include the database connection configuration file
 include ("ImportSQL.php");
 
-// Verificar se a sessão já está ativa
+// Function to reconnect to the database
+function reconnect(&$mysqli) {
+    mysqli_close($mysqli);
+    include ("ImportSQL.php");
+}
+
+// Check if the session is already started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verificar se o formulário foi submetido
+// Check if the form was submitted via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obter os dados do formulário
+    // Get the form data
     $nome_tabela = mysqli_real_escape_string($mysqli, $_POST['nome_tabela']);
     $tag_tabela = $_POST['tag_tabela'];
     $informacao_tabela = mysqli_real_escape_string($mysqli, $_POST['informacao_tabela']);
     $numero_linhas = mysqli_real_escape_string($mysqli, $_POST['numero_linhas']);
 
-    // Processar as tags da tabela
+    // Process table tags
     $tags = implode(", ", $tag_tabela);
 
-    // Verificar e processar o upload do ficheiro
+    // Check and process the file upload
     if (isset($_FILES['fileUpload']) && $_FILES['fileUpload']['error'] == 0) {
         $fileName = basename($_FILES['fileUpload']['name']);
         $fileTmpName = $_FILES['fileUpload']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        // Determinar o tipo de importação com base na extensão do arquivo
+        // Determine import type based on file extension
         $tipoImportacao = '';
         switch ($fileExtension) {
             case 'csv':
@@ -38,101 +44,121 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $tipoImportacao = 'Upload';
         }
 
-        // Definir o diretório de upload
+        // Define the upload directory
         $uploadDir = "uploads/";
 
-        // Criar o diretório de upload se não existir
+        // Create the upload directory if it doesn't exist
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
 
         $filePath = $uploadDir . $fileName;
 
-        // Mover o ficheiro para o diretório de uploads
+        // Move the file to the upload directory
         if (move_uploaded_file($fileTmpName, $filePath)) {
-            // Processar o ficheiro CSV para criar ou atualizar a tabela
+            // Process the CSV file to create or update the table
             if ($tipoImportacao == 'CSV') {
-                // Ler o conteúdo do ficheiro CSV
+                // Read the CSV file content
                 if (($handle = fopen($filePath, "r")) !== FALSE) {
-                    // Obter a primeira linha como os nomes das colunas
-                    $header = fgetcsv($handle, 1000, ";"); // Usar ; como separador
+                    // Get the first line as column names
+                    $header = fgetcsv($handle, 1000, ";"); // Use ; as delimiter
 
-                    // Limpar os nomes das colunas para evitar problemas de sintaxe
+                    // Clean column names to avoid syntax issues
                     $cleanedHeader = array_map(function($col) use ($mysqli) {
                         return '`' . mysqli_real_escape_string($mysqli, trim($col)) . '`';
                     }, $header);
 
-                    // Verificar se a tabela já existe
+                    // Check if the table already exists
                     $checkTableSQL = "SHOW TABLES LIKE '$nome_tabela'";
                     $tableExists = mysqli_query($mysqli, $checkTableSQL);
 
                     if (mysqli_num_rows($tableExists) == 0) {
-                        // Construir a consulta SQL CREATE TABLE se a tabela não existir
+                        // Build the CREATE TABLE SQL query if the table does not exist
                         $createTableSQL = "CREATE TABLE `$nome_tabela` (id INT AUTO_INCREMENT PRIMARY KEY, ";
                         foreach ($cleanedHeader as $column) {
                             $createTableSQL .= "$column VARCHAR(255), ";
                         }
                         $createTableSQL = rtrim($createTableSQL, ", ") . ");";
 
-                        // Executar a consulta para criar a tabela
+                        // Execute the query to create the table
                         if (!mysqli_query($mysqli, $createTableSQL)) {
-                            echo "Erro ao criar tabela: " . mysqli_error($mysqli);
+                            echo "Error creating table: " . mysqli_error($mysqli);
                             exit();
                         }
                     }
 
-                    // Inserir os dados do CSV na tabela (nova ou existente)
+                    // Insert CSV data into the table (new or existing) in chunks
                     $insertSQL = "INSERT INTO `$nome_tabela` (" . implode(", ", $cleanedHeader) . ") VALUES ";
-                    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                    $rowCount = 0;
+                    $limit = 10000; // Limit the import to 10,000 rows
+                    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE && $rowCount < $limit) {
                         $values = array_map(function($value) use ($mysqli) {
                             return "'" . mysqli_real_escape_string($mysqli, $value) . "'";
                         }, $data);
                         $insertSQL .= "(" . implode(", ", $values) . "), ";
-                    }
-                    $insertSQL = rtrim($insertSQL, ", ") . ";";
+                        $rowCount++;
 
-                    // Executar a consulta para inserir os dados
-                    if (mysqli_query($mysqli, $insertSQL)) {
-                        // Inserir os metadados na tabela dataset
-                        $sql = "INSERT INTO dataset (nomeTabela, tags, numeroLinhas, tipoImportacao, idDashboard, informacao, linkAPI)
-                                VALUES ('$nome_tabela', '$tags', '$numero_linhas', '$tipoImportacao', 0, '$informacao_tabela', '$filePath')";
-
-                        if (mysqli_query($mysqli, $sql)) {
-                            // Redirecionar para a página home_dados.php após a inserção bem-sucedida
-                            header("Location: home_dados.php");
-                            exit(); // Certifique-se de que o script pare a execução após o redirecionamento
-                        } else {
-                            echo "Erro ao inserir metadados: " . mysqli_error($mysqli);
+                        // Execute query every 100 rows to avoid long-running queries
+                        if ($rowCount % 100 == 0) {
+                            $insertSQL = rtrim($insertSQL, ", ") . ";";
+                            echo "". $insertSQL ;
+                            die;
+                            if (!mysqli_query($mysqli, $insertSQL)) {
+                                echo "Error inserting CSV data into table: " . mysqli_error($mysqli);
+                                exit();
+                            }
+                            $insertSQL = "INSERT INTO `$nome_tabela` (" . implode(", ", $cleanedHeader) . ") VALUES ";
                         }
-                    } else {
-                        echo "Erro ao inserir dados do CSV na tabela: " . mysqli_error($mysqli);
+                    }
+                    // Execute remaining rows
+                    if ($rowCount % 100 != 0) {
+                        $insertSQL = rtrim($insertSQL, ", ") . ";";
+                        if (!mysqli_query($mysqli, $insertSQL)) {
+                            echo "Error inserting CSV data into table: " . mysqli_error($mysqli);
+                            exit();
+                        }
                     }
                     fclose($handle);
+
+                    // Insert metadata into the dataset table
+                    $sql = "INSERT INTO dataset (nomeTabela, tags, numeroLinhas, tipoImportacao, idDashboard, informacao, linkAPI)
+                            VALUES ('$nome_tabela', '$tags', '$rowCount', '$tipoImportacao', 0, '$informacao_tabela', '$filePath')";
+
+                    // Reconnect to the database before inserting metadata
+                    reconnect($mysqli);
+
+                    if (mysqli_query($mysqli, $sql)) {
+                        // Redirect to home_dados.php after successful insertion
+                        header("Location: home_dados.php");
+                        exit(); // Ensure the script stops executing after redirection
+                    } else {
+                        echo "Error inserting metadata: " . mysqli_error($mysqli);
+                    }
                 } else {
-                    echo "Erro ao abrir o ficheiro CSV.";
+                    echo "Error opening CSV file.";
                 }
             } else {
-                // Inserir os metadados para outros tipos de importação
+                // Insert metadata for other import types
                 $sql = "INSERT INTO dataset (nomeTabela, tags, numeroLinhas, tipoImportacao, idDashboard, informacao, linkAPI)
                         VALUES ('$nome_tabela', '$tags', '$numero_linhas', '$tipoImportacao', 0, '$informacao_tabela', '$filePath')";
 
                 if (mysqli_query($mysqli, $sql)) {
-                    // Redirecionar para a página home_dados.php após a inserção bem-sucedida
+                    // Redirect to home_dados.php after successful insertion
                     header("Location: home_dados.php");
-                    exit(); // Certifique-se de que o script pare a execução após o redirecionamento
+                    exit(); // Ensure the script stops executing after redirection
                 } else {
-                    echo "Erro ao inserir metadados: " . mysqli_error($mysqli);
+                    echo "Error inserting metadata: " . mysqli_error($mysqli);
                 }
             }
         } else {
-            echo "Erro ao fazer upload do ficheiro.";
+            echo "Error uploading file.";
         }
     } else {
-        echo "Por favor, selecione um ficheiro para fazer upload.";
+        echo "Please select a file to upload.";
     }
 }
 
-// Fechar a conexão com o banco de dados
+// Close the database connection
 mysqli_close($mysqli);
 ?>
 
