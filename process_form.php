@@ -101,8 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         // Execute query every 100 rows to avoid long-running queries
                         if ($rowCount % 100 == 0) {
                             $insertSQL = rtrim($insertSQL, ", ") . ";";
-                            echo "". $insertSQL ;
-                            die;
+
                             if (!mysqli_query($mysqli, $insertSQL)) {
                                 echo "Error inserting CSV data into table: " . mysqli_error($mysqli);
                                 exit();

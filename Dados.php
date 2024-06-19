@@ -191,7 +191,16 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
         <div class="button-container">
             <div class="custom-button">
-                <button onclick="window.location.href='Export.php'">Exportar Dados</button>
+            <?php
+                if (isset($nomeTabelaAtual)) {
+                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                    echo "<a href='Export.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Exportar Dados</button></a>";
+                } else {
+                    // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
+                    echo "Erro: Nome da tabela não definido";
+                }
+                ?>
+
                 <?php
                 if (isset($nomeTabelaAtual)) {
                     $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
