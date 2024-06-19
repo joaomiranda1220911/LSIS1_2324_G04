@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <header>
         <div class="logo" onclick="window.location.href='index.php'">
@@ -75,24 +73,20 @@
                 <input type="checkbox" id="tag5" name="tag_tabela[]" value="Renováveis">
                 <label for="tag5">Renováveis</label>
             </div>
-            <div id="uploadFieldContainer"></div>
             <label for="informacao_tabela">Informação da Tabela:</label>
             <textarea id="informacao_tabela" name="informacao_tabela" rows="4" cols="50" required></textarea>
             <label for="numero_linhas">Número de Linhas:</label>
             <input type="number" id="numero_linhas" name="numero_linhas" required>
             <label for="upload_ficheiro">Upload de Ficheiro:</label>
-            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls"
-                required>
+            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls" required>
             <input type="submit" value="Importar Dados" class="submit-button">
         </form>
     </div>
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
-                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
-                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
@@ -100,5 +94,4 @@
         </div>
     </footer>
 </body>
-
 </html>
