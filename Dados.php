@@ -9,50 +9,64 @@ if (isset($_GET['nomeTabela']) && isset($_GET['linkAPI'])) {
     die('Parâmetros necessários não foram passados pela URL.');
 }
 
-function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual) {
+function fetchData($offset, $limit, $mysqli, $nomeTabelaAtual)
+{
     $sql = "SELECT linkAPI FROM dataset WHERE nomeTabela = '{$nomeTabelaAtual}'";
     $result = mysqli_query($mysqli, $sql);
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $url = $row['linkAPI'];
-            $url = str_replace('{$limit}', $limit, $url);
-            $url = str_replace('{$offset}', $offset, $url);
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-            $response = curl_exec($ch);
+            if (!empty($url)) { // Verifica se linkAPI não está vazio
+                $url = str_replace('{$limit}', $limit, $url);
+                $url = str_replace('{$offset}', $offset, $url);
 
-            if (curl_errno($ch)) {
-                $error_message = curl_error($ch);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+                $response = curl_exec($ch);
+
+                if (curl_errno($ch)) {
+                    $error_message = curl_error($ch);
+                    curl_close($ch);
+                    if (strpos($error_message, 'Could not resolve host') !== false) {
+                        die("Erro ao conectar à API: URL inválido ou host não encontrado.");
+                    } else {
+                        die("Erro cURL: " . $error_message);
+                    }
+                }
+
                 curl_close($ch);
-                die("Erro cURL: " . $error_message);
+
+                if ($response === false) {
+                    die("Erro ao obter resposta da API.");
+                }
+
+                $data = json_decode($response, true);
+                if ($data === null) {
+                    die("Erro ao decodificar a resposta da API.");
+                }
+
+                return $data;
+            } else {
+                die("A coluna linkAPI está vazia. Não é possível importar dados da API.");
             }
-
-            curl_close($ch);
-
-            if ($response === false) {
-                die("Erro ao obter resposta da API.");
-            }
-
-            $data = json_decode($response, true);
-            if ($data === null) {
-                die("Erro ao decodificar a resposta da API.");
-            }
-
-            return $data;
         } else {
-            die('Nenhuma URL encontrada na tabela dataset.');
+            // Caso não haja URL definido na coluna linkAPI
+            die("A coluna linkAPI está vazia. Não é possível importar dados da API.");
         }
     } else {
         die('Erro na consulta SQL: ' . mysqli_error($mysqli));
     }
 }
 
-function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI) {
+
+
+function displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI)
+{
     echo "<div class='pagination'>";
     if ($offset > 0) {
         $prevOffset = max(0, $offset - $limit);
@@ -71,11 +85,13 @@ if (session_status() == PHP_SESSION_NONE) {
 ?>
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <title><?php echo $tituloPagina; ?></title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header>
         <div class="logo" onclick="window.location.href='index.php'">
@@ -166,88 +182,119 @@ if (session_status() == PHP_SESSION_NONE) {
         $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
         $limit = 60;
 
-        $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
-        if (isset($data['results']) && is_array($data['results'])) {
-            if ($offset == 0 && !empty($data['results'])) {
-                $columns = array_keys($data['results'][0]);
-                $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-                $createTableSQL = "CREATE TABLE IF NOT EXISTS `{$nomeTabelaFormatado}` (id INT AUTO_INCREMENT PRIMARY KEY, ";
-                foreach ($columns as $column) {
-                    $createTableSQL .= "`{$column}` VARCHAR(255), ";
-                }
-                $createTableSQL = rtrim($createTableSQL, ", ") . ")";
-                if (!mysqli_query($mysqli, $createTableSQL)) {
-                    echo "Erro ao criar tabela: " . mysqli_error($mysqli);
-                    exit;
-                }
-            }
+        // Verifica se a coluna tipoImportacao é igual a "API"
+        $checkAPI = isset($_GET['tipoImportacao']) && $_GET['tipoImportacao'] == 'API';
 
-            foreach ($data['results'] as $record) {
-                $insertValues = array_map(function ($value) use ($mysqli) {
-                    return mysqli_real_escape_string($mysqli, $value);
-                }, $record);
-                $insertValues = "'" . implode("','", $insertValues) . "'";
-
-                $verifica = "SELECT * FROM `{$nomeTabelaFormatado}` WHERE ";
-                $dataOrigem = explode(",", $insertValues);
-                for ($i = 0; $i < count($columns); $i++) {
-                    $verifica .= "`{$columns[$i]}` = {$dataOrigem[$i]}";
-                    if ($i < count($columns) - 1) {
-                        $verifica .= " AND ";
-                    }
-                }
-                $res = mysqli_query($mysqli, $verifica);
-
-                if (mysqli_num_rows($res) == 0) {
-                    $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
-                    if (!mysqli_query($mysqli, $insertSQL)) {
-                        echo "Erro ao inserir dados: " . mysqli_error($mysqli);
-                    }
-                }
-            }
-
-            $offset += $limit;
-        } else {
-            echo "<p>Nenhum registro encontrado.</p>";
-        }
-    }
-    ?>
-    <main>
-        <div class="table-container">
-            <?php
-            $limit = 60;
-            $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+        if ($checkAPI) {
             $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
-            if (isset($data['total_count'])) {
-                $totalRecords = intval($data['total_count']);
-                $totalPages = ceil($totalRecords / $limit);
-                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+            if (isset($data['results']) && is_array($data['results'])) {
+                if ($offset == 0 && !empty($data['results'])) {
+                    $columns = array_keys($data['results'][0]); // Inicializa $columns com os nomes das colunas
+                }
+                // Loop foreach para inserção de dados
+                foreach ($data['results'] as $record) {
+                    if (isset($columns) && is_array($columns)) {
+                        $insertValues = array_map(function ($value) use ($mysqli) {
+                            return mysqli_real_escape_string($mysqli, $value);
+                        }, $record);
+                        $insertValues = "'" . implode("','", $insertValues) . "'";
+
+                        $verifica = "SELECT * FROM `{$nomeTabelaFormatado}` WHERE ";
+                        $dataOrigem = explode(",", $insertValues);
+                        for ($i = 0; $i < count($columns); $i++) {
+                            $verifica .= "`{$columns[$i]}` = {$dataOrigem[$i]}";
+                            if ($i < count($columns) - 1) {
+                                $verifica .= " AND ";
+                            }
+                        }
+                        $res = mysqli_query($mysqli, $verifica);
+
+                        if (mysqli_num_rows($res) == 0) {
+                            $insertSQL = "INSERT INTO `{$nomeTabelaFormatado}` (`" . implode("`, `", $columns) . "`) VALUES ({$insertValues})";
+                            if (!mysqli_query($mysqli, $insertSQL)) {
+                                echo "Erro ao inserir dados: " . mysqli_error($mysqli);
+                            }
+                        }
+                    }
+                }
+
+                $offset += $limit;
+
+                // Exibição da tabela
+                echo '<main>';
+                echo '<div class="table-container">';
+                if (isset($data['total_count'])) {
+                    $totalRecords = intval($data['total_count']);
+                    $totalPages = ceil($totalRecords / $limit);
+                    displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+                } else {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                }
+
+                if (isset($data['results']) && is_array($data['results'])) {
+                    echo "<table>";
+                    echo "<thead><tr>";
+                    foreach ($data['results'][0] as $key => $value) {
+                        echo "<th>" . htmlspecialchars($key) . "</th>";
+                    }
+                    echo "</tr></thead><tbody>";
+                    foreach ($data['results'] as $record) {
+                        echo "<tr>";
+                        foreach ($record as $key => $value) {
+                            echo "<td>" . htmlspecialchars($value) . "</td>";
+                        }
+                        echo "</tr>";
+                    }
+                    echo "</tbody></table>";
+                    displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+                } else {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                }
+
+                echo '</div>';
+                echo '</main>';
             } else {
                 echo "<p>Nenhum registro encontrado.</p>";
             }
+        } else {
+            // Se não for 'API', apenas exibe a tabela da base de dados com o nome recebido
+            $nomeTabelaFormatado = mysqli_real_escape_string($mysqli, $nomeTabelaAtual);
+            $query = "SELECT * FROM `{$nomeTabelaFormatado}` LIMIT {$offset}, {$limit}";
+            $result = mysqli_query($mysqli, $query);
 
-            if (isset($data['results']) && is_array($data['results'])) {
+            if (mysqli_num_rows($result) > 0) {
+                echo '<main>';
+                echo '<div class="table-container">';
                 echo "<table>";
+                $row = mysqli_fetch_assoc($result);
                 echo "<thead><tr>";
-                foreach ($data['results'][0] as $key => $value) {
+                foreach ($row as $key => $value) {
                     echo "<th>" . htmlspecialchars($key) . "</th>";
                 }
                 echo "</tr></thead><tbody>";
-                foreach ($data['results'] as $record) {
+
+                // Exibição dos dados
+                mysqli_data_seek($result, 0); // Retorna o ponteiro do resultado para o início
+                while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    foreach ($record as $key => $value) {
+                    foreach ($row as $value) {
                         echo "<td>" . htmlspecialchars($value) . "</td>";
                     }
                     echo "</tr>";
                 }
+
                 echo "</tbody></table>";
                 displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+                echo '</div>';
+                echo '</main>';
             } else {
                 echo "<p>Nenhum registro encontrado.</p>";
             }
-            ?>
-        </div>
-    </main>
+        }
+    }
+    ?>
+
+
     <footer>
         <div class="footer-content">
             <div class="footer-left">
@@ -266,5 +313,5 @@ if (session_status() == PHP_SESSION_NONE) {
         }
     </script>
 </body>
-</html>
 
+</html>
