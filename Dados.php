@@ -180,18 +180,16 @@ if (session_status() == PHP_SESSION_NONE) {
     if (isset($tituloPagina)) {
         echo "<h1>" . $tituloPagina . "</h1>";
         $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-        $limit = 60;
+        $limit = 35;
 
-        // Verifica se a coluna tipoImportacao é igual a "API"
         $checkAPI = isset($_GET['tipoImportacao']) && $_GET['tipoImportacao'] == 'API';
 
         if ($checkAPI) {
             $data = fetchData($offset, $limit, $mysqli, $nomeTabelaAtual);
             if (isset($data['results']) && is_array($data['results'])) {
                 if ($offset == 0 && !empty($data['results'])) {
-                    $columns = array_keys($data['results'][0]); // Inicializa $columns com os nomes das colunas
+                    $columns = array_keys($data['results'][0]);
                 }
-                // Loop foreach para inserção de dados
                 foreach ($data['results'] as $record) {
                     if (isset($columns) && is_array($columns)) {
                         $insertValues = array_map(function ($value) use ($mysqli) {
@@ -218,18 +216,15 @@ if (session_status() == PHP_SESSION_NONE) {
                     }
                 }
 
-                $offset += $limit;
-
-                // Exibição da tabela
-                echo '<main>';
-                echo '<div class="table-container">';
+                $totalPages = 1;  // Inicialização padrão
                 if (isset($data['total_count'])) {
                     $totalRecords = intval($data['total_count']);
                     $totalPages = ceil($totalRecords / $limit);
-                    displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
-                } else {
-                    echo "<p>Nenhum registro encontrado.</p>";
                 }
+
+                echo '<main>';
+                echo '<div class="table-container">';
+                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
 
                 if (isset($data['results']) && is_array($data['results'])) {
                     echo "<table>";
@@ -257,43 +252,51 @@ if (session_status() == PHP_SESSION_NONE) {
                 echo "<p>Nenhum registro encontrado.</p>";
             }
         } else {
-            // Se não for 'API', apenas exibe a tabela da base de dados com o nome recebido
-            $nomeTabelaFormatado = mysqli_real_escape_string($mysqli, $nomeTabelaAtual);
+            // Escapa o nome da tabela adequadamente
+            $nomeTabelaFormatado = mysqli_real_escape_string($mysqli, str_replace([' ', '-'], '_', $nomeTabelaAtual));
             $query = "SELECT * FROM `{$nomeTabelaFormatado}` LIMIT {$offset}, {$limit}";
             $result = mysqli_query($mysqli, $query);
 
-            if (mysqli_num_rows($result) > 0) {
-                echo '<main>';
-                echo '<div class="table-container">';
-                echo "<table>";
-                $row = mysqli_fetch_assoc($result);
-                echo "<thead><tr>";
-                foreach ($row as $key => $value) {
-                    echo "<th>" . htmlspecialchars($key) . "</th>";
-                }
-                echo "</tr></thead><tbody>";
+            if ($result) {
+                $totalRecordsQuery = "SELECT COUNT(*) as total FROM `{$nomeTabelaFormatado}`";
+                $totalRecordsResult = mysqli_query($mysqli, $totalRecordsQuery);
+                $totalRecordsRow = mysqli_fetch_assoc($totalRecordsResult);
+                $totalRecords = intval($totalRecordsRow['total']);
+                $totalPages = ceil($totalRecords / $limit);
 
-                // Exibição dos dados
-                mysqli_data_seek($result, 0); // Retorna o ponteiro do resultado para o início
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    foreach ($row as $value) {
-                        echo "<td>" . htmlspecialchars($value) . "</td>";
+                if (mysqli_num_rows($result) > 0) {
+                    echo '<main>';
+                    echo '<div class="table-container">';
+                    echo "<table>";
+                    $row = mysqli_fetch_assoc($result);
+                    echo "<thead><tr>";
+                    foreach ($row as $key => $value) {
+                        echo "<th>" . htmlspecialchars($key) . "</th>";
                     }
-                    echo "</tr>";
-                }
+                    echo "</tr></thead><tbody>";
 
-                echo "</tbody></table>";
-                displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
-                echo '</div>';
-                echo '</main>';
+                    mysqli_data_seek($result, 0);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        foreach ($row as $value) {
+                            echo "<td>" . htmlspecialchars($value) . "</td>";
+                        }
+                        echo "</tr>";
+                    }
+
+                    echo "</tbody></table>";
+                    displayNavigationMenu($offset, $limit, $totalPages, $nomeTabelaAtual, $linkAPI);
+                    echo '</div>';
+                    echo '</main>';
+                } else {
+                    echo "<p>Nenhum registro encontrado.</p>";
+                }
             } else {
-                echo "<p>Nenhum registro encontrado.</p>";
+                echo 'Erro na consulta SQL: ' . mysqli_error($mysqli);
             }
         }
     }
     ?>
-
 
     <footer>
         <div class="footer-content">
