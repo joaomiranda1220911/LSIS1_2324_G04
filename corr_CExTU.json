@@ -1,0 +1,94 @@
+[
+    {
+        "Região": "Alentejo Central",
+        "Correlacao_Número_de_instalacões_Total": 0.3670140394862571
+    },
+    {
+        "Região": "Alentejo Litoral",
+        "Correlacao_Número_de_instalacões_Total": 0.1795670713613064
+    },
+    {
+        "Região": "Algarve",
+        "Correlacao_Número_de_instalacões_Total": 0.3449852784010379
+    },
+    {
+        "Região": "Alto Alentejo",
+        "Correlacao_Número_de_instalacões_Total": 0.3127649139317843
+    },
+    {
+        "Região": "Alto Minho",
+        "Correlacao_Número_de_instalacões_Total": 0.39471029379414646
+    },
+    {
+        "Região": "Alto Tâmega",
+        "Correlacao_Número_de_instalacões_Total": 0.32215846000456777
+    },
+    {
+        "Região": "Ave",
+        "Correlacao_Número_de_instalacões_Total": 0.3562535753742596
+    },
+    {
+        "Região": "Baixo Alentejo",
+        "Correlacao_Número_de_instalacões_Total": 0.13508142398119197
+    },
+    {
+        "Região": "Beira Baixa",
+        "Correlacao_Número_de_instalacões_Total": 0.23939386878187247
+    },
+    {
+        "Região": "Beiras e Serra da Estrela",
+        "Correlacao_Número_de_instalacões_Total": 0.33156843808182257
+    },
+    {
+        "Região": "Cávado",
+        "Correlacao_Número_de_instalacões_Total": 0.36000634534116027
+    },
+    {
+        "Região": "Douro",
+        "Correlacao_Número_de_instalacões_Total": 0.19536257708683513
+    },
+    {
+        "Região": "Lezíria do Tejo",
+        "Correlacao_Número_de_instalacões_Total": 0.31961317434524755
+    },
+    {
+        "Região": "Médio Tejo",
+        "Correlacao_Número_de_instalacões_Total": 0.3093970648037039
+    },
+    {
+        "Região": "Oeste",
+        "Correlacao_Número_de_instalacões_Total": 0.391311087472288
+    },
+    {
+        "Região": "Região de Aveiro",
+        "Correlacao_Número_de_instalacões_Total": 0.27048738595921207
+    },
+    {
+        "Região": "Região de Coimbra",
+        "Correlacao_Número_de_instalacões_Total": 0.2125859371293318
+    },
+    {
+        "Região": "Região de Leiria",
+        "Correlacao_Número_de_instalacões_Total": 0.4144192562103893
+    },
+    {
+        "Região": "Terras de Trás-os-Montes",
+        "Correlacao_Número_de_instalacões_Total": 0.34522230126173076
+    },
+    {
+        "Região": "Tâmega e Sousa",
+        "Correlacao_Número_de_instalacões_Total": 0.16088379134845135
+    },
+    {
+        "Região": "Viseu Dão Lafões",
+        "Correlacao_Número_de_instalacões_Total": 0.3682832138160124
+    },
+    {
+        "Região": "Área Metropolitana de Lisboa",
+        "Correlacao_Número_de_instalacões_Total": 0.0835228425869993
+    },
+    {
+        "Região": "Área Metropolitana do Porto",
+        "Correlacao_Número_de_instalacões_Total": 0.10071622625262647
+    }
+]

@@ -8,7 +8,7 @@
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
     <style>
         .dashboard {
             display: flex;
@@ -97,22 +97,16 @@
         </div>
 
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
         include("ImportSQL.php");
 
-        // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Definir um nome padrão
         $nome_utilizador = "Utilizador";
 
-        // Verificar se o usuário está logado
         if (isset($_SESSION['email'])) {
             $email = $_SESSION['email'];
-
-            // Query para selecionar o nome do usuário
             $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
             $result = mysqli_query($mysqli, $sql);
 
@@ -144,41 +138,71 @@
         <div class="chart-container">
             <canvas id="correlationChart"></canvas>
         </div>
-        <div class="expand-button-container" onclick="toggleText('correlationText')">
+        <div class="expand-button-container" onclick="toggleText('correlationText1')">
             <div class="expand-button-wrapper">
                 <button class="expand-button">▼</button>
             </div>
         </div>
-        <div id="correlationText" class="chart-text">
-            <h2>Correlação PIB e Processos Concluídos por Região</h2>
+        <div id="correlationText1" class="chart-text">
+            <h2>Correlação PIB e Processos Concluídos</h2>
             <p style="text-align: justify">
                 De acordo com o gráfico de correlação entre os processos concluídos e o PIB por região, observa-se uma correlação significativa entre essas duas variáveis.
                 É possível observar que a região onde a correlação é mais forte é o Tâmega e Sousa, seguida pelas regiões do Douro e do Alto Tâmega, respetivamente.
-                No caso do Alto Minho, Guimarães destaca-se como o local com a maior quantidade de painéis fotovoltaicos instalados, apresentando uma alta correlação com o PIB.
-                Contudo, o valor de correlação para a região como um todo é baixo, uma vez que os outros concelhos abrangentes não apresentam uma correlação tão elevada.
-                Com base nesta análise, podemos concluir que o PIB é um fator influente no número de painéis fotovoltaicos por região.
-                Em geral, regiões com um PIB mais elevado tendem a possuir uma maior quantidade de painéis fotovoltaicos instalados.
+                No caso do Alto Minho, Guimarães destaca-se como o local com a maior quantidade de painéis fotovoltaicos instalados, apresentando uma alta correlação com o PIB. Contudo, o valor de correlação para a região como um todo é baixo, uma vez que os outros concelhos abrangentes não apresentam uma correlação tão elevada.
+                Com base nesta análise, podemos concluir que o PIB é um fator influente no número de painéis fotovoltaicos por região. Em geral, regiões com um PIB mais elevado tendem a possuir uma maior quantidade de painéis fotovoltaicos instalados.
             </p>
         </div>
+
         <div class="chart-container">
-            <canvas id="pibCpesChart"></canvas>
+            <canvas id="correlationChart2"></canvas>
         </div>
-        <div class="expand-button-container" onclick="toggleText('pibCpesText')">
+        <div class="expand-button-container" onclick="toggleText('correlationText2')">
             <div class="expand-button-wrapper">
                 <button class="expand-button">▼</button>
             </div>
         </div>
-        <div id="pibCpesText" class="chart-text">
-            <h2>Correlação PIB e Processos Concluídos por Região</h2>
+        <div id="correlationText2" class="chart-text">
+            <h2>Correlação Consumo de Energia e Total de Unidades</h2>
             <p style="text-align: justify">
-                De acordo com o gráfico de correlação entre os processos concluídos e o PIB por região, observa-se uma correlação significativa entre essas duas variáveis.
-                É possível observar que a região onde a correlação é mais forte é o Tâmega e Sousa, seguida pelas regiões do Douro e do Alto Tâmega, respetivamente.
-                No caso do Alto Minho, Guimarães destaca-se como o local com a maior quantidade de painéis fotovoltaicos instalados, apresentando uma alta correlação com o PIB.
-                Contudo, o valor de correlação para a região como um todo é baixo, uma vez que os outros concelhos abrangentes não apresentam uma correlação tão elevada.
-                Com base nesta análise, podemos concluir que o PIB é um fator influente no número de painéis fotovoltaicos por região.
-                Em geral, regiões com um PIB mais elevado tendem a possuir uma maior quantidade de painéis fotovoltaicos instalados.
+            Considerando os valores obtidos após a análise de correlação entre o Consumo de Energia e o Número de Instalações por região, concluímos que essa correlação não é muito significativa. Embora, na sua maioria, quanto maior o Consumo de Energia, maior seja a quantidade de painéis fotovoltaicos necessária para suprir as necessidades da região, essa conclusão não é totalmente precisa, pois, os valores de correlação obtidos não foram muito elevados.
             </p>
         </div>
+
+        <div class="chart-container">
+            <canvas id="correlationChart3"></canvas>
+        </div>
+        <div class="expand-button-container" onclick="toggleText('correlationText3')">
+            <div class="expand-button-wrapper">
+                <button class="expand-button">▼</button>
+            </div>
+        </div>
+        <div id="correlationText3" class="chart-text">
+            <h2>Correlação Consumo de Energia e Processos Concluídos</h2>
+            <p style="text-align: justify">
+                Ao analisar o gráfico obtido pela correlação entre o Consumo de Energia e os Processos Concluídos por região, observa-se uma forte correlação entre essas duas variáveis.
+                Em várias regiões do país, os valores de correlação são superiores a 0.8, indicando que, quanto maior o consumo de energia em uma determinada região, maior tende a ser a quantidade de painéis fotovoltaicos instalados.
+                Entretanto, essa relação não é observada de forma tão linear nas regiões do Alentejo Litoral, Baixo Alentejo, e nas áreas Metropolitanas de Porto e Lisboa.
+            </p>
+        </div>
+
+
+        <div class="chart-container">
+            <canvas id="correlationChart4"></canvas>
+        </div>
+        <div class="expand-button-container" onclick="toggleText('correlationText4')">
+            <div class="expand-button-wrapper">
+                <button class="expand-button">▼</button>
+            </div>
+        </div>
+        <div id="correlationText4" class="chart-text">
+            <h2>Correlação Nível de Escolaridade e Total de Unidades</h2>
+            <p style="text-align: justify">
+                De acordo com o gráfico de correlação entre o Total de Unidades e o Nível de Escolaridade, observa-se uma ligeira correlação entre essas duas variáveis.
+                Verifica-se que indivíduos com formação até ao ensino superior possuem um maior número de unidades de painéis fotovoltaicos, seguidos por aqueles com formação até ao ensino secundário e médio, respetivamente.
+                Com base nesta análise, podemos concluir que o Nível de Escolaridade é um fator influente no número de painéis fotovoltaicos. Em geral, quanto mais elevado for o nível de escolaridade alcançado, maior é a tendência de possuírem painéis fotovoltaicos.
+            </p>
+        </div>
+
     </main>
 
     <footer>
@@ -194,6 +218,123 @@
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('corr_PCxPIB.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Obter os nomes das regiões distintas
+                    const regionNames = [...new Set(data.map(item => item['Regiao']))];
+
+                    // Calcular a média de correlação por região
+                    const correlationData = regionNames.map(region => {
+                        const regionData = data.filter(item => item['Regiao'] === region);
+                        const validData = regionData.filter(item => item['Correlacao_ProcessosConcluidos_PIB'] !== undefined);
+                        const averageCorrelation = validData.reduce((sum, item) => {
+                            const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
+                            return sum + (isNaN(correlation) ? 0 : correlation);
+                        }, 0) / validData.length;
+                        return averageCorrelation;
+                    });
+
+                    // Configurar o gráfico inicial por região
+                    const ctx = document.getElementById('correlationChart').getContext('2d');
+                    const correlationChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: regionNames,
+                            datasets: [{
+                                label: 'Correlação Processos Concluídos vs PIB',
+                                data: correlationData,
+                                backgroundColor: '#FFDC00',
+                                borderColor: 'black',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Correlação'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Região'
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // Função para calcular média de correlação por concelho
+                    function calcularMediaCorrelacaoConcelhos(data, regiao) {
+                        const concelhosData = {};
+                        const regiaoData = data.filter(item => item['Regiao'] === regiao);
+
+                        regiaoData.forEach(item => {
+                            const concelho = item['Concelho'];
+                            const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
+
+                            if (!isNaN(correlation)) {
+                                if (!concelhosData[concelho]) {
+                                    concelhosData[concelho] = {
+                                        totalCorrelation: 0,
+                                        count: 0
+                                    };
+                                }
+
+                                concelhosData[concelho].totalCorrelation += correlation;
+                                concelhosData[concelho].count++;
+                            }
+                        });
+
+                        // Calcular média de correlação por concelho
+                        const concelhosCorrelationData = Object.keys(concelhosData).map(concelho => {
+                            const averageCorrelation = concelhosData[concelho].totalCorrelation / concelhosData[concelho].count;
+                            return {
+                                concelho: concelho,
+                                correlacao: averageCorrelation
+                            };
+                        });
+
+                        return concelhosCorrelationData;
+                    }
+
+
+                    // Adicionar evento de clique para atualizar o gráfico ao clicar em uma barra de região
+                    correlationChart.options.onClick = function(evt, elements) {
+                        if (elements.length > 0) {
+                            const clickedRegion = correlationChart.data.labels[elements[0].index];
+                            const concelhosCorrelationData = calcularMediaCorrelacaoConcelhos(data, clickedRegion);
+
+                            const concelhosLabels = concelhosCorrelationData.map(item => item.concelho);
+                            const concelhosCorrelationValues = concelhosCorrelationData.map(item => item.correlacao);
+
+                            correlationChart.data.labels = concelhosLabels;
+                            correlationChart.data.datasets[0].data = concelhosCorrelationValues;
+                            correlationChart.options.scales.x.title.text = 'Concelho';
+                            correlationChart.update();
+                        }
+                    };
+
+                    // Adicionar evento de clique ao documento para voltar ao gráfico por região
+                    document.addEventListener('click', function(evt) {
+                        const isOutsideChart = !correlationChart.canvas.contains(evt.target);
+                        if (isOutsideChart) {
+                            correlationChart.data.labels = regionNames;
+                            correlationChart.data.datasets[0].data = correlationData;
+                            correlationChart.options.scales.x.title.text = 'Região';
+                            correlationChart.update();
+                        }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar dados:', error));
+        });
+
         function toggleText(id) {
             const element = document.getElementById(id);
             const button = element.previousElementSibling.firstElementChild.firstElementChild;
@@ -207,99 +348,143 @@
             }
         }
 
-        // Carregar e processar o arquivo CSV para o primeiro gráfico
-        Papa.parse('regiao_pib_novasinst.csv', {
-            download: true,
-            header: true,
-            delimiter: ';',
-            complete: function(results) {
-                const data = results.data;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para carregar e processar os dados do segundo arquivo JSON
+            fetch('corr_CExTU.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Processar os dados conforme necessário
+                    const regionNames = data.map(item => item['Região']);
+                    const correlationData = data.map(item => item['Correlacao_Número_de_instalacões_Total']);
 
-                // Extrair nomes das regiões e correlações
-                const regionNames = data.map(item => item['Região']);
-                const correlationData = data.map(item => parseFloat(item['Correlacao_ProcessosConcluidos_PIB'].replace(',', '.'))); // Substituir ',' por '.' para interpretar números corretamente
-
-                // Configurar o gráfico
-                const ctx = document.getElementById('correlationChart').getContext('2d');
-                const correlationChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: regionNames,
-                        datasets: [{
-                            label: 'Correlação Processos Concluídos vs PIB',
-                            data: correlationData,
-                            backgroundColor: '#FFDC00',
-                            borderColor: 'black',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Correlação'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Região'
+                    // Configurar o segundo gráfico
+                    const ctx2 = document.getElementById('correlationChart2').getContext('2d');
+                    const correlationChart2 = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: regionNames,
+                            datasets: [{
+                                label: 'Correlação Consumo de Energia vs Total de Unidades',
+                                data: correlationData,
+                                backgroundColor: '#FFDC00',
+                                borderColor: 'black',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Correlação'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Região'
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar dados do segundo arquivo:', error));
         });
 
-        // Carregar e processar o arquivo CSV para o segundo gráfico
-        Papa.parse('escolaridade_instalacoes.csv', {
-            download: true,
-            header: true,
-            delimiter: ';',
-            complete: function(results) {
-                const data = results.data;
-                const educationLevels = data.map(item => item['Variável de Educação']);
-                const correlationData = data.map(item => parseFloat(item['Correlação'].replace(',', '.')));
+        // Script para carregar e configurar o terceiro gráfico
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('corr_CExPC.json')
+                .then(response => response.json())
+                .then(data => {
+                    const regionNames = data.map(item => item['Região']);
+                    const correlationData = data.map(item => item['Correlacao_Número_de_instalacões_Total']);
 
-                const ctx2 = document.getElementById('pibCpesChart').getContext('2d');
-                const pibCpesChart = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: educationLevels,
-                        datasets: [{
-                            label: 'Correlação Nível de Escolaridade vs Total de UPAC',
-                            data: correlationData,
-                            backgroundColor: '#FFDC00',
-                            borderColor: 'black',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Correlação'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Nível de Escolaridade'
+                    const ctx3 = document.getElementById('correlationChart3').getContext('2d');
+                    const correlationChart3 = new Chart(ctx3, {
+                        type: 'bar',
+                        data: {
+                            labels: regionNames,
+                            datasets: [{
+                                label: 'Correlação Consumo de Energia vs Processos Concluídos',
+                                data: correlationData,
+                                backgroundColor: '#FFDC00',
+                                borderColor: 'black',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Correlação'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Região'
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar dados do terceiro arquivo:', error));
+        });
+
+        // Script para carregar e configurar o quarto gráfico
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('corr_NExTU.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Extrair chaves e valores do JSON
+                    const educationLevels = Object.keys(data);
+                    const correlationValues = Object.values(data);
+
+                    // Configurar o quarto gráfico
+                    const ctx4 = document.getElementById('correlationChart4').getContext('2d');
+                    const correlationChart4 = new Chart(ctx4, {
+                        type: 'bar',
+                        data: {
+                            labels: educationLevels,
+                            datasets: [{
+                                label: 'Correlação Nível de Escolaridade vs Total de Unidades',
+                                data: correlationValues,
+                                backgroundColor: '#FFDC00',
+                                borderColor: 'black',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Correlação'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Nível de Escolaridade'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar dados do quarto arquivo:', error));
         });
     </script>
+
 
 </body>
 
