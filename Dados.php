@@ -144,12 +144,14 @@ if (session_status() == PHP_SESSION_NONE) {
                 $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
                 $checkTableSQL = "SHOW TABLES LIKE '{$nomeTabelaFormatado}'";
                 $checkResult = mysqli_query($mysqli, $checkTableSQL);
+
                 if (mysqli_num_rows($checkResult) == 0) {
                     die("A tabela {$nomeTabelaFormatado} não existe.");
                 } else {
                     $sqla = "SHOW COLUMNS FROM `{$nomeTabelaFormatado}`";
                     $resultas = mysqli_query($mysqli, $sqla);
                     $colunas = array();
+
                     if ($resultas) {
                         while ($row = mysqli_fetch_assoc($resultas)) {
                             $colunas[] = $row['Field'];
@@ -161,11 +163,9 @@ if (session_status() == PHP_SESSION_NONE) {
                 ?>
                 <ul class="menu-lista">
                     <?php foreach ($colunas as $coluna) : ?>
-                        <?php $colunaFormatada = ucwords(str_replace('_', ' ', $coluna)); ?>
                         <li>
-                            <a href='PaginaTabela.php?nomeTabela=<?php echo $coluna; ?>&linkAPI=<?php echo $linkAPI; ?>'><?php echo $colunaFormatada; ?></a>
                             <div class="dropdown">
-                                <a href="#" class="dropbtn"><?php echo $colunaFormatada; ?></a>
+                                <a href="#" class="dropbtn"><?php echo ucwords(str_replace('_', ' ', $coluna)); ?></a>
                                 <div class="dropdown-content">
                                     <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=ASC'>Ordenação Ascendente</a>
                                     <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=DESC'>Ordenação Descendente</a>
@@ -176,14 +176,22 @@ if (session_status() == PHP_SESSION_NONE) {
                 </ul>
             </div>
         </div>
-
-    <div class="button-container">
-        <div class="custom-button">
-            <?php
-            $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-            echo "<a href='Export.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Exportar Dados</button></a>";
-            echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
-            ?>
+        <div class="button-container">
+            <div class="custom-button">
+                <button onclick="window.location.href='Export.php'">Exportar Dados</button>
+                <?php
+                if (isset($nomeTabelaAtual)) {
+                    $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+                    echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+                } else {
+                    // Caso "nomeTabela" não esteja definido, você pode tratar isso aqui, se necessário
+                    echo "Erro: Nome da tabela não definido";
+                }
+                ?>
+            
+            <button onclick="window.location.href='Mapa.php'">Mapa</button>
+            <!-- nao esta iterativo -->
+            </div>
         </div>
     </div>
     </div>
