@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .submit-button{
+            background-color: #FFDC00;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 10px 10px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-block;
+            color: black;
+        }
+
+        .submit-button:hover{
+            background-color: #333;
+            color: #FFDC00;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <div class="logo" onclick="window.location.href='index.php'">
@@ -25,7 +44,7 @@
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <?php
-        include ("ImportSQL.php");
+        include("ImportSQL.php");
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -94,4 +113,5 @@
         </div>
     </footer>
 </body>
+
 </html>
