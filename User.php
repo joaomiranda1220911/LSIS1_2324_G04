@@ -7,6 +7,14 @@
     <title>Página de Utilizador</title>
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function eliminarUtilizador(userEmail) {
+            if (confirm("Tens a certeza que queres eliminar o utilizador? Esta ação é irreversível.")) {
+                document.getElementById('deleteEmail').value = userEmail;
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -28,22 +36,16 @@
         </div>
 
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
         include("ImportSQL.php");
 
-        // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Definir um nome padrão
         $nome_utilizador = "Utilizador";
 
-        // Verificar se o usuário está logado
         if (isset($_SESSION['email'])) {
             $email = $_SESSION['email'];
-
-            // Query para selecionar o nome do usuário
             $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
             $result = mysqli_query($mysqli, $sql);
 
@@ -70,14 +72,9 @@
         </div>
     </header>
 
-    <nav>
-
-    </nav>
+    <nav></nav>
 
     <?php
-    //session_start();
-    include("ImportSQL.php");
-
     if (!isset($_SESSION['email'])) {
         header("Location: login.php");
         exit();
@@ -95,44 +92,53 @@
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Processar a submissão do nome
-        if (isset($_POST['submitName']) && !empty($_POST['name'])) {
-            $newName = $_POST['name'];
-            $sql = "UPDATE utilizador SET nome = '$newName' WHERE email = '$email'";
-            if ($mysqli->query($sql) === TRUE) {
-                echo "<script>alert('Nome atualizado com sucesso');</script>";
-                $user['nome'] = $newName; // Atualiza o nome na variável $user
+        if (isset($_POST['deleteEmail'])) {
+            $deleteEmail = $_POST['deleteEmail'];
+            $stmt = $mysqli->prepare("DELETE FROM utilizador WHERE email = ?");
+            $stmt->bind_param("s", $deleteEmail);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Utilizador eliminado com sucesso.'); window.location.href='Logout.php';</script>";
+                exit();
             } else {
-                echo "<script>alert('Erro ao atualizar o nome: ' '" . mysqli_error($mysqli) . "')</script>";
+                echo "<script>alert('Erro ao eliminar o utilizador: " . mysqli_error($mysqli) . "')</script>";
             }
-        }
-
-        // Processar a submissão do email
-        if (isset($_POST['submitEmail']) && !empty($_POST['email'])) {
-            $newEmail = $_POST['email'];
-            $sql = "UPDATE utilizador SET email = '$newEmail' WHERE email = '$email'";
-            if ($mysqli->query($sql) === TRUE) {
-                echo "<script>alert('Email atualizado com sucesso');</script>";
-                $_SESSION['email'] = $newEmail; // Atualiza o email na sessão
-                $user['email'] = $newEmail; // Atualiza o email na variável $user
-            } else {
-                echo "<script>alert('Erro ao atualizar o email: ' '" . mysqli_error($mysqli) . "')</script>";
-            }
-        }
-
-
-        // Processar a submissão da senha
-        if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-            if ($_POST['password'] === $_POST['confirm_password']) {
-                $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                $sql = "UPDATE utilizador SET password = '$newPassword' WHERE email = '$email'";
+        } else {
+            if (isset($_POST['submitName']) && !empty($_POST['name'])) {
+                $newName = $_POST['name'];
+                $sql = "UPDATE utilizador SET nome = '$newName' WHERE email = '$email'";
                 if ($mysqli->query($sql) === TRUE) {
-                    echo "<script>alert('Senha atualizada com sucesso');</script>";
+                    echo "<script>alert('Nome atualizado com sucesso');</script>";
+                    $user['nome'] = $newName;
                 } else {
-                    echo "<script>alert('Erro ao atualizar a password: ' '" . mysqli_error($mysqli) . "')</script>";
+                    echo "<script>alert('Erro ao atualizar o nome: " . mysqli_error($mysqli) . "')</script>";
                 }
-            } else {
-                echo "<script>alert('As passwords não coincidem')</script>";
+            }
+
+            if (isset($_POST['submitEmail']) && !empty($_POST['email'])) {
+                $newEmail = $_POST['email'];
+                $sql = "UPDATE utilizador SET email = '$newEmail' WHERE email = '$email'";
+                if ($mysqli->query($sql) === TRUE) {
+                    echo "<script>alert('Email atualizado com sucesso');</script>";
+                    $_SESSION['email'] = $newEmail;
+                    $user['email'] = $newEmail;
+                } else {
+                    echo "<script>alert('Erro ao atualizar o email: " . mysqli_error($mysqli) . "')</script>";
+                }
+            }
+
+            if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
+                if ($_POST['password'] === $_POST['confirm_password']) {
+                    $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                    $sql = "UPDATE utilizador SET password = '$newPassword' WHERE email = '$email'";
+                    if ($mysqli->query($sql) === TRUE) {
+                        echo "<script>alert('Senha atualizada com sucesso');</script>";
+                    } else {
+                        echo "<script>alert('Erro ao atualizar a password: " . mysqli_error($mysqli) . "')</script>";
+                    }
+                } else {
+                    echo "<script>alert('As passwords não coincidem')</script>";
+                }
             }
         }
     }
@@ -146,14 +152,14 @@
                 <label for="name">Nome:</label>
                 <input type="text" id="name" name="name" placeholder="Atual: <?php echo htmlspecialchars($user['nome']); ?>">
                 <div class="atual_alterar">
-                    <button type="submit" name="submitName">Alterar Nome</button>
+                    <button type="submit" name="submitName" class="button">Alterar Nome</button>
                 </div>
             </div>
             <div class="form-row">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Atual: <?php echo htmlspecialchars($user['email']); ?>">
                 <div class="atual_alterar">
-                    <button type="submit" name="submitEmail">Alterar Email</button>
+                    <button type="submit" name="submitEmail" class="button">Alterar Email</button>
                 </div>
             </div>
 
@@ -164,10 +170,16 @@
             <div class="form-row">
                 <label for="confirm_password">Confirmar Nova Password:</label>
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar a Nova Password">
-                <button type="submit" name="submitPassword" style="margin-right: auto;">Alterar Password</button>
+                <button type="submit" name="submitPassword" class="button">Alterar Password</button>
             </div>
         </form>
+        <button onclick="eliminarUtilizador('<?php echo $user['email']; ?>')" class="button button-delete">Eliminar Utilizador</button>
+
+        <form id="deleteForm" method="POST" style="display: none;">
+            <input type="hidden" id="deleteEmail" name="deleteEmail">
+        </form>
     </div>
+    
 
     <footer>
         <div class="footer-content">
@@ -180,7 +192,6 @@
             </div>
         </div>
     </footer>
-
 
     <script src="script.js"></script>
 </body>

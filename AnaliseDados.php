@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Estilos específicos para esta página */
         .dashboard {
             display: flex;
             flex-wrap: wrap;
@@ -43,11 +44,10 @@
 
         form {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            width: 660px;
             max-width: 100%;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -55,13 +55,15 @@
             margin-top: 20px;
         }
 
-        form label {
-            font-weight: bold;
-            margin-right: 10px;
-            color: #333;
+        form label,
+        form select {
+            margin-bottom: 10px;
         }
 
         form select {
+            width: 100%;
+            max-width: 300px;
+            /* Ajuste conforme necessário */
             padding: 8px;
             margin-right: 20px;
             border: 1px solid #ccc;
@@ -78,7 +80,7 @@
             cursor: pointer;
             text-align: center;
             transition: background-color 0.3s ease;
-            margin-left: 20px;
+            margin-top: 10px;
         }
 
         form input[type="submit"]:hover {
@@ -91,6 +93,7 @@
             background-color: #f4f4f4;
             color: white;
             text-align: center;
+            padding: 10px;
         }
 
         .error {
@@ -166,7 +169,6 @@
     <?php
     // Verificar se o parâmetro nomeTabelaAtual foi recebido
     if (isset($_GET['nomeTabelaAtual'])) {
-        // Receber o valor do parâmetro
         $nomeTabelaAtual = $_GET['nomeTabelaAtual'];
 
         // Função para obter nomes das colunas da tabela
@@ -185,15 +187,16 @@
 
         $colunas = obterColunas($mysqli, $nomeTabelaAtual);
 
-        $dataPoints1 = array(); // Inicializa como array vazio
-        $mensagemErro = ""; // Variável para armazenar a mensagem de erro
+        // Inicializar variáveis
+        $dataPoints1 = array();
+        $mensagemErro = "";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $xColuna1 = isset($_POST['xColuna1']) ? $_POST['xColuna1'] : '';
             $yColuna1 = isset($_POST['yColuna1']) ? $_POST['yColuna1'] : '';
 
             if (empty($xColuna1) || empty($yColuna1)) {
-                $mensagemErro = "Por favor preencha os parametros do grafico";
+                $mensagemErro = "Por favor preencha os parâmetros do gráfico";
             } else {
                 // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
                 function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
@@ -219,8 +222,8 @@
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
     ?>
-
-    <?php if (!empty($mensagemErro)): ?>
+    
+    <?php if (!empty($mensagemErro)) : ?>
         <p class="error"><?php echo $mensagemErro; ?></p>
     <?php endif; ?>
 
@@ -244,37 +247,35 @@
         <input type="submit" value="Gerar Gráfico">
     </form>
 
-    <div class="chart-container">
-        <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
-    </div>
+    <?php if (!empty($dataPoints1)) : ?>
+        <div class="chart-container">
+            <div class="chart" id="chartContainer1"></div>
+        </div>
 
-    <script>
-        // Configuração dos gráficos CanvasJS
-        window.onload = function() {
-            var dataPoints1 = <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>;
+        <script>
+            window.onload = function() {
+                var chart1 = new CanvasJS.Chart("chartContainer1", {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title: {
+                        text: "Gráfico Dinâmico"
+                    },
+                    axisX: {
+                        title: "<?php echo $xColuna1; ?>"
+                    },
+                    axisY: {
+                        title: "<?php echo $yColuna1; ?>"
+                    },
+                    data: [{
+                        type: "column",
+                        dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
+                    }]
+                });
+                chart1.render();
+            }
+        </script>
+    <?php endif; ?>
 
-            var chart1 = new CanvasJS.Chart("chartContainer1", {
-                animationEnabled: true,
-                theme: "light2",
-                title: {
-                    text: "Gráfico 1"
-                },
-                axisX: {
-                    title: "<?php echo isset($xColuna1) ? $xColuna1 : ''; ?>"
-                },
-                axisY: {
-                    title: "<?php echo isset($yColuna1) ? $yColuna1 : ''; ?>",
-                    includeZero: false
-                },
-                data: [{
-                    type: "line",
-                    dataPoints: dataPoints1
-                }]
-            });
-
-            chart1.render();
-        };
-    </script>
     <footer>
         <div class="footer-content">
             <div class="footer-left">
@@ -286,7 +287,7 @@
             </div>
         </div>
     </footer>
+
 </body>
 
 </html>
-

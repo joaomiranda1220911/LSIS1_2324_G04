@@ -140,40 +140,52 @@ if (session_status() == PHP_SESSION_NONE) {
             <img src="https://www.svgrepo.com/show/509382/menu.svg" alt="Menu Icon" class="menu-icon" onclick="toggleMenu()">
             <div class="menu" id="menu">
                 <h2>Filtros</h2>
-                <ul>
-                    <li>
-                        <input type="checkbox" id="Ano">
-                        <label for="Ano">Ano</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Semestre">
-                        <label for="Semestre">Semestre</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Concelho">
-                        <label for="Concelho">Concelho</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="Potência de Ligação (kW)">
-                        <label for="Potência de Ligação (kW)">Potência de Ligação (kW)</label>
-                    </li>
-                </ul>
-                <div class="button-container">
-                    <div class="custom-button">
-                        <button onclick="window.location.href='Export.php'">Pesquisar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="button-container">
-            <div class="custom-button">
                 <?php
                 $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
-                echo "<a href='Export.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Exportar Dados</button></a>";
-                echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+                $checkTableSQL = "SHOW TABLES LIKE '{$nomeTabelaFormatado}'";
+                $checkResult = mysqli_query($mysqli, $checkTableSQL);
+                if (mysqli_num_rows($checkResult) == 0) {
+                    die("A tabela {$nomeTabelaFormatado} não existe.");
+                } else {
+                    $sqla = "SHOW COLUMNS FROM `{$nomeTabelaFormatado}`";
+                    $resultas = mysqli_query($mysqli, $sqla);
+                    $colunas = array();
+                    if ($resultas) {
+                        while ($row = mysqli_fetch_assoc($resultas)) {
+                            $colunas[] = $row['Field'];
+                        }
+                    } else {
+                        echo "Erro ao obter as colunas da tabela: " . mysqli_error($mysqli);
+                    }
+                }
                 ?>
+                <ul class="menu-lista">
+                    <?php foreach ($colunas as $coluna) : ?>
+                        <?php $colunaFormatada = ucwords(str_replace('_', ' ', $coluna)); ?>
+                        <li>
+                            <a href='PaginaTabela.php?nomeTabela=<?php echo $coluna; ?>&linkAPI=<?php echo $linkAPI; ?>'><?php echo $colunaFormatada; ?></a>
+                            <div class="dropdown">
+                                <a href="#" class="dropbtn"><?php echo $colunaFormatada; ?></a>
+                                <div class="dropdown-content">
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=ASC'>Ordenação Ascendente</a>
+                                    <a href='?nomeTabela=<?php echo $nomeTabelaAtual; ?>&linkAPI=<?php echo $linkAPI; ?>&order=<?php echo $coluna; ?>&direction=DESC'>Ordenação Descendente</a>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
         </div>
+
+    <div class="button-container">
+        <div class="custom-button">
+            <?php
+            $nomeTabelaFormatado = str_replace(array(" ", "-"), "_", $nomeTabelaAtual);
+            echo "<a href='Export.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Exportar Dados</button></a>";
+            echo "<a href='AnaliseDados.php?nomeTabelaAtual=" . urlencode($nomeTabelaFormatado) . "'><button>Análise</button></a>";
+            ?>
+        </div>
+    </div>
     </div>
 
     <?php

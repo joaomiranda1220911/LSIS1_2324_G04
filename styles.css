@@ -824,7 +824,7 @@ h1 {
     border-color: #333;
 }
 
-.form-container .submit-button {
+.form-container .button {
     display: block;
     margin: 0 auto;
     /* Centraliza o botão */
@@ -837,7 +837,7 @@ h1 {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.form-container .submit-button:hover {
+.form-container .button:hover {
     background-color: #333;
     color: #FFDC00;
 }
@@ -912,5 +912,5 @@ h1 {
     background-color: #333;
     color: #FFDC00; 
     border-radius: 4px;
-
 }
+
