@@ -44,31 +44,30 @@
 
         form {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
             max-width: 100%;
-            margin: 20px auto;
+            margin: 40px auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background-color: #f9f9f9;
-            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
 
         form label,
         form select {
-            margin-bottom: 10px;
+            flex: 1;
         }
 
         form select {
             width: 100%;
             max-width: 300px;
-            /* Ajuste conforme necessário */
             padding: 8px;
-            margin-right: 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
             background-color: #fff;
+            margin-right: 20px;
         }
 
         form input[type="submit"] {
@@ -80,7 +79,6 @@
             cursor: pointer;
             text-align: center;
             transition: background-color 0.3s ease;
-            margin-top: 10px;
         }
 
         form input[type="submit"]:hover {
@@ -89,15 +87,25 @@
         }
 
         footer {
-            margin-top: auto;
             background-color: #f4f4f4;
-            color: white;
+            color: #333;
             text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
             padding: 10px;
+            background-color: #FFDC00;
+            bottom: 0;
         }
 
         .error {
-            color: red;
+            color: #d3b700;
             text-align: center;
             font-weight: bold;
             margin-top: 20px;
@@ -222,7 +230,7 @@
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
     ?>
-    
+
     <?php if (!empty($mensagemErro)) : ?>
         <p class="error"><?php echo $mensagemErro; ?></p>
     <?php endif; ?>
@@ -235,7 +243,7 @@
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
         </select>
-        <br><br>
+        <br>
         <label for="yColuna1">Eixo Y:</label>
         <select name="yColuna1" id="yColuna1">
             <option value="" disabled selected>-</option>
@@ -243,7 +251,7 @@
                 echo "<option value='$coluna'>$coluna</option>";
             } ?>
         </select>
-        <br><br>
+        <br>
         <input type="submit" value="Gerar Gráfico">
     </form>
 
