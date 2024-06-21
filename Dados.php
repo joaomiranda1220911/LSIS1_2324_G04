@@ -126,15 +126,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
-        <div class="button-container">
-            <div class="custom-button">
-                <button onclick="window.location.href='Export.php'">Pesquisar</button>
-            </div>
-        </div>
-        </div>
-        </div>
 
-        
         <?php
         include("ImportSQL.php");
         if (session_status() == PHP_SESSION_NONE) {
