@@ -225,7 +225,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <?php
     // Configurações iniciais
     echo "<h1>"  . $tituloPagina . "</h1>";
-    $limit = 60; // Número de registros a serem exibidos por vez
+    $limit =35; // Número de registros a serem exibidos por vez
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0; // Ponto de início inicial
 
     // Obter parâmetros de ordenação
