@@ -10,11 +10,11 @@ pib = pd.read_csv("PIB.csv", delimiter=";", engine='python')
 concelho_por_regiao = pd.read_csv("concelhos por região csv.csv", delimiter=";", engine='python')
 novas_instalacoes = pd.read_csv("26-centrais.csv", delimiter=";", engine='python')
 
-# Mesclar os DataFrames usando a coluna em comum 'Concelho'
+# Juntar os DataFrames usando a coluna em comum 'Concelho'
 dataset1 = novas_instalacoes.merge(concelho_por_regiao, on='Concelho', how='left')
 dataset1.dropna(inplace=True)  # Remover linhas com valores NaN
 
-# Mesclar os DataFrames usando a coluna em comum 'Ano'
+# Juntar os DataFrames usando a coluna em comum 'Ano'
 corr_PCxPIB = pib.merge(dataset1, on='Ano', how='left')
 corr_PCxPIB.dropna(inplace=True)  # Remover linhas com valores NaN
 

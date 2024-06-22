@@ -21,14 +21,14 @@ total_uni = ler_csv("8-unidades-de-producao-para-autoconsumo.csv")
 # Criar um dicionário de regiões e concelhos para facilitar a mesclagem
 regiao_concelho = {item['Concelho']: item['Regiao'] for item in concelho_por_regiao}
 
-# Mesclar total_uni com concelho_por_regiao usando a coluna 'Concelho'
+# Juntar total_uni com concelho_por_regiao usando a coluna 'Concelho'
 dataset1 = []
 for item in total_uni:
     if item['Concelho'] in regiao_concelho:
         item['Regiao'] = regiao_concelho[item['Concelho']]
         dataset1.append(item)
 
-# Mesclar consumo_energia com dataset1 usando a coluna 'Concelho'
+# Juntar consumo_energia com dataset1 usando a coluna 'Concelho'
 df_combined = []
 for item in consumo_energia:
     for unit in dataset1:

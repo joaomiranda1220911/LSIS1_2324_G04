@@ -166,7 +166,7 @@
         <div id="correlationText2" class="chart-text">
             <h2>Correlação Consumo de Energia e Total de Unidades</h2>
             <p style="text-align: justify">
-            Considerando os valores obtidos após a análise de correlação entre o Consumo de Energia e o Número de Instalações por região, concluímos que essa correlação não é muito significativa. Embora, na sua maioria, quanto maior o Consumo de Energia, maior seja a quantidade de painéis fotovoltaicos necessária para suprir as necessidades da região, essa conclusão não é totalmente precisa, pois, os valores de correlação obtidos não foram muito elevados.
+                Considerando os valores obtidos após a análise de correlação entre o Consumo de Energia e o Número de Instalações por região, concluímos que essa correlação não é muito significativa. Embora, na sua maioria, quanto maior o Consumo de Energia, maior seja a quantidade de painéis fotovoltaicos necessária para suprir as necessidades da região, essa conclusão não é totalmente precisa, pois, os valores de correlação obtidos não foram muito elevados.
             </p>
         </div>
 
@@ -306,7 +306,6 @@
                         return concelhosCorrelationData;
                     }
 
-
                     // Adicionar evento de clique para atualizar o gráfico ao clicar em uma barra de região
                     correlationChart.options.onClick = function(evt, elements) {
                         if (elements.length > 0) {
@@ -316,6 +315,7 @@
                             const concelhosLabels = concelhosCorrelationData.map(item => item.concelho);
                             const concelhosCorrelationValues = concelhosCorrelationData.map(item => item.correlacao);
 
+                            // Atualizar o gráfico com dados dos concelhos
                             correlationChart.data.labels = concelhosLabels;
                             correlationChart.data.datasets[0].data = concelhosCorrelationValues;
                             correlationChart.options.scales.x.title.text = 'Concelho';
