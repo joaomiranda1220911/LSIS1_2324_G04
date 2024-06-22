@@ -384,7 +384,7 @@ main {
 .separator {
     width: 1px;
     height: 60%;
-    background-color: gray;
+    background-color: #f4f4f4;
     margin: 0 70px;
     display: inline-block;
     vertical-align: middle;

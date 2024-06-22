@@ -83,7 +83,7 @@ if (session_status() == PHP_SESSION_NONE) {
             justify-content: space-between;
             align-items: center;
             max-width: 100%;
-            margin: 40px auto;
+            margin: 10px auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -391,7 +391,7 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
 
         <div class="statistics-box">
-            <h2>Estatísticas:</h2>
+            <h2 style="margin-top: 0px">Estatísticas:</h2>
             <ul class="statistics-list">
                 <?php
                 // Calcular estatísticas apenas se houver dados disponíveis
