@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // ... continuar para todas as colunas necessárias
 
                 // Bind dos parâmetros e execução da query
-                $stmt->bind_param("sss...", $coluna1, $coluna2, $coluna3, ...);
+                $stmt->bind_param("sss...", $coluna1, $coluna2, $coluna3);
                 $stmt->execute();
             }
 
