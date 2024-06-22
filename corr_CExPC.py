@@ -8,7 +8,7 @@ consumo_energia = pd.read_csv("PORDATA_Consumo-de-energia-elétrica-por-tipo-de-
 concelho_por_regiao = pd.read_csv("concelhos por região csv.csv", delimiter=";", engine='python')
 total_uni = pd.read_csv("26-centrais.csv", delimiter=";", engine='python')
 
-# Mesclar DataFrames
+# Juntar DataFrames
 dataset1 = total_uni.merge(concelho_por_regiao, left_on='Concelho', right_on='Concelho', how='left')
 dataset1.dropna(inplace=True)
 

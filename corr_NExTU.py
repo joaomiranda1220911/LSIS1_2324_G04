@@ -40,7 +40,7 @@ for col in cols_to_select[1:]:
 # Remover registros com valores inválidos
 df_education = df_education.dropna()
 
-# Mesclar os dois datasets com base nos concelhos/municípios
+# Juntar os dois datasets com base nos concelhos/municípios
 df_merged = pd.merge(total_uni, df_education, on='Concelho', how='inner')
 
 # Calcular a matriz de correlação entre 'Número de instalações' e as variáveis de educação
