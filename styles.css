@@ -43,19 +43,12 @@ header {
 .search-bar {
     display: flex;
     align-items: center;
-    border: 1px solid #898989;
     padding: 10px;
     border-radius: 10px;
     width: 400px; /* Definir largura desejada */
 }
 
-.search-input {
-    display: flex;
-    align-items: center;
-    flex: 1; /* Ocupar todo o espaço disponível */
-}
-
-.search-input input[type="text"] {
+.search-bar input[type="text"] {
     padding: 10px;
     flex: 1; /* Ocupar todo o espaço disponível */
     border: 1px solid #898989;
@@ -64,26 +57,22 @@ header {
     margin-right: 10px; /* Espaçamento entre input e botão */
 }
 
-input[type="text"]::placeholder {
+.search-bar input[type="text"]::placeholder {
     color: black;
 }
 
-.search-button {
-    padding: 10px;
+.search-bar button {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    outline: none; /* Remover outline padrão */
 }
 
-.search-button img {
+.search-bar button img {
     height: 30px;
     width: 30px;
     border-radius: 10px;
 }
-
 
 .user-info {
     display: flex;
@@ -919,4 +908,3 @@ h1 {
     color: #FFDC00; 
     border-radius: 4px;
 }
-
