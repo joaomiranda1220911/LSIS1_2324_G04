@@ -458,18 +458,6 @@ if (session_status() == PHP_SESSION_NONE) {
         </script>
     <?php endif; ?>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
-            </div>
-            <div class="footer-right">
-                <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
-            </div>
-        </div>
-    </footer>
-
 </body>
 
 </html>
