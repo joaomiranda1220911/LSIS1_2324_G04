@@ -9,6 +9,27 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        footer {
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-content {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #FFDC00;
+            bottom: 0;
+        }
+
+    </style>
 </head>
 
 <body>

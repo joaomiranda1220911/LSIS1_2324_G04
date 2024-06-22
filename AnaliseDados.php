@@ -42,6 +42,14 @@
             height: 370px;
         }
 
+        .statistics-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
         form {
             display: flex;
             justify-content: space-between;
@@ -132,7 +140,7 @@
         </div>
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
+        include ("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -173,32 +181,130 @@
         </div>
     </header>
     <?php
+    // Função para obter nomes das colunas da tabela
+    function obterColunas($mysqli, $tabela)
+    {
+        // Escape and quote the table name
+        $tabela = $mysqli->real_escape_string($tabela);
+        $sql = "SHOW COLUMNS FROM `$tabela`";
+        $result = $mysqli->query($sql);
+        $colunas = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $colunas[] = $row['Field'];
+            }
+        }
+        return $colunas;
+    }
+
+    // Função para calcular a média
+    function calcularMedia($dataPoints)
+    {
+        $total = count($dataPoints);
+        if ($total === 0) {
+            return "Não é possível calcular média: nenhum dado disponível.";
+        }
+        $soma = 0;
+        foreach ($dataPoints as $dataPoint) {
+            if (is_numeric($dataPoint['y'])) {
+                $soma += $dataPoint['y'];
+            } else {
+                return "Não é possível calcular média: valores não são numéricos.";
+            }
+        }
+        return $soma / $total;
+    }
+
+
+
+    // Função para calcular a mediana
+    function calcularMediana($dataPoints)
+    {
+        $yValues = array_column($dataPoints, 'y');
+        foreach ($yValues as $value) {
+            if (!is_numeric($value)) {
+                return "Não é possível calcular mediana: valores não são numéricos.";
+            }
+        }
+        sort($yValues);
+        $count = count($yValues);
+        $middle = floor(($count - 1) / 2);
+        if ($count % 2) {
+            return $yValues[$middle];
+        } else {
+            return ($yValues[$middle] + $yValues[$middle + 1]) / 2.0;
+        }
+    }
+
+
+
+    // Função para calcular o desvio padrão
+    function calcularDesvioPadrao($dataPoints)
+    {
+        $media = calcularMedia($dataPoints);
+        $total = count($dataPoints);
+        if ($total === 0) {
+            return "Não é possível calcular desvio padrão: nenhum dado disponível.";
+        }
+        $somaQuadrados = 0;
+        foreach ($dataPoints as $dataPoint) {
+            if (is_numeric($dataPoint['y'])) {
+                $somaQuadrados += pow($dataPoint['y'] - $media, 2);
+            } else {
+                return "Não é possível calcular desvio padrão: valores não são numéricos.";
+            }
+        }
+        return sqrt($somaQuadrados / $total);
+    }
+
+
+
+    // Funções para encontrar valor máximo e mínimo
+    function encontrarValorMaximo($dataPoints)
+    {
+        $yValues = array_column($dataPoints, 'y');
+        $maxValue = null;
+        foreach ($yValues as $value) {
+            if (is_numeric($value)) {
+                if ($maxValue === null || $value > $maxValue) {
+                    $maxValue = $value;
+                }
+            } else {
+                return "Não é possível encontrar valor máximo: valores não são numéricos.";
+            }
+        }
+        return $maxValue !== null ? $maxValue : "Não é possível encontrar valor máximo: nenhum dado disponível.";
+    }
+
+    function encontrarValorMinimo($dataPoints)
+    {
+        $yValues = array_column($dataPoints, 'y');
+        $minValue = null;
+        foreach ($yValues as $value) {
+            if (is_numeric($value)) {
+                if ($minValue === null || $value < $minValue) {
+                    $minValue = $value;
+                }
+            } else {
+                return "Não é possível encontrar valor mínimo: valores não são numéricos.";
+            }
+        }
+        return $minValue !== null ? $minValue : "Não é possível encontrar valor mínimo: nenhum dado disponível.";
+    }
+
+
     // Verificar se o parâmetro nomeTabelaAtual foi recebido
     if (isset($_GET['nomeTabelaAtual'])) {
         $nomeTabelaAtual = $_GET['nomeTabelaAtual'];
 
-        // Função para obter nomes das colunas da tabela
-        function obterColunas($mysqli, $tabela)
-        {
-            // Escape and quote the table name
-            $tabela = $mysqli->real_escape_string($tabela);
-            $sql = "SHOW COLUMNS FROM `$tabela`";
-            $result = $mysqli->query($sql);
-            $colunas = array();
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $colunas[] = $row['Field'];
-                }
-            }
-            return $colunas;
-        }
-
+        // Obter colunas da tabela atual
         $colunas = obterColunas($mysqli, $nomeTabelaAtual);
 
         // Inicializar variáveis
         $dataPoints1 = array();
         $mensagemErro = "";
 
+        // Processar formulário quando enviado
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $xColuna1 = isset($_POST['xColuna1']) ? $_POST['xColuna1'] : '';
             $yColuna1 = isset($_POST['yColuna1']) ? $_POST['yColuna1'] : '';
@@ -206,7 +312,7 @@
             if (empty($xColuna1) || empty($yColuna1)) {
                 $mensagemErro = "Por favor preencha os parâmetros do gráfico";
             } else {
-                // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
+                // Função para obter dados com base na seleção do usuário e ordenar pelo eixo X
                 function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
                 {
                     // Escape and quote the table name and columns
@@ -229,16 +335,18 @@
         }
     }
 
-    // Verificar se $nomeTabelaAtual está definido e ajustar o título da página
+    // Ajustar título da página
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
+
+    // Exibir mensagem de erro, se houver
+    if (!empty($mensagemErro)) {
+        echo "<p class='error'>$mensagemErro</p>";
+    }
     ?>
 
-    <?php if (!empty($mensagemErro)) : ?>
-        <p class="error"><?php echo $mensagemErro; ?></p>
-    <?php endif; ?>
-
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
+    <form method="post"
+        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
         <label for="xColuna1">Eixo X:</label>
         <select name="xColuna1" id="xColuna1">
             <option value="" disabled selected>-</option>
@@ -258,13 +366,57 @@
         <input type="submit" value="Gerar Gráfico">
     </form>
 
-    <?php if (!empty($dataPoints1)) : ?>
+    <?php if (!empty($dataPoints1)): ?>
         <div class="chart-container">
             <div class="chart" id="chartContainer1"></div>
         </div>
 
+        <div class="statistics-box">
+            <h2>Estatísticas : </h2>
+            <ul>
+                <?php
+                // Calcular estatísticas apenas se houver dados disponíveis
+                $media = calcularMedia($dataPoints1);
+                $mediana = calcularMediana($dataPoints1);
+                $desvioPadrao = calcularDesvioPadrao($dataPoints1);
+                $valorMaximo = encontrarValorMaximo($dataPoints1);
+                $valorMinimo = encontrarValorMinimo($dataPoints1);
+                ?>
+
+                <?php if (is_numeric($media)): ?>
+                    <li><strong>Média:</strong> <?php echo number_format($media, 2); ?></li>
+                <?php else: ?>
+                    <li><strong>Média:</strong> <?php echo $media; ?></li>
+                <?php endif; ?>
+
+                <?php if (is_numeric($mediana)): ?>
+                    <li><strong>Mediana:</strong> <?php echo number_format($mediana, 2); ?></li>
+                <?php else: ?>
+                    <li><strong>Mediana:</strong> <?php echo $mediana; ?></li>
+                <?php endif; ?>
+
+                <?php if (is_numeric($desvioPadrao)): ?>
+                    <li><strong>Desvio Padrão:</strong> <?php echo number_format($desvioPadrao, 2); ?></li>
+                <?php else: ?>
+                    <li><strong>Desvio Padrão:</strong> <?php echo $desvioPadrao; ?></li>
+                <?php endif; ?>
+
+                <?php if (is_numeric($valorMaximo)): ?>
+                    <li><strong>Valor Máximo:</strong> <?php echo $valorMaximo; ?></li>
+                <?php else: ?>
+                    <li><strong>Valor Máximo:</strong> <?php echo $valorMaximo; ?></li>
+                <?php endif; ?>
+
+                <?php if (is_numeric($valorMinimo)): ?>
+                    <li><strong>Valor Mínimo:</strong> <?php echo $valorMinimo; ?></li>
+                <?php else: ?>
+                    <li><strong>Valor Mínimo:</strong> <?php echo $valorMinimo; ?></li>
+                <?php endif; ?>
+            </ul>
+        </div>
+
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 var chart1 = new CanvasJS.Chart("chartContainer1", {
                     animationEnabled: true,
                     theme: "light2",
@@ -286,11 +438,14 @@
             }
         </script>
     <?php endif; ?>
+
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
+                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
+                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
