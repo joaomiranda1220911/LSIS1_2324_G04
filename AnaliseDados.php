@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilos específicos para esta página */
         .dashboard {
             display: flex;
             flex-wrap: wrap;
@@ -48,6 +47,26 @@
             background-color: #f9f9f9;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .statistics-list {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .statistics-list li {
+            margin-right: 20px;
+        }
+
+        .statistics-list li:last-child {
+            margin-right: 0;
         }
 
         form {
@@ -98,7 +117,6 @@
             background-color: #f4f4f4;
             color: #333;
             text-align: center;
-            position: fixed;
             bottom: 0;
             width: 100%;
         }
@@ -140,7 +158,7 @@
         </div>
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
-        include ("ImportSQL.php");
+        include("ImportSQL.php");
 
         // Verificar se a sessão já está ativa
         if (session_status() == PHP_SESSION_NONE) {
@@ -345,8 +363,7 @@
     }
     ?>
 
-    <form method="post"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?nomeTabelaAtual=' . $nomeTabelaAtual; ?>">
         <label for="xColuna1">Eixo X:</label>
         <select name="xColuna1" id="xColuna1">
             <option value="" disabled selected>-</option>
@@ -366,14 +383,14 @@
         <input type="submit" value="Gerar Gráfico">
     </form>
 
-    <?php if (!empty($dataPoints1)): ?>
+    <?php if (!empty($dataPoints1)) : ?>
         <div class="chart-container">
             <div class="chart" id="chartContainer1"></div>
         </div>
 
         <div class="statistics-box">
-            <h2>Estatísticas : </h2>
-            <ul>
+            <h2>Estatísticas:</h2>
+            <ul class="statistics-list">
                 <?php
                 // Calcular estatísticas apenas se houver dados disponíveis
                 $media = calcularMedia($dataPoints1);
@@ -383,40 +400,40 @@
                 $valorMinimo = encontrarValorMinimo($dataPoints1);
                 ?>
 
-                <?php if (is_numeric($media)): ?>
+                <?php if (is_numeric($media)) : ?>
                     <li><strong>Média:</strong> <?php echo number_format($media, 2); ?></li>
-                <?php else: ?>
+                <?php else : ?>
                     <li><strong>Média:</strong> <?php echo $media; ?></li>
                 <?php endif; ?>
 
-                <?php if (is_numeric($mediana)): ?>
+                <?php if (is_numeric($mediana)) : ?>
                     <li><strong>Mediana:</strong> <?php echo number_format($mediana, 2); ?></li>
-                <?php else: ?>
+                <?php else : ?>
                     <li><strong>Mediana:</strong> <?php echo $mediana; ?></li>
                 <?php endif; ?>
 
-                <?php if (is_numeric($desvioPadrao)): ?>
+                <?php if (is_numeric($desvioPadrao)) : ?>
                     <li><strong>Desvio Padrão:</strong> <?php echo number_format($desvioPadrao, 2); ?></li>
-                <?php else: ?>
+                <?php else : ?>
                     <li><strong>Desvio Padrão:</strong> <?php echo $desvioPadrao; ?></li>
                 <?php endif; ?>
 
-                <?php if (is_numeric($valorMaximo)): ?>
+                <?php if (is_numeric($valorMaximo)) : ?>
                     <li><strong>Valor Máximo:</strong> <?php echo $valorMaximo; ?></li>
-                <?php else: ?>
+                <?php else : ?>
                     <li><strong>Valor Máximo:</strong> <?php echo $valorMaximo; ?></li>
                 <?php endif; ?>
 
-                <?php if (is_numeric($valorMinimo)): ?>
+                <?php if (is_numeric($valorMinimo)) : ?>
                     <li><strong>Valor Mínimo:</strong> <?php echo $valorMinimo; ?></li>
-                <?php else: ?>
+                <?php else : ?>
                     <li><strong>Valor Mínimo:</strong> <?php echo $valorMinimo; ?></li>
                 <?php endif; ?>
             </ul>
         </div>
 
         <script>
-            window.onload = function () {
+            window.onload = function() {
                 var chart1 = new CanvasJS.Chart("chartContainer1", {
                     animationEnabled: true,
                     theme: "light2",
@@ -442,10 +459,8 @@
     <footer>
         <div class="footer-content">
             <div class="footer-left">
-                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img"
-                    onclick="window.open('https://www.isep.ipp.pt', '_blank');">
-                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img"
-                    onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
+                <img src="Imagens/isep_logo.png" alt="ISEP Logo" class="isep_img" onclick="window.open('https://www.isep.ipp.pt', '_blank');">
+                <img src="Imagens/e-redes.jpeg" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://www.e-redes.pt/pt-pt', '_blank');">
             </div>
             <div class="footer-right">
                 <p>Projeto realizado no âmbito de Laboratório de Sistemas 1</p>
