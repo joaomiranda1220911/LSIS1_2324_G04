@@ -18,34 +18,39 @@ dataset1.dropna(inplace=True)  # Remover linhas com valores NaN
 corr_PCxPIB = pib.merge(dataset1, on='Ano', how='left')
 corr_PCxPIB.dropna(inplace=True)  # Remover linhas com valores NaN
 
-# Calcular a correlação entre 'Processos Concluidos (#)' e 'PIB a preços constantes' agrupadas por 'Região'
-correlacoes = corr_PCxPIB.groupby('Regiao').apply(lambda x: x['Processos Concluidos (#)'].corr(x['PIB a preços constantes'])).reset_index()
-correlacoes.columns = ['Região', 'Correlacao_ProcessosConcluidos_PIB']
+# Calcular a correlação entre 'Processos Concluidos (#)' e 'PIB a preços constantes' agrupadas por 'Concelho'
+correlacoes = corr_PCxPIB.groupby(['Regiao', 'Concelho']).apply(lambda x: x['Processos Concluidos (#)'].corr(x['PIB a preços constantes'])).reset_index()
+correlacoes.columns = ['Regiao', 'Concelho', 'Correlacao_ProcessosConcluidos_PIB']
 
-# Adicionar a coluna de correlação ao DataFrame original
-corr_PCxPIB = corr_PCxPIB.merge(correlacoes, left_on='Regiao', right_on='Região', how='left')
-corr_PCxPIB.drop(columns=['Região'], inplace=True)
+# Preparar o JSON com os dados de correlação por concelho, removendo NaN
+json_data = []
+for regiao, concelho, correlacao in zip(correlacoes['Regiao'], correlacoes['Concelho'], correlacoes['Correlacao_ProcessosConcluidos_PIB']):
+    # Verificar se a correlação é um valor numérico válido antes de adicionar ao JSON
+    if pd.notna(correlacao):  # Verifica se não é NaN
+        json_data.append({
+            'Regiao': regiao,
+            'Concelho': concelho,
+            'Correlacao_ProcessosConcluidos_PIB': float(correlacao)  # Garantir que a correlação seja convertida para float
+        })
 
-# Exportar para JSON com formatação correta
+# Exportar para o arquivo JSON
 with open('corr_PCxPIB.json', 'w', encoding='utf-8') as f:
-    json.dump(corr_PCxPIB.to_dict(orient='records'), f, ensure_ascii=False, indent=4)
+    json.dump(json_data, f, ensure_ascii=False, indent=4)
 
 # Função para criar o gráfico dos concelhos
 def create_concelhos_graph(region):
     region_data = corr_PCxPIB[corr_PCxPIB['Regiao'] == region]
-    concelhos_correlacoes = region_data.groupby('Concelho').apply(lambda x: x['Processos Concluidos (#)'].corr(x['PIB a preços constantes'])).reset_index()
-    concelhos_correlacoes.columns = ['Concelho', 'Correlacao_ProcessosConcluidos_PIB']
 
-    fig = px.bar(concelhos_correlacoes, x='Concelho', y='Correlacao_ProcessosConcluidos_PIB', 
+    fig = px.bar(region_data, x='Concelho', y='Correlacao_ProcessosConcluidos_PIB', 
                  title=f'Correlações entre Processos Concluídos e PIB - {region}', 
                  labels={'Correlacao_ProcessosConcluidos_PIB': 'Correlação', 'Concelho': 'Concelho'})
     return fig
 
 # Função para criar o gráfico principal das regiões
 def create_main_graph():
-    fig = px.bar(correlacoes, x='Região', y='Correlacao_ProcessosConcluidos_PIB', 
+    fig = px.bar(correlacoes, x='Regiao', y='Correlacao_ProcessosConcluidos_PIB', 
                  title='Correlações entre Processos Concluídos e PIB por região', 
-                 labels={'Correlacao_ProcessosConcluidos_PIB': 'Correlação', 'Região': 'Região'})
+                 labels={'Correlacao_ProcessosConcluidos_PIB': 'Correlação', 'Regiao': 'Região'})
     return fig
 
 # Inicializar o aplicativo Dash

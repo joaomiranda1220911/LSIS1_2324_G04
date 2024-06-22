@@ -220,135 +220,135 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('corr_PCxPIB.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Obter os nomes das regiões distintas
-                    const regionNames = [...new Set(data.map(item => item['Regiao']))];
+     document.addEventListener('DOMContentLoaded', function() {
+        fetch('corr_PCxPIB.json')
+            .then(response => response.json())
+            .then(data => {
+                // Obter os nomes das regiões distintas
+                const regionNames = [...new Set(data.map(item => item['Regiao']))];
 
-                    // Calcular a média de correlação por região
-                    const correlationData = regionNames.map(region => {
-                        const regionData = data.filter(item => item['Regiao'] === region);
-                        const validData = regionData.filter(item => item['Correlacao_ProcessosConcluidos_PIB'] !== undefined);
-                        const averageCorrelation = validData.reduce((sum, item) => {
-                            const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
-                            return sum + (isNaN(correlation) ? 0 : correlation);
-                        }, 0) / validData.length;
-                        return averageCorrelation;
-                    });
+                // Calcular a média de correlação por região
+                const correlationData = regionNames.map(region => {
+                    const regionData = data.filter(item => item['Regiao'] === region);
+                    const validData = regionData.filter(item => item['Correlacao_ProcessosConcluidos_PIB'] !== undefined);
+                    const averageCorrelation = validData.reduce((sum, item) => {
+                        const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
+                        return sum + (isNaN(correlation) ? 0 : correlation);
+                    }, 0) / validData.length;
+                    return averageCorrelation;
+                });
 
-                    // Configurar o gráfico inicial por região
-                    const ctx = document.getElementById('correlationChart').getContext('2d');
-                    const correlationChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: regionNames,
-                            datasets: [{
-                                label: 'Correlação Processos Concluídos vs PIB',
-                                data: correlationData,
-                                backgroundColor: '#FFDC00',
-                                borderColor: 'black',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    title: {
-                                        display: true,
-                                        text: 'Correlação'
-                                    }
-                                },
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Região'
-                                    }
+                // Configurar o gráfico inicial por região
+                const ctx = document.getElementById('correlationChart').getContext('2d');
+                const correlationChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: regionNames,
+                        datasets: [{
+                            label: 'Correlação Processos Concluídos vs PIB',
+                            data: correlationData,
+                            backgroundColor: '#FFDC00',
+                            borderColor: 'black',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Correlação'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Região'
                                 }
                             }
                         }
-                    });
-
-                    // Função para calcular média de correlação por concelho
-                    function calcularMediaCorrelacaoConcelhos(data, regiao) {
-                        const concelhosData = {};
-                        const regiaoData = data.filter(item => item['Regiao'] === regiao);
-
-                        regiaoData.forEach(item => {
-                            const concelho = item['Concelho'];
-                            const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
-
-                            if (!isNaN(correlation)) {
-                                if (!concelhosData[concelho]) {
-                                    concelhosData[concelho] = {
-                                        totalCorrelation: 0,
-                                        count: 0
-                                    };
-                                }
-
-                                concelhosData[concelho].totalCorrelation += correlation;
-                                concelhosData[concelho].count++;
-                            }
-                        });
-
-                        // Calcular média de correlação por concelho
-                        const concelhosCorrelationData = Object.keys(concelhosData).map(concelho => {
-                            const averageCorrelation = concelhosData[concelho].totalCorrelation / concelhosData[concelho].count;
-                            return {
-                                concelho: concelho,
-                                correlacao: averageCorrelation
-                            };
-                        });
-
-                        return concelhosCorrelationData;
                     }
+                });
 
-                    // Adicionar evento de clique para atualizar o gráfico ao clicar em uma barra de região
-                    correlationChart.options.onClick = function(evt, elements) {
-                        if (elements.length > 0) {
-                            const clickedRegion = correlationChart.data.labels[elements[0].index];
-                            const concelhosCorrelationData = calcularMediaCorrelacaoConcelhos(data, clickedRegion);
+                // Função para calcular média de correlação por concelho
+                function calcularMediaCorrelacaoConcelhos(data, regiao) {
+                    const concelhosData = {};
+                    const regiaoData = data.filter(item => item['Regiao'] === regiao);
 
-                            const concelhosLabels = concelhosCorrelationData.map(item => item.concelho);
-                            const concelhosCorrelationValues = concelhosCorrelationData.map(item => item.correlacao);
+                    regiaoData.forEach(item => {
+                        const concelho = item['Concelho'];
+                        const correlation = parseFloat(item['Correlacao_ProcessosConcluidos_PIB']);
 
-                            // Atualizar o gráfico com dados dos concelhos
-                            correlationChart.data.labels = concelhosLabels;
-                            correlationChart.data.datasets[0].data = concelhosCorrelationValues;
-                            correlationChart.options.scales.x.title.text = 'Concelho';
-                            correlationChart.update();
-                        }
-                    };
+                        if (!isNaN(correlation)) {
+                            if (!concelhosData[concelho]) {
+                                concelhosData[concelho] = {
+                                    totalCorrelation: 0,
+                                    count: 0
+                                };
+                            }
 
-                    // Adicionar evento de clique ao documento para voltar ao gráfico por região
-                    document.addEventListener('click', function(evt) {
-                        const isOutsideChart = !correlationChart.canvas.contains(evt.target);
-                        if (isOutsideChart) {
-                            correlationChart.data.labels = regionNames;
-                            correlationChart.data.datasets[0].data = correlationData;
-                            correlationChart.options.scales.x.title.text = 'Região';
-                            correlationChart.update();
+                            concelhosData[concelho].totalCorrelation += correlation;
+                            concelhosData[concelho].count++;
                         }
                     });
-                })
-                .catch(error => console.error('Erro ao carregar dados:', error));
-        });
 
-        function toggleText(id) {
-            const element = document.getElementById(id);
-            const button = element.previousElementSibling.firstElementChild.firstElementChild;
+                    // Calcular média de correlação por concelho
+                    const concelhosCorrelationData = Object.keys(concelhosData).map(concelho => {
+                        const averageCorrelation = concelhosData[concelho].totalCorrelation / concelhosData[concelho].count;
+                        return {
+                            concelho: concelho,
+                            correlacao: averageCorrelation
+                        };
+                    });
 
-            if (element.style.display === "none" || element.style.display === "") {
-                element.style.display = "block";
-                button.innerHTML = "▲";
-            } else {
-                element.style.display = "none";
-                button.innerHTML = "▼";
-            }
+                    return concelhosCorrelationData;
+                }
+
+                // Adicionar evento de clique para atualizar o gráfico ao clicar em uma barra de região
+                correlationChart.options.onClick = function(evt, elements) {
+                    if (elements.length > 0) {
+                        const clickedRegion = correlationChart.data.labels[elements[0].index];
+                        const concelhosCorrelationData = calcularMediaCorrelacaoConcelhos(data, clickedRegion);
+
+                        const concelhosLabels = concelhosCorrelationData.map(item => item.concelho);
+                        const concelhosCorrelationValues = concelhosCorrelationData.map(item => item.correlacao);
+
+                        // Atualizar o gráfico com dados dos concelhos
+                        correlationChart.data.labels = concelhosLabels;
+                        correlationChart.data.datasets[0].data = concelhosCorrelationValues;
+                        correlationChart.options.scales.x.title.text = 'Concelho';
+                        correlationChart.update();
+                    }
+                };
+
+                // Adicionar evento de clique ao documento para voltar ao gráfico por região
+                document.addEventListener('click', function(evt) {
+                    const isOutsideChart = !correlationChart.canvas.contains(evt.target);
+                    if (isOutsideChart) {
+                        correlationChart.data.labels = regionNames;
+                        correlationChart.data.datasets[0].data = correlationData;
+                        correlationChart.options.scales.x.title.text = 'Região';
+                        correlationChart.update();
+                    }
+                });
+            })
+            .catch(error => console.error('Erro ao carregar dados:', error));
+    });
+
+    function toggleText(id) {
+        const element = document.getElementById(id);
+        const button = element.previousElementSibling.firstElementChild.firstElementChild;
+
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+            button.innerHTML = "▲";
+        } else {
+            element.style.display = "none";
+            button.innerHTML = "▼";
         }
+    }
 
         document.addEventListener('DOMContentLoaded', function() {
             // Função para carregar e processar os dados do segundo arquivo JSON
