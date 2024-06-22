@@ -1,3 +1,12 @@
+<?php
+// Incluir o arquivo de configuração da conexão com o banco de dados
+include("ImportSQL.php");
+
+// Verificar se a sessão já está ativa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -157,13 +166,6 @@
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
         <?php
-        // Incluir o arquivo de configuração da conexão com o banco de dados
-        include("ImportSQL.php");
-
-        // Verificar se a sessão já está ativa
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
 
         // Definir um nome padrão
         $nome_utilizador = "Utilizador";
