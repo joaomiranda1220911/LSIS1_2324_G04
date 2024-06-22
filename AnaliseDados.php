@@ -130,7 +130,6 @@
             <input type="text" placeholder="Pesquisar">
             <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
         </div>
-
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
         include("ImportSQL.php");
@@ -173,7 +172,6 @@
             </div>
         </div>
     </header>
-
     <?php
     // Verificar se o parâmetro nomeTabelaAtual foi recebido
     if (isset($_GET['nomeTabelaAtual'])) {
@@ -182,7 +180,9 @@
         // Função para obter nomes das colunas da tabela
         function obterColunas($mysqli, $tabela)
         {
-            $sql = "SHOW COLUMNS FROM $tabela";
+            // Escape and quote the table name
+            $tabela = $mysqli->real_escape_string($tabela);
+            $sql = "SHOW COLUMNS FROM `$tabela`";
             $result = $mysqli->query($sql);
             $colunas = array();
             if ($result->num_rows > 0) {
@@ -209,14 +209,16 @@
                 // Obter dados com base na seleção do utilizador e ordenar pelo eixo X
                 function obterDadosSelecionados($mysqli, $tabela, $xColuna, $yColuna)
                 {
+                    // Escape and quote the table name and columns
+                    $tabela = $mysqli->real_escape_string($tabela);
+                    $xColuna = $mysqli->real_escape_string($xColuna);
+                    $yColuna = $mysqli->real_escape_string($yColuna);
+                    $sql = "SELECT `$xColuna` AS x, `$yColuna` AS y FROM `$tabela` ORDER BY `$xColuna` ASC";
+                    $result = $mysqli->query($sql);
                     $dataPoints = array();
-                    if ($xColuna && $yColuna) {
-                        $sql = "SELECT $xColuna AS x, $yColuna AS y FROM $tabela ORDER BY $xColuna ASC";
-                        $result = $mysqli->query($sql);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $dataPoints[] = array("label" => $row["x"], "y" => $row["y"]);
-                            }
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $dataPoints[] = array("label" => $row["x"], "y" => $row["y"]);
                         }
                     }
                     return $dataPoints;
@@ -226,6 +228,7 @@
             }
         }
     }
+
     // Verificar se $nomeTabelaAtual está definido e ajustar o título da página
     $tituloPagina = isset($nomeTabelaAtual) ? str_replace("_", " ", $nomeTabelaAtual) : "Análise de Dados";
     echo "<h1>Análise - " . $tituloPagina . "</h1>";
@@ -283,7 +286,6 @@
             }
         </script>
     <?php endif; ?>
-
     <footer>
         <div class="footer-content">
             <div class="footer-left">
