@@ -106,6 +106,10 @@ if (isset($_SESSION['email'])) {
                             <input type="checkbox" id="Renováveis" name="tags[]" value="Renováveis">
                             <label for="Renováveis">Renováveis</label>
                         </li>
+                        <li>
+                            <input type="checkbox" id="Externo" name="tags[]" value="Externo">
+                            <label for="Externo">Externo</label>
+                        </li>
                     </ul>
                     <div class="button-container">
                         <div class="custom-button">
