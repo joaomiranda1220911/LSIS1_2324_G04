@@ -175,15 +175,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
             </div>
             <div class="input-container">
                 <input type="password" placeholder="Password" id="password" name="password" required>
-                <button type="button" onclick="togglePasswordVisibility('password')">
-                    Mostrar
-                </button>
             </div>
             <div class="input-container">
                 <input type="password" placeholder="Confirmar Password" id="confirm_password" name="confirm_password" required>
-                <button type="button" onclick="togglePasswordVisibility('confirm_password')">
-                    Mostrar
-                </button>
             </div>
             <button name="submit" type="submit">Registar</button>
         </form>

@@ -69,12 +69,15 @@
             $email = $_SESSION['email'];
 
             // Query para selecionar o nome do usuário
-            $sql = "SELECT nome FROM utilizador WHERE email = '$email'";
-            $result = mysqli_query($mysqli, $sql);
-
-            if ($result) {
-                $row = mysqli_fetch_assoc($result);
-                $nome_utilizador = $row['nome'];
+            $sql = "SELECT nome FROM utilizador WHERE email = ?";
+            if ($stmt = $mysqli->prepare($sql)) {
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result && $row = $result->fetch_assoc()) {
+                    $nome_utilizador = $row['nome'];
+                }
+                $stmt->close();
             }
         } else {
             $nome_utilizador = "Visitante";
@@ -84,7 +87,7 @@
         <div class="dropdown">
             <button class="user-info">
                 <img src="Imagens/user_icon.png" alt="User Icon">
-                <span><?php echo $nome_utilizador; ?></span>
+                <span><?php echo htmlspecialchars($nome_utilizador); ?></span>
             </button>
             <div class="dropdown-content">
                 <a href="Login.php">Login</a>
@@ -132,6 +135,11 @@
 
             $columns = getColumns($mysqli, $table);
             foreach ($columns as $column) {
+                // Skip email and password columns
+                if (in_array($column, ['email', 'password'])) {
+                    continue;
+                }
+
                 $sql = "SELECT * FROM `$table` WHERE `$column` LIKE ? LIMIT 35"; // Limit to 35 rows
                 if ($stmt = $mysqli->prepare($sql)) {
                     $stmt->bind_param("s", $searchTerm);
@@ -144,13 +152,21 @@
                         echo "<table border='1'>";
                         echo "<tr>";
                         foreach ($result->fetch_fields() as $field) {
+                            // Skip email and password columns
+                            if (in_array($field->name, ['email', 'password'])) {
+                                continue;
+                            }
                             echo "<th>" . htmlspecialchars($field->name) . "</th>";
                         }
                         echo "</tr>";
                         $rowCount = 0;
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
-                            foreach ($row as $cell) {
+                            foreach ($row as $key => $cell) {
+                                // Skip email and password columns
+                                if (in_array($key, ['email', 'password'])) {
+                                    continue;
+                                }
                                 echo "<td>" . htmlspecialchars($cell) . "</td>";
                             }
                             echo "</tr>";
@@ -160,19 +176,18 @@
 
                         if ($rowCount >= 20) {
                             echo "<p style='text-align: center;'><strong>Mais do que 20 resultados encontrados. Melhore a sua pesquisa.</strong></p>";
-
                         }
                     }
 
                     $stmt->close();
                 } else {
-                    echo "Error preparing statement for table '$table', column '$column'.<br>";
+                    echo "Erro ao preparar a declaração para a tabela '$table', coluna '$column'.<br>";
                 }
             }
         }
 
         if (!$resultsFound) {
-            echo "<p>No results found for '" . htmlspecialchars($query) . "'</p>";
+            echo "<p>Sem resultados para: '" . htmlspecialchars($query) . "'</p>";
         }
     }
 

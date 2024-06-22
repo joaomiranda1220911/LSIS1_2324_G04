@@ -18,6 +18,11 @@
     <style>
         .form-container {
             margin-top: 60px;
+            width: 300px;
+        }
+
+        .form-row input[type="text"]{
+            box-sizing: none;
         }
     </style>
 </head>
