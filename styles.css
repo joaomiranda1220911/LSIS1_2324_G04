@@ -88,7 +88,6 @@ header {
 main {
     padding: 20px;
 }
-
 .hero {
     position: relative;
     text-align: center;
@@ -128,6 +127,7 @@ main {
     cursor: pointer; /* Add cursor pointer for clickable images */
     border-radius: 10px; /* Optional: Add border radius to the images */
 }
+
 
 
 
