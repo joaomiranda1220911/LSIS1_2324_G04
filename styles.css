@@ -43,19 +43,25 @@ header {
 .search-bar {
     display: flex;
     align-items: center;
-    border-color: 1px #898989 solid;
-    margin-left: auto;
+    border: 1px solid #898989;
+    padding: 10px;
+    border-radius: 10px;
+    width: 400px; /* Definir largura desejada */
 }
 
-.search-bar input[type="text"] {
-    padding: 10px 10px 10px 10px;
-    width: 400px;
-    border: 1px solid;
-    border-color: 1px #898989 solid;
+.search-input {
+    display: flex;
+    align-items: center;
+    flex: 1; /* Ocupar todo o espaço disponível */
+}
+
+.search-input input[type="text"] {
+    padding: 10px;
+    flex: 1; /* Ocupar todo o espaço disponível */
+    border: 1px solid #898989;
     border-radius: 10px;
-    margin-right: 0px;
-    margin-left: 40px;
     background-color: rgb(250, 250, 250);
+    margin-right: 10px; /* Espaçamento entre input e botão */
 }
 
 input[type="text"]::placeholder {
@@ -70,7 +76,6 @@ input[type="text"]::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 40px;
 }
 
 .search-button img {
@@ -78,6 +83,7 @@ input[type="text"]::placeholder {
     width: 30px;
     border-radius: 10px;
 }
+
 
 .user-info {
     display: flex;

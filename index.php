@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<header>
+    <header>
         <div class="logo" onclick="window.location.href='index.php'">
             <img src="Imagens/casa_icon.png" alt="Logo">
         </div>
@@ -22,10 +22,13 @@
                 <button><a href="Mapa.php">Mapa</a></button>
             </div>
         </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar">
-            <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
-        </div>
+        <form action="search.php" method="GET" class="search-bar">
+            <input type="text" name="query" placeholder="Pesquisar">
+            <button type="submit" class="search-button">
+                <img src="Imagens/search_icon.png" alt="ir">
+            </button>
+        </form>
+
 
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
@@ -51,7 +54,7 @@
                 $row = mysqli_fetch_assoc($result);
                 $nome_utilizador = $row['nome'];
             }
-        }else{
+        } else {
             $nome_utilizador = "Visitante";
         }
         ?>
@@ -78,10 +81,10 @@
         </section>
         <section class="dashboards">
             <div class="dashboard">
-            <iframe src="https://e-redes.opendatasoft.com/explore/embed/dataset/16-pedidos-concluidos-plrs/analyze/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiU1VNIiwieUF4aXMiOiJwZWRpZG9zX2RlX2xpZ2FjYW9fYV9yZWRlX2V4ZWN1dGFkb3MiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjRkZEQzAwIn1dLCJ4QXhpcyI6ImNvbmNlbGhvIiwibWF4cG9pbnRzIjoyMCwic29ydCI6InNlcmllMS0xIiwiY29uZmlnIjp7ImRhdGFzZXQiOiIxNi1wZWRpZG9zLWNvbmNsdWlkb3MtcGxycyIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D&static=false&datasetcard=true" width="600" height="450" frameborder="0"></iframe>
+                <iframe src="https://e-redes.opendatasoft.com/explore/embed/dataset/16-pedidos-concluidos-plrs/analyze/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiU1VNIiwieUF4aXMiOiJwZWRpZG9zX2RlX2xpZ2FjYW9fYV9yZWRlX2V4ZWN1dGFkb3MiLCJzY2llbnRpZmljRGlzcGxheSI6dHJ1ZSwiY29sb3IiOiIjRkZEQzAwIn1dLCJ4QXhpcyI6ImNvbmNlbGhvIiwibWF4cG9pbnRzIjoyMCwic29ydCI6InNlcmllMS0xIiwiY29uZmlnIjp7ImRhdGFzZXQiOiIxNi1wZWRpZG9zLWNvbmNsdWlkb3MtcGxycyIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D&static=false&datasetcard=true" width="600" height="450" frameborder="0"></iframe>
             </div>
             <div class="dashboard">
-            <iframe src="https://e-redes.opendatasoft.com/explore/embed/dataset/26-centrais/analyze/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiU1VNIiwieUF4aXMiOiJwcm9jZXNzb3NfY29uY2x1aWRvcyIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiNGRkRDMDAifV0sInhBeGlzIjoiYW5vIiwibWF4cG9pbnRzIjpudWxsLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiIyNi1jZW50cmFpcyIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D&static=false&datasetcard=true" width="600" height="450" frameborder="0"></iframe>
+                <iframe src="https://e-redes.opendatasoft.com/explore/embed/dataset/26-centrais/analyze/?dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJjb2x1bW4iLCJmdW5jIjoiU1VNIiwieUF4aXMiOiJwcm9jZXNzb3NfY29uY2x1aWRvcyIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiNGRkRDMDAifV0sInhBeGlzIjoiYW5vIiwibWF4cG9pbnRzIjpudWxsLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiIyNi1jZW50cmFpcyIsIm9wdGlvbnMiOnt9fX1dLCJ0aW1lc2NhbGUiOiIiLCJkaXNwbGF5TGVnZW5kIjp0cnVlLCJhbGlnbk1vbnRoIjp0cnVlfQ%3D%3D&static=false&datasetcard=true" width="600" height="450" frameborder="0"></iframe>
             </div>
         </section>
     </main>
