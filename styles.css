@@ -112,7 +112,24 @@ main {
     background-color: rgba(0, 0, 0, 0.624);
     padding: 50px;
     border-radius: 10px;
+    text-align: center; /* Center align text */
 }
+
+.hero-images {
+    display: flex; /* Use flexbox for images */
+    justify-content: center; /* Center images */
+    gap: 20px; /* Space between images */
+    margin-top: 20px; /* Add margin to separate from title */
+}
+
+.hero-images img {
+    width: auto; /* Adjust to maintain aspect ratio */
+    height: 100px; /* Set a fixed height for the images */
+    cursor: pointer; /* Add cursor pointer for clickable images */
+    border-radius: 10px; /* Optional: Add border radius to the images */
+}
+
+
 
 .lista-datasets {
     list-style-type: none; /* Remove as marcas de lista */

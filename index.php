@@ -76,7 +76,12 @@
         <section class="hero">
             <img src="Imagens/paineis.png" alt="Hero Image">
             <div class="hero-text">
-                <h1 style="font-size: 30px">Principais estatísticas descobertas</h1>
+                <h1 style="font-size: 30px">Principais Fontes de Dados</h1>
+                <div class="hero-images">
+                    <img src="Imagens/opendata.png" alt="E-Redes Logo" class="eredes_img" onclick="window.open('https://e-redes.opendatasoft.com/pages/homepage/', '_blank');">
+                    <img src="Imagens/pordata.jpg" alt="PORDATA Logo" class="pordata_img" onclick="window.open('https://www.pordata.pt/', '_blank');">
+                    <img src="Imagens/ine.jpeg" alt="INE Logo" class="ine_img" onclick="window.open('https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_main', '_blank');">
+                </div>
             </div>
         </section>
         <section class="dashboards">
