@@ -15,6 +15,11 @@
             }
         }
     </script>
+    <style>
+        .form-container {
+            margin-top: 60px;
+        }
+    </style>
 </head>
 
 <body>
@@ -129,17 +134,21 @@
                 }
             }
 
-            if (isset($_POST['submitPassword']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-                if ($_POST['password'] === $_POST['confirm_password']) {
-                    $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $sql = "UPDATE utilizador SET password = '$newPassword' WHERE email = '$email'";
-                    if ($mysqli->query($sql) === TRUE) {
-                        echo "<script>alert('Senha atualizada com sucesso');</script>";
+            if (isset($_POST['submitPassword'])) {
+                if (!empty($_POST['password']) && !empty($_POST['confirm_password'])) {
+                    if ($_POST['password'] === $_POST['confirm_password']) {
+                        $newPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                        $sql = "UPDATE utilizador SET password = '$newPassword' WHERE email = '$email'";
+                        if ($mysqli->query($sql) === TRUE) {
+                            echo "<script>alert('Senha atualizada com sucesso');</script>";
+                        } else {
+                            echo "<script>alert('Erro ao atualizar a password: " . mysqli_error($mysqli) . "')</script>";
+                        }
                     } else {
-                        echo "<script>alert('Erro ao atualizar a password: " . mysqli_error($mysqli) . "')</script>";
+                        echo "<script>alert('As passwords não coincidem')</script>";
                     }
                 } else {
-                    echo "<script>alert('As passwords não coincidem')</script>";
+                    echo "<script>alert('Por favor, preencha os dois campos de senha.')</script>";
                 }
             }
         }
@@ -181,7 +190,6 @@
             <input type="hidden" id="deleteEmail" name="deleteEmail">
         </form>
     </div>
-    
 
     <footer>
         <div class="footer-content">
