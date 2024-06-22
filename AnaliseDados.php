@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilos específicos para esta página */
         .dashboard {
             display: flex;
             flex-wrap: wrap;
