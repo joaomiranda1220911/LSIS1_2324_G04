@@ -31,10 +31,12 @@
                 <button><a href="Mapa.php">Mapa</a></button>
             </div>
         </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar">
-            <button class="search-button"><img src="Imagens/search_icon.png" alt="ir"></button>
-        </div>
+        <form action="search.php" method="GET" class="search-bar">
+            <input type="text" name="query" placeholder="Pesquisar">
+            <button type="submit" class="search-button">
+                <img src="Imagens/search_icon.png" alt="ir">
+            </button>
+        </form>
 
         <?php
         // Incluir o arquivo de configuração da conexão com o banco de dados
