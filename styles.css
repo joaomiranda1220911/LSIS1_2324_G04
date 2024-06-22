@@ -53,8 +53,9 @@ header {
     flex: 1; /* Ocupar todo o espaço disponível */
     border: 1px solid #898989;
     border-radius: 10px;
+    margin-right: 0px;
+    margin-left: 40px;
     background-color: rgb(250, 250, 250);
-    margin-right: 10px; /* Espaçamento entre input e botão */
 }
 
 .search-bar input[type="text"]::placeholder {
@@ -835,6 +836,11 @@ h1 {
 .form-container .button:hover {
     background-color: #333;
     color: #FFDC00;
+}
+
+.form-container input[type="checkbox"] {
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
 #graficoProcessosConcluidos {
