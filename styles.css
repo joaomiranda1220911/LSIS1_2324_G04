@@ -27,6 +27,7 @@ header {
 .nav-buttons {
     display: flex;
     align-items: center;
+    justify-content: flex-start; /* Aligns items (buttons) to the left */
 }
 
 .nav-buttons button {
@@ -243,14 +244,14 @@ main {
 .nav-buttons button {
     background-color: #FFDC00;
     border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    padding: 12px 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    display: inline-block;
     color: black;
-    margin: 0 10px 0 10px;
+    margin-right: 15px;
 }
+
 
 .eredes_btn:hover,
 .nav-buttons button:hover {
