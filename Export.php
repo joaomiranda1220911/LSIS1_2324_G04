@@ -1,4 +1,13 @@
 <?php
+// Inicia a sessão
+session_start();
+
+// Verifica se o utilizador está autenticado (exemplo de verificação básica)
+if (!isset($_SESSION['email'])) {
+    header("Location: Login.php"); // Redirecionar para página de login se não estiver logado
+    exit;
+}
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -45,3 +54,4 @@ if (isset($_GET['nomeTabelaAtual'])) {
     $mysqli->close();
 }
 ?>
+

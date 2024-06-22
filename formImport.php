@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Formulário de Importação</title>
     <link rel="icon" href="Imagens/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .submit-button{
+        .submit-button {
             background-color: #FFDC00;
             border: none;
             border-radius: 8px;
@@ -19,7 +19,7 @@
             color: black;
         }
 
-        .submit-button:hover{
+        .submit-button:hover {
             background-color: #333;
             color: #FFDC00;
         }
@@ -80,29 +80,35 @@
         <h2>Importar Dados</h2>
         <form method="POST" enctype="multipart/form-data" action="process_form.php">
             <label for="nome_tabela">Nome da Tabela:</label>
-            <input type="text" id="nome_tabela" name="nome_tabela" required>
-            <label for="tag_tabela">Tags da Tabela:</label>
-            <div id="tag_tabela" name="tag_tabela[]">
-                <input type="checkbox" id="tag1" name="tag_tabela[]" value="Operação e Qualidade de Serviço">
-                <label for="tag1">Operação e Qualidade de Serviço</label><br>
-                <input type="checkbox" id="tag2" name="tag_tabela[]" value="Rede Elétrica">
-                <label for="tag2">Rede Elétrica</label><br>
-                <input type="checkbox" id="tag3" name="tag_tabela[]" value="Consumos e Energia">
-                <label for="tag3">Consumos e Energia</label><br>
-                <input type="checkbox" id="tag4" name="tag_tabela[]" value="Mobilidade Elétrica">
-                <label for="tag4">Mobilidade Elétrica</label><br>
-                <input type="checkbox" id="tag5" name="tag_tabela[]" value="Renováveis">
-                <label for="tag5">Renováveis</label>
-            </div>
+            <input type="text" id="nome_tabela" name="nome_tabela" required><br>
+
+            <label>Tags da Tabela:</label><br>
+            <input type="checkbox" id="tag1" name="tag_tabela[]" value="Operação e Qualidade de Serviço">
+            <label for="tag1">Operação e Qualidade de Serviço</label><br>
+            <input type="checkbox" id="tag2" name="tag_tabela[]" value="Rede Elétrica">
+            <label for="tag2">Rede Elétrica</label><br>
+            <input type="checkbox" id="tag3" name="tag_tabela[]" value="Consumos e Energia">
+            <label for="tag3">Consumos e Energia</label><br>
+            <input type="checkbox" id="tag4" name="tag_tabela[]" value="Mobilidade Elétrica">
+            <label for="tag4">Mobilidade Elétrica</label><br>
+            <input type="checkbox" id="tag5" name="tag_tabela[]" value="Renováveis">
+            <label for="tag5">Renováveis</label><br>
+            <input type="checkbox" id="tag6" name="tag_tabela[]" value="Externo">
+            <label for="tag6">Externo</label><br>
+
             <label for="informacao_tabela">Informação da Tabela:</label>
-            <textarea id="informacao_tabela" name="informacao_tabela" rows="4" cols="50" required></textarea>
+            <textarea id="informacao_tabela" name="informacao_tabela" rows="4" cols="50" required></textarea><br>
+
             <label for="numero_linhas">Número de Linhas:</label>
-            <input type="number" id="numero_linhas" name="numero_linhas" required>
+            <input type="number" id="numero_linhas" name="numero_linhas" required><br>
+
             <label for="upload_ficheiro">Upload de Ficheiro:</label>
-            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls" required>
+            <input type="file" id="fileUpload" name="fileUpload" class="file-upload" accept=".csv, .xlsx, .xls" required><br>
+
             <input type="submit" value="Importar Dados" class="submit-button">
         </form>
     </div>
+
     <footer>
         <div class="footer-content">
             <div class="footer-left">
